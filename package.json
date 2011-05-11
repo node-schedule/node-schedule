@@ -1,0 +1,16 @@
+{
+	"name": "node-schedule",
+	"version": "0.1.0",
+	"description": "A cron-like and not-cron-like job scheduler for Node.",
+	"keywords": ["schedule", "task", "job", "cron"],
+	"author": {
+		"name": "Matt Patenaude",
+		"email": "matt@mattpatenaude.com",
+		"url": "http://mattpatenaude.com"
+	},
+	"main": "./lib/schedule.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mattpat/node-schedule.git"
+	}
+}
