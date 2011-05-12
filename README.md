@@ -10,7 +10,7 @@ Jobs and Scheduling
 -------------------
 Every scheduled job in node-schedule is represented by a `Job` object. You can create jobs manually, then execute the `schedule()` method to apply a schedule, or use the convenience function `scheduleJob()` as demonstrated below.
 
-`Job` objects are `EventEmitter`s, and emit a `run` event after each execution.
+`Job` objects are `EventEmitter`s, and emit a `run` event after each execution. They also emit a `scheduled` event each time they're scheduled to run, and a `canceled` event when an invocation is canceled before it's executed (both events receive a JavaScript date object as a parameter). Note that jobs are scheduled the first time immediately, so if you create a job using the `scheduleJob()` convenience method, you'll miss the first `scheduled` event. Also note that `canceled` is the single-L American spelling.
 
 Date-based Scheduling
 ---------------------
