@@ -27,13 +27,45 @@ If you later rethink your decision, you can invalidate the job with the `cancel(
 
 Recurrence Rule Scheduling
 --------------------------
-TODO
+You can build recurrence rules to specify when a job should recur. For instance, consider this rule, which executes the function every hour at 42 minutes after the hour:
+
+	var schedule = require('node-schedule');
+	
+	var rule = new schedule.RecurrenceRule();
+	rule.minute = 42;
+	
+	var j = schedule.scheduleJob(rule, function(){
+		console.log('The answer to life, the universe, and everything!');
+	});
+
+You can also use arrays to specify a list of acceptable values, and the `Range` object to specify a range of start and end values, with an optional step parameter. For instance, this will print a message on Thursday, Friday, Saturday, and Sunday at 5pm:
+
+	var rule = new schedule.RecurrenceRule();
+	rule.dayOfWeek = [0, new schedule.Range(4, 6)];
+	rule.hour = 17;
+	rule.minute = 0;
+	
+	var j = schedule.scheduleJob(rule, function(){
+		console.log('Today is recognized by Rebecca Black!');
+	});
 
 Cron-style Scheduling
 ---------------------
-TODO
+If you're a fan of cron, you can instead define your recurrence rules using a syntax similar to what you might write in your crontab. For example, the above examples rewritten using this style:
+
+	var schedule = require('node-schedule');
+	
+	var j = schedule.scheduleJob('42 * * * *', function(){
+		console.log('The answer to life, the universe, and everything!');
+	});
+	
+And:
+
+	var j = schedule.scheduleJob('0 17 ? * 0,4-6', function(){
+		console.log('Today is recognized by Rebecca Black!');
+	});
 
 ### Unsupported Cron Features
-Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (xth weekday of the month) are not supported. Most other features supported by popular cron implementations should work just fine.
+Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (xth weekday of the month) are not supported. Also, in the day-of-week field, 7 is currently not recognized as a legal value for Sunday (use 0). Most other features supported by popular cron implementations should work just fine.
 
 It is also entirely possible at this point that constructing a cron string that can *only* exist in the past will cause an infinite loop. This is only possible if a year is specified. If the specified year is a number (i.e., not a range), node-schedule will perform a sanity check before attempting to schedule something in the past.
