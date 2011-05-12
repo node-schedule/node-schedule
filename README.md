@@ -49,6 +49,8 @@ You can also use arrays to specify a list of acceptable values, and the `Range` 
 		console.log('Today is recognized by Rebecca Black!');
 	});
 
+It's worth noting that the default value of a component of a recurrence rule is `null` (except for seconds, which is 0 for familiarity with cron). If we did not explicitly set `minute` to 0 above, the message would have instead been logged at 5:00pm, 5:01pm, 5:02pm, ..., 5:59pm. Probably not what you want.
+
 Cron-style Scheduling
 ---------------------
 If you're a fan of cron, you can instead define your recurrence rules using a syntax similar to what you might write in your crontab. For example, the above examples rewritten using this style:
@@ -66,6 +68,6 @@ And:
 	});
 
 ### Unsupported Cron Features
-Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (xth weekday of the month) are not supported. Also, in the day-of-week field, 7 is currently not recognized as a legal value for Sunday (use 0). Most other features supported by popular cron implementations should work just fine.
+Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (nth weekday of the month) are not supported. Also, in the day-of-week field, 7 is currently not recognized as a legal value for Sunday (use 0). Most other features supported by popular cron implementations should work just fine.
 
 It is also entirely possible at this point that constructing a cron string that can *only* exist in the past will cause an infinite loop. This is only possible if a year is specified. If the specified year is a number (i.e., not a range), node-schedule will perform a sanity check before attempting to schedule something in the past.
