@@ -10,6 +10,8 @@ Jobs and Scheduling
 -------------------
 Every scheduled job in node-schedule is represented by a `Job` object. You can create jobs manually, then execute the `schedule()` method to apply a schedule, or use the convenience function `scheduleJob()` as demonstrated below.
 
+`Job` objects are `EventEmitter`s, and emit a `run` event after each execution.
+
 Date-based Scheduling
 ---------------------
 Say you very specifically want a function to execute at 5:30am on December 21, 2012.
