@@ -51,6 +51,13 @@ You can also use arrays to specify a list of acceptable values, and the `Range` 
 
 It's worth noting that the default value of a component of a recurrence rule is `null` (except for seconds, which is 0 for familiarity with cron). If we did not explicitly set `minute` to 0 above, the message would have instead been logged at 5:00pm, 5:01pm, 5:02pm, ..., 5:59pm. Probably not what you want.
 
+### Object Literal Syntax
+To make things a little easier, an object literal syntax is also supported, like in this example which will log a message every Sunday at 2:30pm:
+
+	var j = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 0}, function(){
+		console.log('Time for tea!');
+	});
+
 Cron-style Scheduling
 ---------------------
 If you're a fan of cron, you can instead define your recurrence rules using a syntax similar to what you might write in your crontab. For example, the above examples rewritten using this style:
