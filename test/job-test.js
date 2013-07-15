@@ -50,6 +50,24 @@ module.exports = {
 			setTimeout(function() {
 				test.done();
 			}, 1000);
+		},
+		"Jobs still run after scheduling a Job in the past": function(test) {
+			test.expect(1);
+
+			var pastJob = new schedule.Job(function() {
+				// Should not run, blow up if it does
+				test.ok(false);
+			});
+			pastJob.schedule(new Date(Date.now() - 3000));
+
+			var job = new schedule.Job(function() {
+				test.ok(true);
+			});
+			job.schedule(new Date(Date.now() + 3000));
+
+			setTimeout(function() {
+				test.done();
+			}, 3250);
 		},*/
 		"Emits 'scheduled' event with 'run at' Date": function(test) {
 			test.expect(1);
