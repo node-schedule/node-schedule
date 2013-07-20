@@ -86,23 +86,6 @@ module.exports = {
 			}, 3250);
 		}
 	},
-	"When invoked": {
-		"Emits 'run' event": function(test) {
-			test.expect(1);
-
-			var job = new schedule.Job(function() {});
-
-			job.on('run', function() {
-				test.ok(true);
-			});
-
-			job.schedule(new Date(Date.now() + 3000));
-
-			setTimeout(function() {
-				test.done();
-			}, 3250);
-		}
-	},
 	"#schedule(RecurrenceRule)": {
 		"Runs job at interval based on recur rule, repeating indefinitely": function(test) {
 			test.expect(3);
@@ -255,5 +238,22 @@ module.exports = {
 				test.done();
 			}, 2250);
 		}
+	},
+	"When invoked": {
+		"Emits 'run' event": function(test) {
+			test.expect(1);
+
+			var job = new schedule.Job(function() {});
+
+			job.on('run', function() {
+				test.ok(true);
+			});
+
+			job.schedule(new Date(Date.now() + 3000));
+
+			setTimeout(function() {
+				test.done();
+			}, 3250);
+		}
 	}
-}
+};
