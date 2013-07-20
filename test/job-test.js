@@ -160,7 +160,7 @@ module.exports = {
 			}, 1000);
 		}*/
 	},
-	"#schedule(<object literal>)": {
+	"#schedule({...})": {
 		"Runs job at interval based on object, repeating indefinitely": function(test) {
 			test.expect(3);
 
@@ -213,5 +213,47 @@ module.exports = {
 				test.done();
 			}, 1000);
 		}*/
+	},
+	"#cancel": {
+		"Prevents all future invocations": function(test) {
+			test.expect(1);
+
+			var job = new schedule.Job(function() {
+				test.ok(true);
+			});
+
+			job.schedule({
+				second: null // fire every second
+			});
+
+			setTimeout(function() {
+				job.cancel();
+			}, 1250);
+
+			setTimeout(function() {
+				test.done();
+			}, 2250);
+		},
+		"Emits 'canceled' event": function(test) {
+			test.expect(1);
+
+			var job = new schedule.Job(function() {});
+
+			job.on('canceled', function() {
+				test.ok(true);
+			});
+
+			job.schedule({
+				second: null // fire every second
+			});
+
+			setTimeout(function() {
+				job.cancel();
+			}, 1250);
+
+			setTimeout(function() {
+				test.done();
+			}, 2250);
+		}
 	}
 }
