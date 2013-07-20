@@ -69,7 +69,7 @@ module.exports = {
 				test.done();
 			}, 3250);
 		},*/
-		"Emits 'scheduled' event with 'run at' Date": function(test) {
+		"Job emits 'scheduled' event with 'run at' Date": function(test) {
 			test.expect(1);
 
 			var date = new Date(Date.now() + 3000);
@@ -104,7 +104,7 @@ module.exports = {
 				test.done();
 			}, 3250);
 		},
-		"Emits 'scheduled' event for every next invocation": function(test) {
+		"Job emits 'scheduled' event for every next invocation": function(test) {
 			// Job will run 3 times but be scheduled 4 times, 4th run never happens
 			// due to cancel.
 			test.expect(4);
@@ -160,7 +160,7 @@ module.exports = {
 				test.done();
 			}, 3250);
 		},
-		"Emits 'scheduled' event for every next invocation": function(test) {
+		"Job emits 'scheduled' event for every next invocation": function(test) {
 			// Job will run 3 times but be scheduled 4 times, 4th run never happens
 			// due to cancel.
 			test.expect(4);
@@ -217,7 +217,7 @@ module.exports = {
 				test.done();
 			}, 2250);
 		},
-		"Emits 'canceled' event": function(test) {
+		"Job emits 'canceled' event": function(test) {
 			test.expect(1);
 
 			var job = new schedule.Job(function() {});
@@ -240,7 +240,7 @@ module.exports = {
 		}
 	},
 	"When invoked": {
-		"Emits 'run' event": function(test) {
+		"Job emits 'run' event": function(test) {
 			test.expect(1);
 
 			var job = new schedule.Job(function() {});

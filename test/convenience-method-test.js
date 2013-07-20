@@ -24,7 +24,7 @@ module.exports = {
 				test.done();
 			}, 3250);
 		},
-		"Doesn't emit initial 'scheduled' event": function(test) {
+		"Job doesn't emit initial 'scheduled' event": function(test) {
 			var job = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
 
 			job.on('scheduled', function() {
@@ -61,7 +61,7 @@ module.exports = {
 				test.done();
 			}, 3250);
 		},
-		"Doesn't emit initial 'scheduled' event": function(test) {
+		"Job doesn't emit initial 'scheduled' event": function(test) {
 			/*
 			 * If this was Job#schedule it'd fire 4 times.
 			 */
@@ -110,7 +110,7 @@ module.exports = {
 				test.done();
 			}, 3250);
 		},
-		"Doesn't emit initial 'scheduled' event": function(test) {
+		"Job doesn't emit initial 'scheduled' event": function(test) {
 			/*
 			 * With Job#schedule this would be 3:
 			 * 	scheduled at time 0
@@ -144,5 +144,133 @@ module.exports = {
 				test.done();
 			}, 1000);
 		}*/
+	},
+	".cancelJob(Job)": {
+		"Prevents all future invocations of Job passed in": function(test) {
+			test.expect(2);
+
+			var job = schedule.scheduleJob({
+				second: null
+			}, function() {
+				test.ok(true);
+			});
+
+			setTimeout(function() {
+				schedule.cancelJob(job);
+			}, 2250);
+
+			setTimeout(function() {
+				test.done();
+			}, 3250);
+		},
+		"Can cancel Jobs scheduled with Job#schedule": function(test) {
+			test.expect(2);
+
+			var job = new schedule.Job(function() {
+				test.ok(true);
+			});
+
+			job.schedule({
+				second: null
+			});
+
+			setTimeout(function() {
+				schedule.cancelJob(job);
+			}, 2250);
+
+			setTimeout(function() {
+				test.done();
+			}, 3250);
+		},
+		"Job emits 'canceled' event": function(test) {
+			test.expect(1);
+
+			var job = schedule.scheduleJob({
+				second: null
+			}, function() {});
+
+			job.on('canceled', function() {
+				test.ok(true);
+			});
+
+			setTimeout(function() {
+				schedule.cancelJob(job);
+				test.done();
+			}, 1250);
+		}
+	},
+	'.cancelJob("job name")': {
+		"Prevents all future invocations of Job identified by name": function(test) {
+			test.expect(2);
+
+			var job = schedule.scheduleJob({
+				second: null
+			}, function() {
+				test.ok(true);
+			});
+
+			setTimeout(function() {
+				schedule.cancelJob(job.name);
+			}, 2250);
+
+			setTimeout(function() {
+				test.done();
+			}, 3250);
+		},
+		/*
+		"Can cancel Jobs scheduled with Job#schedule": function(test) {
+			test.expect(2);
+
+			var job = new schedule.Job(function() {
+				test.ok(true);
+			});
+
+			job.schedule({
+				second: null
+			});
+
+			setTimeout(function() {
+				schedule.cancelJob(job.name);
+			}, 2250);
+
+			setTimeout(function() {
+				test.done();
+			}, 3250);
+		},*/
+		"Job emits 'canceled' event": function(test) {
+			test.expect(1);
+
+			var job = schedule.scheduleJob({
+				second: null
+			}, function() {});
+
+			job.on('canceled', function() {
+				test.ok(true);
+			});
+
+			setTimeout(function() {
+				schedule.cancelJob(job.name);
+				test.done();
+			}, 1250);
+		},
+		"Does nothing if no job found by that name": function(test) {
+			test.expect(3);
+
+			var job = schedule.scheduleJob({
+				second: null
+			}, function() {
+				test.ok(true);
+			});
+
+			setTimeout(function() {
+				// This cancel should not affect anything
+				schedule.cancelJob('blah');
+			}, 2250);
+
+			setTimeout(function() {
+				job.cancel(); // prevent tests from hanging
+				test.done();
+			}, 3250);
+		}
 	}
 };
