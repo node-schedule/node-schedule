@@ -156,5 +156,79 @@ module.exports = {
 			test.deepEqual(new Date(2010, 3, 1, 0, 0, 0, 0), next);
 			test.done();
 		}*/
+		"returns null when no invocations left": function(test) {
+			var rule = new schedule.RecurrenceRule();
+			rule.year = 2000;
+
+			var next = rule.nextInvocationDate(base);
+
+			test.strictEqual(null, next);
+			test.done();
+		},
+		"specify span of components using Range": function(test) {
+			var rule = new schedule.RecurrenceRule();
+			rule.minute = new schedule.Range(4, 6);
+
+			var next;
+
+			next = rule.nextInvocationDate(base);
+			test.deepEqual(new Date(2010, 3, 29, 13, 4, 0, 0), next);
+
+			next = rule.nextInvocationDate(next);
+			test.deepEqual(new Date(2010, 3, 29, 13, 5, 0, 0), next);
+
+			next = rule.nextInvocationDate(next);
+			test.deepEqual(new Date(2010, 3, 29, 13, 6, 0, 0), next);
+
+			next = rule.nextInvocationDate(next);
+			test.deepEqual(new Date(2010, 3, 29, 14, 4, 0, 0), next);
+
+			test.done();
+		},
+		"specify intervals within span of components using Range with step": function(test) {
+			var rule = new schedule.RecurrenceRule();
+			rule.minute = new schedule.Range(4, 8, 2);
+
+			var next;
+
+			next = rule.nextInvocationDate(base);
+			test.deepEqual(new Date(2010, 3, 29, 13, 4, 0, 0), next);
+
+			next = rule.nextInvocationDate(next);
+			test.deepEqual(new Date(2010, 3, 29, 13, 6, 0, 0), next);
+
+			/* Should Range stay inclusive on both ends when step > 1
+			next = rule.nextInvocationDate(next);
+			test.deepEqual(new Date(2010, 3, 29, 13, 8, 0, 0), next);
+			*/
+
+			next = rule.nextInvocationDate(next);
+			test.deepEqual(new Date(2010, 3, 29, 14, 4, 0, 0), next);
+
+			test.done();
+		},
+		"specify span and explicit components using Array of Ranges and Numbers": function(test) {
+			var rule = new schedule.RecurrenceRule();
+			rule.minute = [2, new schedule.Range(4, 6)];
+
+			var next;
+
+			next = rule.nextInvocationDate(base);
+			test.deepEqual(new Date(2010, 3, 29, 13, 2, 0, 0), next);
+
+			next = rule.nextInvocationDate(next);
+			test.deepEqual(new Date(2010, 3, 29, 13, 4, 0, 0), next);
+
+			next = rule.nextInvocationDate(next);
+			test.deepEqual(new Date(2010, 3, 29, 13, 5, 0, 0), next);
+
+			next = rule.nextInvocationDate(next);
+			test.deepEqual(new Date(2010, 3, 29, 13, 6, 0, 0), next);
+
+			next = rule.nextInvocationDate(next);
+			test.deepEqual(new Date(2010, 3, 29, 14, 2, 0, 0), next);
+
+			test.done();
+		}
 	}
 };
