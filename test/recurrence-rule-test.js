@@ -232,3 +232,57 @@ module.exports = {
 		}
 	}
 };
+
+// Build up object of tests for .fromCronString
+
+var rr = function(year, month, dayOfMonth, dayOfWeek, hour, minute, second) {
+	return new schedule.RecurrenceRule(year, month, dayOfMonth, dayOfWeek, hour, minute, second)
+};
+var fromCronStringTests = {};
+
+[
+	// Basics
+	['5 * * * *', rr(null, null, null, null, null, 5, null)],
+	['0 5 * * *', rr(null, null, null, null, 5, 0, null)],
+	['0 0 5 * *', rr(null, null, 5, null, 0, 0, null)],
+	['0 0 1 5 *', rr(null, 4, 1, null, 0, 0, null)],
+	['0 0 1 5 ?', rr(null, 4, 1, null, 0, 0, null)],
+	['0 0 * 5 3', rr(null, 4, null, 3, 0, 0, null)],
+	['0 0 ? 5 3', rr(null, 4, null, 3, 0, 0, null)],
+	['1 2 3 4 5', rr(null, 3, 3, 5, 2, 1, null)],
+	['1 2 3 4 5 2014', rr(2014, 3, 3, 5, 2, 1, null)],
+
+	// Multiple times, ranges and intervals
+	['5,10,15 * * * *', rr(null, null, null, null, null, [5, 10, 15], null)],
+	['5-10 * * * *', rr(null, null, null, null, null, new schedule.Range(5, 10), null)],
+	['5-10/2 * * * *', rr(null, null, null, null, null, new schedule.Range(5, 10, 2), null)],
+	['*/15 * * * *', rr(null, null, null, null, null, new schedule.Range(0, 59, 15), null)],
+	['*/5 0 1 1 * 2014', rr(2014, 0, 1, null, 0, new schedule.Range(0, 59, 5), null)],
+
+	// Special commands
+	['@yearly', rr(null, 0, 1, null, 0, 0, 0)],
+	['@annually', rr(null, 0, 1, null, 0, 0, 0)],
+	['@monthly', rr(null, null, 1, null, 0, 0, 0)],
+	['@weekly', rr(null, null, null, 0, 0, 0, 0)],
+	['@daily', rr(null, null, null, null, 0, 0, 0)],
+	['@hourly', rr(null, null, null, null, null, 0, 0)],
+
+	// Invalid
+	['1 2 3 4', null, '(invalid)'], // Not enough fields
+	['1 2 3 4 5 6 7', null, '(invalid)'] // Too many fields
+].forEach(function(tuple) {
+	var cronExpression = tuple[0];
+	var expected = tuple[1];
+	var note = tuple[2] || '';
+	if (note) note = ' ' + note;
+
+	fromCronStringTests[cronExpression + note] = function(test) {
+		var actual = schedule.RecurrenceRule.fromCronString(cronExpression);
+
+		test.deepEqual(expected, actual);
+		test.done();
+	};
+});
+
+// Attach tests to exports
+module.exports['.fromCronString'] = fromCronStringTests;
