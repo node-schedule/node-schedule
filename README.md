@@ -15,67 +15,67 @@ Every scheduled job in node-schedule is represented by a `Job` object. You can c
 Date-based Scheduling
 ---------------------
 Say you very specifically want a function to execute at 5:30am on December 21, 2012.
+```js
+var schedule = require('node-schedule');
+var date = new Date(2012, 11, 21, 5, 30, 0);
 
-	var schedule = require('node-schedule');
-	var date = new Date(2012, 11, 21, 5, 30, 0);
-	
-	var j = schedule.scheduleJob(date, function(){
-		console.log('The world is going to end today.');
-	});
-
+var j = schedule.scheduleJob(date, function(){
+	console.log('The world is going to end today.');
+});
+```
 If you later rethink your decision, you can invalidate the job with the `cancel()` method:
-
-	j.cancel();
-
+```js
+j.cancel();
+```
 Recurrence Rule Scheduling
 --------------------------
 You can build recurrence rules to specify when a job should recur. For instance, consider this rule, which executes the function every hour at 42 minutes after the hour:
+```js
+var schedule = require('node-schedule');
 
-	var schedule = require('node-schedule');
-	
-	var rule = new schedule.RecurrenceRule();
-	rule.minute = 42;
-	
-	var j = schedule.scheduleJob(rule, function(){
-		console.log('The answer to life, the universe, and everything!');
-	});
+var rule = new schedule.RecurrenceRule();
+rule.minute = 42;
 
+var j = schedule.scheduleJob(rule, function(){
+	console.log('The answer to life, the universe, and everything!');
+});
+```
 You can also use arrays to specify a list of acceptable values, and the `Range` object to specify a range of start and end values, with an optional step parameter. For instance, this will print a message on Thursday, Friday, Saturday, and Sunday at 5pm:
+```js
+var rule = new schedule.RecurrenceRule();
+rule.dayOfWeek = [0, new schedule.Range(4, 6)];
+rule.hour = 17;
+rule.minute = 0;
 
-	var rule = new schedule.RecurrenceRule();
-	rule.dayOfWeek = [0, new schedule.Range(4, 6)];
-	rule.hour = 17;
-	rule.minute = 0;
-	
-	var j = schedule.scheduleJob(rule, function(){
-		console.log('Today is recognized by Rebecca Black!');
-	});
-
+var j = schedule.scheduleJob(rule, function(){
+	console.log('Today is recognized by Rebecca Black!');
+});
+```
 It's worth noting that the default value of a component of a recurrence rule is `null` (except for seconds, which is 0 for familiarity with cron). If we did not explicitly set `minute` to 0 above, the message would have instead been logged at 5:00pm, 5:01pm, 5:02pm, ..., 5:59pm. Probably not what you want.
 
 ### Object Literal Syntax
 To make things a little easier, an object literal syntax is also supported, like in this example which will log a message every Sunday at 2:30pm:
-
-	var j = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 0}, function(){
-		console.log('Time for tea!');
-	});
-
+```js
+var j = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 0}, function(){
+	console.log('Time for tea!');
+});
+```
 Cron-style Scheduling
 ---------------------
 If you're a fan of cron, you can instead define your recurrence rules using a syntax similar to what you might write in your crontab. For example, the above examples rewritten using this style:
+```js
+var schedule = require('node-schedule');
 
-	var schedule = require('node-schedule');
-	
-	var j = schedule.scheduleJob('42 * * * *', function(){
-		console.log('The answer to life, the universe, and everything!');
-	});
-	
+var j = schedule.scheduleJob('42 * * * *', function(){
+	console.log('The answer to life, the universe, and everything!');
+});
+```
 And:
-
-	var j = schedule.scheduleJob('0 17 ? * 0,4-6', function(){
-		console.log('Today is recognized by Rebecca Black!');
-	});
-
+```js
+var j = schedule.scheduleJob('0 17 ? * 0,4-6', function(){
+	console.log('Today is recognized by Rebecca Black!');
+});
+```
 ### Unsupported Cron Features
 Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (nth weekday of the month) are not supported. Also, in the day-of-week field, 7 is currently not recognized as a legal value for Sunday (use 0). Most other features supported by popular cron implementations should work just fine.
 
@@ -84,9 +84,9 @@ It is also entirely possible at this point that constructing a cron string that 
 Installing
 ----------
 You can install using `npm` in the usual way.
-
-	npm install node-schedule
-
+```js
+npm install node-schedule
+```
 License
 -------
 	Copyright (C) 2011 Matt Patenaude.
