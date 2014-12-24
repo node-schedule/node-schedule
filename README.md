@@ -1,19 +1,24 @@
 node-schedule
 =============
+
 node-schedule is a cron-like and not-cron-like job scheduler for Node. It allows you to schedule jobs (arbitrary functions) for execution at specific dates, with optional recurrence rules. It only uses a single timer at any given time (rather than reevaluating upcoming jobs every second/minute), and is MIT-licensed (see below).
 
 node-schedule is for time-based scheduling, not interval-based scheduling. While you can easily bend it to your will, if you only want to do something like "run this function every 5 minutes", you'll find `setInterval` much easier to use, and far more appropriate. But if you want to, say, "run this function at the :20 and :50 of every hour on the third Tuesday of every month," you'll find that node-schedule suits your needs better.
 
 Note that node-schedule is for in-process scheduling, i.e., scheduled jobs will only fire as long as your script is running, and the schedule will disappear when execution completes. If you need to schedule jobs that will persist even when your script *isn't* running, consider using the actual cron.
 
+
 Jobs and Scheduling
 -------------------
+
 Every scheduled job in node-schedule is represented by a `Job` object. You can create jobs manually, then execute the `schedule()` method to apply a schedule, or use the convenience function `scheduleJob()` as demonstrated below.
 
 `Job` objects are `EventEmitter`s, and emit a `run` event after each execution. They also emit a `scheduled` event each time they're scheduled to run, and a `canceled` event when an invocation is canceled before it's executed (both events receive a JavaScript date object as a parameter). Note that jobs are scheduled the first time immediately, so if you create a job using the `scheduleJob()` convenience method, you'll miss the first `scheduled` event. Also note that `canceled` is the single-L American spelling.
 
+
 Date-based Scheduling
 ---------------------
+
 Say you very specifically want a function to execute at 5:30am on December 21, 2012.
 ```js
 var schedule = require('node-schedule');
@@ -27,8 +32,11 @@ If you later rethink your decision, you can invalidate the job with the `cancel(
 ```js
 j.cancel();
 ```
+
+
 Recurrence Rule Scheduling
 --------------------------
+
 You can build recurrence rules to specify when a job should recur. For instance, consider this rule, which executes the function every hour at 42 minutes after the hour:
 ```js
 var schedule = require('node-schedule');
@@ -60,8 +68,11 @@ var j = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 0}, function(){
 	console.log('Time for tea!');
 });
 ```
+
+
 Cron-style Scheduling
 ---------------------
+
 If you're a fan of cron, you can instead define your recurrence rules using a syntax similar to what you might write in your crontab. For example, the above examples rewritten using this style:
 ```js
 var schedule = require('node-schedule');
@@ -81,14 +92,19 @@ Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (nth wee
 
 It is also entirely possible at this point that constructing a cron string that can *only* exist in the past will cause an infinite loop. This is only possible if a year is specified. If the specified year is a number (i.e., not a range), node-schedule will perform a sanity check before attempting to schedule something in the past.
 
+
 Installing
 ----------
+
 You can install using `npm` in the usual way.
 ```js
 npm install node-schedule
 ```
+
+
 License
 -------
+
 	Copyright (C) 2011 Matt Patenaude.
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
