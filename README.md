@@ -73,6 +73,9 @@ var j = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 0}, function(){
 Cron-style Scheduling
 ---------------------
 
+>The cron format consists of:
+> `[MINUTE] [HOUR] [DAY OF MONTH] [MONTH OF YEAR] [DAY OF WEEK] [YEAR (optional)]` 
+
 If you're a fan of cron, you can instead define your recurrence rules using a syntax similar to what you might write in your crontab. For example, the above examples rewritten using this style:
 ```js
 var schedule = require('node-schedule');
