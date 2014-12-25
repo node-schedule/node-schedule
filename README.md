@@ -105,9 +105,11 @@ npm install node-schedule
 ```
 
 
-Maintainers
-------------
+Acknowledgements
+-----------------
 This module was originally developed by [Matt Patenaude](http://mattpatenaude.com/) and is now maintained by [Tejas Manohar](https://tejas.io).
+
+That said, we have a lot of contributors that help this project stay alive! Find a bug? File an issue! Know how to fix? Submit a PR!
 
 
 License
