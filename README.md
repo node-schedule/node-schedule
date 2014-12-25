@@ -28,7 +28,7 @@ var j = schedule.scheduleJob(date, function(){
 	console.log('The world is going to end today.');
 });
 ```
-If you later rethink your decision, you can invalidate the job with the `cancel()` method:
+You can invalidate the job with the `cancel()` method:
 ```js
 j.cancel();
 ```
