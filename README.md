@@ -99,7 +99,7 @@ It is also entirely possible at this point that constructing a cron string that 
 Installing
 ----------
 
-You can install using [npm](https://www.npmjs.com/) in the usual way.
+You can install using [npm](https://www.npmjs.com/package/node-schedule) in the usual way.
 ```js
 npm install node-schedule
 ```
