@@ -107,7 +107,7 @@ var j = schedule.scheduleJob('0 17 ? * 0,4-6', function(){
 
 Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (nth weekday of the month) are not supported. Also, in the day-of-week field, 7 is currently not recognized as a legal value for Sunday (use 0). Most other features supported by popular cron implementations should work just fine.
 
-It is also entirely possible at this point that constructing a cron string that can *only* exist in the past will cause an infinite loop. This is only possible if a year is specified. If the specified year is a number (i.e., not a range), node-schedule will perform a sanity check before attempting to schedule something in the past.
+It is also entirely possible at this point that constructing a cron string that can *only* exist in the past will cause an infinite loop. This is only possible if a year is specified. If the specified year is a number (i.e., not a range), node-schedule will perform a sanity check before attempting to schedule something in the past. [cron-parser](https://github.com/harrisiirak/cron-parser) is used to parse crontab instructions.
 
 
 Installing
