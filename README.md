@@ -115,7 +115,7 @@ Installing
 
 You can install using [npm](https://www.npmjs.com/package/node-schedule) in the usual way.
 
-```js
+```
 npm install node-schedule
 ```
 
