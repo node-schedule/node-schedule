@@ -5,7 +5,7 @@ node-schedule is a cron-like and not-cron-like job scheduler for Node. It allows
 
 node-schedule is for time-based scheduling, not interval-based scheduling. While you can easily bend it to your will, if you only want to do something like "run this function every 5 minutes", you'll find `setInterval` much easier to use, and far more appropriate. But if you want to, say, "run this function at the :20 and :50 of every hour on the third Tuesday of every month," you'll find that node-schedule suits your needs better.
 
-Note that node-schedule is for in-process scheduling, i.e. scheduled jobs will only fire as long as your script is running, and the schedule will disappear when execution completes. If you need to schedule jobs that will persist even when your script *isn't* running, consider using the actual cron.
+Note that node-schedule is for in-process scheduling, i.e. scheduled jobs will only fire as long as your script is running, and the schedule will disappear when execution completes. If you need to schedule jobs that will persist even when your script *isn't* running, consider using the actual [cron](http://unixhelp.ed.ac.uk/CGI/man-cgi?crontab+5).
 
 
 Jobs and Scheduling
