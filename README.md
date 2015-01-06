@@ -36,6 +36,20 @@ You can invalidate the job with the `cancel()` method:
 j.cancel();
 ```
 
+To use current data in the future you can use binding:
+
+```js
+var schedule = require('node-schedule');
+var date = new Date(2012, 12, 21, 5, 30, 0);
+var x = 'Tada!';
+var j = schedule.scheduleJob(date, function(y){
+	console.log(y);
+}.bind(null,x));
+x = 'Changing Data';
+```
+This will log 'Tada!' when the scheduled Job runs, rather than 'Changing Data', which x changes to immediately after scheduling.
+
+
 
 Recurrence Rule Scheduling
 --------------------------
