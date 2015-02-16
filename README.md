@@ -1,7 +1,7 @@
 node-schedule
 =============
 
-node-schedule is a flexible both cron-like and not-cron-like job scheduler for Node.js. It allows you to schedule jobs (arbitrary functions) for execution at specific dates, with optional recurrence rules. It only uses a single timer at any given time (rather than reevaluating upcoming jobs every second/minute), and is MIT-licensed (see below).
+node-schedule is a flexible both cron-like and not-cron-like job scheduler for Node.js originally developed by [@mattpat]((https://github.com/mattpat) but is now maintained by [@tejasmanohar](https://github.com/tejasmanohar) and [@simplyianm](https://github.com/simplyianm). It allows you to schedule jobs (arbitrary functions) for execution at specific dates, with optional recurrence rules. It only uses a single timer at any given time (rather than reevaluating upcoming jobs every second/minute), and is MIT-licensed (see below).
 
 node-schedule is for time-based scheduling, not interval-based scheduling. While you can easily bend it to your will, if you only want to do something like "run this function every 5 minutes", you'll find `setInterval` much easier to use, and far more appropriate. But if you want to, say, "run this function at the :20 and :50 of every hour on the third Tuesday of every month," you'll find that node-schedule suits your needs better. Additionally, node-schedule has Windows support unlike true cron since the node runtime is now fully supported.
 
@@ -132,14 +132,6 @@ You can install using [npm](https://www.npmjs.com/package/node-schedule) in the 
 ```
 npm install node-schedule
 ```
-
-
-Acknowledgements
------------------
-
-This module was originally developed by [@mattpatt](https://github.com/mattpat) and is now maintained by [@tejasmanohar](https://github.com/tejasmanohar).
-
-That said, we have a lot of contributors that help this project stay alive! Find a bug? File an issue! Know how to fix? Submit a PR!
 
 
 License
