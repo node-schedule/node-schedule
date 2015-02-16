@@ -137,7 +137,7 @@ npm install node-schedule
 Acknowledgements
 -----------------
 
-This module was originally developed by [@mattpatt](https://github.com/mattpat) and is now maintained by [@tejasmanohar](https://github.com/tejasmanohar) and [@simplyianm](https://github.com/simplyianm).
+This module was originally developed by [Matt Pat](https://github.com/mattpat), but is now maintained by [Tejas Manohar](https://github.com/tejasmanohar).
 
 That said, we have a lot of contributors that help this project stay alive! Find a bug? File an issue! Know how to fix? Submit a PR!
 
