@@ -1,7 +1,3 @@
-# WebTorrent is an OPEN Open Source Project
-
-Individuals making copious significant and valuable contributions are given commit-access to the project to contribute as they see fit.
-
 ## Rules
 
 There are a few basic ground-rules for contributors:
