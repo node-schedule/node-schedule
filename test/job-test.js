@@ -73,17 +73,15 @@ module.exports = {
       test.expect(1);
 
       var date = new Date(Date.now() + 3000);
-      var job = new schedule.Job();
+      var job = new schedule.Job(function() {
+        test.done();
+      });
 
       job.on('scheduled', function(runAtDate) {
         test.equal(runAtDate, date);
       });
 
       job.schedule(date);
-
-      setTimeout(function() {
-        test.done();
-      }, 3250);
     }
   },
   "#schedule(RecurrenceRule)": {
