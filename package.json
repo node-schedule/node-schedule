@@ -22,6 +22,7 @@
     "long-timeout": "~0.0.1"
   },
   "devDependencies": {
-    "nodeunit": "~0.8.1"
+    "nodeunit": "~0.8.1",
+    "sinon": "~1.12.2"
   }
 }
