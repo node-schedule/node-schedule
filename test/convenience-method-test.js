@@ -272,5 +272,16 @@ module.exports = {
         test.done();
       }, 3250);
     }
+  },
+  '.pendingInvocations()': {
+    "Retrieves pendingInvocations of the job": function(test) {
+      var job = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
+
+      test.ok(job instanceof schedule.Job);
+      test.ok(job.pendingInvocations()[0].job);
+
+      job.cancel();
+      test.done();
+    }
   }
 };
