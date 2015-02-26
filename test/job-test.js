@@ -4,7 +4,7 @@ var schedule = require('../' + main);
 module.exports = {
   "Job constructor": {
     "Accepts Job name and function to run": function(test) {
-      var job = new schedule.Job('the job', function(){});
+      var job = new schedule.Job('the job', function() {});
 
       test.equal(job.name, 'the job');
       test.done();
