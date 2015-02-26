@@ -1,7 +1,14 @@
+var sinon = require('sinon');
 var main = require('../package.json').main;
 var schedule = require('../' + main);
 
+var clock;
+
 module.exports = {
+  setUp: function(cb) {
+    clock = sinon.useFakeTimers();
+    cb();
+  },
   ".scheduleJob": {
     "Returns Job instance": function(test) {
       var job = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
@@ -23,6 +30,8 @@ module.exports = {
       setTimeout(function() {
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     },
     "Job doesn't emit initial 'scheduled' event": function(test) {
       var job = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
@@ -34,6 +43,8 @@ module.exports = {
       setTimeout(function() {
         test.done();
       }, 1250);
+
+      clock.tick(1250);
     }/*,
     "Won't run job if scheduled in the past": function(test) {
       schedule.scheduleJob(new Date(Date.now() - 3000), function() {
@@ -60,6 +71,8 @@ module.exports = {
         job.cancel();
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     },
     "Job doesn't emit initial 'scheduled' event": function(test) {
       /*
@@ -80,6 +93,8 @@ module.exports = {
         job.cancel();
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     }/*,
     "Doesn't invoke job if recur rule schedules it in the past": function(test) {
       var rule = new schedule.RecurrenceRule();
@@ -109,6 +124,8 @@ module.exports = {
         job.cancel();
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     },
     "Job doesn't emit initial 'scheduled' event": function(test) {
       /*
@@ -131,6 +148,8 @@ module.exports = {
         job.cancel();
         test.done();
       }, 2250);
+
+      clock.tick(2250);
     }/*,
     "Doesn't invoke job if object schedules it in the past": function(test) {
       var job = new schedule.scheduleJob({
@@ -162,6 +181,8 @@ module.exports = {
       setTimeout(function() {
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     },
     "Can cancel Jobs scheduled with Job#schedule": function(test) {
       test.expect(2);
@@ -181,6 +202,8 @@ module.exports = {
       setTimeout(function() {
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     },
     "Job emits 'canceled' event": function(test) {
       test.expect(1);
@@ -197,6 +220,8 @@ module.exports = {
         schedule.cancelJob(job);
         test.done();
       }, 1250);
+
+      clock.tick(1250);
     }
   },
   '.cancelJob("job name")': {
@@ -216,6 +241,8 @@ module.exports = {
       setTimeout(function() {
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     },
     /*
     "Can cancel Jobs scheduled with Job#schedule": function(test) {
@@ -252,6 +279,8 @@ module.exports = {
         schedule.cancelJob(job.name);
         test.done();
       }, 1250);
+
+      clock.tick(1250);
     },
     "Does nothing if no job found by that name": function(test) {
       test.expect(3);
@@ -271,6 +300,8 @@ module.exports = {
         job.cancel(); // prevent tests from hanging
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     }
   },
   '.pendingInvocations()': {
@@ -283,5 +314,9 @@ module.exports = {
       job.cancel();
       test.done();
     }
+  },
+  tearDown: function(cb) {
+    clock.restore();
+    cb();
   }
 };

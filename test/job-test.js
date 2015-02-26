@@ -1,7 +1,14 @@
+var sinon = require('sinon');
 var main = require('../package.json').main;
 var schedule = require('../' + main);
 
+var clock;
+
 module.exports = {
+  setUp: function(cb) {
+    clock = sinon.useFakeTimers();
+    cb();
+  },
   "Job constructor": {
     "Accepts Job name and function to run": function(test) {
       var job = new schedule.Job('the job', function(){});
@@ -36,6 +43,8 @@ module.exports = {
       setTimeout(function() {
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     },
     /* No jobs will run after this test for some reason - hide for now
     "Won't run job if scheduled in the past": function(test) {
@@ -82,6 +91,7 @@ module.exports = {
       });
 
       job.schedule(date);
+      clock.tick(3250);
     }
   },
   "#schedule(RecurrenceRule)": {
@@ -101,6 +111,8 @@ module.exports = {
         job.cancel();
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     },
     "Job emits 'scheduled' event for every next invocation": function(test) {
       // Job will run 3 times but be scheduled 4 times, 4th run never happens
@@ -122,6 +134,8 @@ module.exports = {
         job.cancel();
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     }/*,
     "Doesn't invoke job if recur rule schedules it in the past": function(test) {
       test.expect(0);
@@ -157,6 +171,8 @@ module.exports = {
         job.cancel();
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     },
     "Job emits 'scheduled' event for every next invocation": function(test) {
       // Job will run 3 times but be scheduled 4 times, 4th run never happens
@@ -177,6 +193,8 @@ module.exports = {
         job.cancel();
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     }/*,
     "Doesn't invoke job if object schedules it in the past": function(test) {
       test.expect(0);
@@ -214,6 +232,8 @@ module.exports = {
       setTimeout(function() {
         test.done();
       }, 2250);
+
+      clock.tick(2250);
     },
     "Job emits 'canceled' event": function(test) {
       test.expect(1);
@@ -235,6 +255,8 @@ module.exports = {
       setTimeout(function() {
         test.done();
       }, 2250);
+
+      clock.tick(2250);
     }
   },
   "When invoked": {
@@ -252,6 +274,12 @@ module.exports = {
       setTimeout(function() {
         test.done();
       }, 3250);
+
+      clock.tick(3250);
     }
+  },
+  tearDown: function(cb) {
+    clock.restore();
+    cb();
   }
 };

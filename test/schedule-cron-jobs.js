@@ -123,7 +123,6 @@ module.exports = {
             clock.tick(timeout);
         },
         tearDown: function(cb) {
-            console.log('restore');
             clock.restore();
             cb();
         }
