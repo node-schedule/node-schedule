@@ -18,10 +18,11 @@
   },
 
   "dependencies": {
-    "cron-parser": "~0.3.0",
+    "cron-parser": "~0.6.1",
     "long-timeout": "~0.0.1"
   },
   "devDependencies": {
-    "nodeunit": "~0.8.1"
+    "nodeunit": "~0.8.1",
+    "sinon": "~1.12.2"
   }
 }
