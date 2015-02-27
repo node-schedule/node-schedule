@@ -1,7 +1,14 @@
+var sinon = require('sinon');
 var main = require('../package.json').main;
 var schedule = require('../' + main);
 
+var clock;
+
 module.exports = {
+  setUp: function(cb) {
+    clock = sinon.useFakeTimers();
+    cb();
+  },
   "Date Enhancements":{
     "Should Not add date convenience methods unless explicitly specified": function(test){
       test.ok(typeof Date.addYear !== 'function');
@@ -34,7 +41,13 @@ module.exports = {
       setTimeout(function() {
         test.done();
       }, 1250);
+
+      clock.tick(1250);
     }
+  },
+  tearDown: function(cb) {
+    clock.restore();
+    cb();
   }
 };
 
