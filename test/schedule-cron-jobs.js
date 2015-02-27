@@ -93,7 +93,7 @@ module.exports = {
         "Runs job every month": function(test) {
             test.expect(3);
 
-            var timeout = 3 * 31 * 24 * 60 * 60 * 1000;
+            var timeout = 3 * 29.53 * 24 * 60 * 60 * 1000;
 
             var job = schedule.scheduleJob('0 0 0 1 * *', function() {
                 test.ok(true);
@@ -109,7 +109,7 @@ module.exports = {
         "Runs job every year": function(test) {
             test.expect(3);
 
-            var timeout = 3 * 366 * 24 * 60 * 60 * 1000;
+            var timeout = 3 * 365.25 * 24 * 60 * 60 * 1000;
 
             var job = schedule.scheduleJob('0 0 0 1 1 *', function() {
                 test.ok(true);
