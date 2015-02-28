@@ -27,6 +27,6 @@ Licensed under the **[MIT License] [license]** (the "License");
 you may not use this software except in compliance with the License.
 
 [cron]: http://unixhelp.ed.ac.uk/CGI/man-cgi?crontab+5
-[wiki]: https://github.com/snowplow/snowplow/wiki
+[wiki]: https://github.com/mattpat/node-schedule/wiki
 [contributing]: https://github.com/mattpat/node-schedule/blob/master/CONTRIBUTING.md
 [license]: https://github.com/mattpat/node-schedule/blob/master/LICENSE
