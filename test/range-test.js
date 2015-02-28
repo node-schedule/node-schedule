@@ -40,7 +40,7 @@ module.exports = {
   "when step > 1": {
     "setUp": function(done) {
       this.range = new schedule.Range(2, 6, 2);
-      
+
       done();
     },
     "includes start value": function(test) {

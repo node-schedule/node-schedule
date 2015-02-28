@@ -16,7 +16,6 @@
     "type": "git",
     "url": "https://github.com/mattpat/node-schedule.git"
   },
-
   "dependencies": {
     "cron-parser": "~0.6.1",
     "long-timeout": "~0.0.1"

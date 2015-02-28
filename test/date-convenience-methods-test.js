@@ -9,8 +9,8 @@ module.exports = {
     clock = sinon.useFakeTimers();
     cb();
   },
-  "Date Enhancements":{
-    "Should Not add date convenience methods unless explicitly specified": function(test){
+  "Date Enhancements": {
+    "Should Not add date convenience methods unless explicitly specified": function(test) {
       test.ok(typeof Date.addYear !== 'function');
       test.ok(typeof Date.addMonth !== 'function');
       test.ok(typeof Date.addDay !== 'function');
@@ -19,7 +19,7 @@ module.exports = {
       test.ok(typeof Date.addSecond !== 'function');
       test.done();
     },
-    "Should add date convenience methods when explicitly specified": function(test){
+    "Should add date convenience methods when explicitly specified": function(test) {
       schedule.addDateConvenienceMethods(Date);
       test.ok(typeof Date.addYear === 'function');
       test.ok(typeof Date.addMonth === 'function');
@@ -30,8 +30,8 @@ module.exports = {
       test.done();
     }
   },
-  "Date string":{
-    "Should accept a valid date string": function(test){
+  "Date string": {
+    "Should accept a valid date string": function(test) {
       test.expect(1);
 
       schedule.scheduleJob(new Date(Date.now() + 1000).toString(), function() {
@@ -50,4 +50,3 @@ module.exports = {
     cb();
   }
 };
-
