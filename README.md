@@ -19,6 +19,20 @@ We're committed to a loosely-coupled architecture for node-schedule and would lo
 Before jumping in, check out our **[Contributing] [contributing]** page on the wiki!
 
 
+## Core Team
+
+This module was originally developed by [Matt Patenaude](https://github.com/mattpat), but the new team is as follows:
+
+**Tejas Manohar - Maintainer**
+
+- <https://twitter.com/tejasmanohar>
+- <https://github.com/tejasmanohar>
+
+**Santiago Gimeno - Collaborator**
+
+- <https://github.com/santigimeno>
+
+
 ## Copyright and license
 
 node-schedule is copyright 2011 Matt Patenaude.
