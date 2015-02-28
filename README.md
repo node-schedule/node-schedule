@@ -18,7 +18,7 @@ Before jumping in, check out our **[Contributing] [contributing]** page on the w
 
 ## Core Team
 
-This module was originally developed by [Matt Patenaude](https://github.com/mattpat), but the new team is as follows:
+This module was originally developed by [Matt Patenaude], but the new team is as follows:
 
 **Tejas Manohar - Maintainer**
 
@@ -40,4 +40,5 @@ you may only use this software in compliance with the License.
 [cron]: http://unixhelp.ed.ac.uk/CGI/man-cgi?crontab+5
 [wiki]: https://github.com/mattpat/node-schedule/wiki
 [contributing]: https://github.com/mattpat/node-schedule/blob/master/CONTRIBUTING.md
+[Matt Patenaude]: https://github.com/mattpat
 [license]: https://github.com/mattpat/node-schedule/blob/master/LICENSE
