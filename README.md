@@ -37,7 +37,7 @@ This module was originally developed by [Matt Patenaude](https://github.com/matt
 
 node-schedule is copyright 2011 Matt Patenaude.
 
-Licensed under the **[MIT License] [license]** (the "License");
+Licensed under the **[MIT License] [license]**;
 you may only use this software in compliance with the License.
 
 [cron]: http://unixhelp.ed.ac.uk/CGI/man-cgi?crontab+5
