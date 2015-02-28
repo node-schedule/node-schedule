@@ -7,7 +7,9 @@ var clock;
 module.exports = {
   ".scheduleJob(cron_expr, fn)": {
     setUp: function(cb) {
+      var now = Date.now();
       clock = sinon.useFakeTimers();
+      clock.tick(now);
       cb();
     },
     "Runs job every second": function(test) {
