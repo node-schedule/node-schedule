@@ -34,7 +34,7 @@ This module was originally developed by [Matt Patenaude], but the new team is as
 
 ## Copyright and license
 
-node-schedule is copyright 2011 Matt Patenaude.
+node-schedule is copyright 2011-2015 Matt Patenaude.
 
 Licensed under the **[MIT License] [license]**;
 you may only use this software in compliance with the License.
