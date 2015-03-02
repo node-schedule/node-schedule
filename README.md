@@ -22,12 +22,12 @@ Before jumping in, check out our **[Contributing] [contributing]** page on the w
 
 This module was originally developed by [Matt Patenaude], but the new team is as follows:
 
-**Tejas Manohar**
+**Tejas Manohar - Maintainer**
 
 - <https://twitter.com/tejasmanohar>
 - <https://github.com/tejasmanohar>
 
-**Santiago Gimeno**
+**Santiago Gimeno - Collaborator**
 
 - <https://github.com/santigimeno>
 
