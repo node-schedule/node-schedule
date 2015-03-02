@@ -93,9 +93,9 @@ module.exports = {
       clock.tick(timeout);
     },
     "Runs job every month": function(test) {
-      test.expect(3);
+      test.expect(48);
 
-      var timeout = 3 * 29.53 * 24 * 60 * 60 * 1000;
+      var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
 
       var job = schedule.scheduleJob('0 0 0 1 * *', function() {
         test.ok(true);
@@ -107,11 +107,12 @@ module.exports = {
       }, timeout);
 
       clock.tick(timeout);
+
     },
     "Runs job every year": function(test) {
-      test.expect(3);
+      test.expect(4);
 
-      var timeout = 3 * 365.25 * 24 * 60 * 60 * 1000;
+      var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
 
       var job = schedule.scheduleJob('0 0 0 1 1 *', function() {
         test.ok(true);
