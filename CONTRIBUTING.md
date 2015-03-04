@@ -8,7 +8,8 @@ There are a few basic ground-rules for contributors:
 2. **External API changes and significant modifications** should be subject to a **pull request** to solicit feedback from other contributors.
 3. Use a non-`master` branch for ongoing work.
 4. Adhere to existing code style as much as possible.
-5. Run `npm test` locally before submitting your PR to catch easy-to-miss issues
+5. Run `npm run lint` locally to ensure that your code lints.
+6. Finally, run `npm test` locally before submitting your PR to catch easy-to-miss issues.
 
 ## Releases
 
