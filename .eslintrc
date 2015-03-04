@@ -5,7 +5,7 @@
   "rules": {
     "eqeqeq": [2, "smart"],
     "curly": [2, "multi-line"],
-    "no-constant-condition": 1,
+    "no-constant-condition": false,
     "no-redeclare": 1,
     "no-shadow": 1,
     "no-underscore-dangle": false,
