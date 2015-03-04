@@ -10,7 +10,8 @@
   },
   "main": "./lib/schedule.js",
   "scripts": {
-    "test": "./node_modules/.bin/nodeunit test"
+    "test": "./node_modules/.bin/nodeunit test",
+    "lint": "./node_modules/.bin/eslint lib"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   },
   "dependencies": {
     "cron-parser": "~0.6.1",
+    "eslint": "^0.15.1",
     "long-timeout": "~0.0.1"
   },
   "devDependencies": {
