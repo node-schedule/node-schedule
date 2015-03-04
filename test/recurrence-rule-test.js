@@ -1,3 +1,5 @@
+'use strict';
+
 var main = require('../package.json').main;
 var schedule = require('../' + main);
 
