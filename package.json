@@ -19,10 +19,10 @@
   },
   "dependencies": {
     "cron-parser": "~0.6.1",
-    "eslint": "^0.15.1",
     "long-timeout": "~0.0.1"
   },
   "devDependencies": {
+    "eslint": "^0.15.1",
     "nodeunit": "~0.8.1",
     "sinon": "~1.12.2"
   }
