@@ -123,7 +123,6 @@ module.exports = {
       test.deepEqual(new Date(2011, 1, 1, 0, 0, 0, 0), next);
       test.done();
     },
-    /*
     "in the year 2040": function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.year = 2040;
@@ -133,7 +132,15 @@ module.exports = {
       test.deepEqual(new Date(2040, 0, 1, 0, 0, 0, 0), next);
       test.done();
     },
-    */
+    "using past year": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.year = 2000;
+
+      var next = rule.nextInvocationDate(base);
+
+      test.equal(null, next);
+      test.done();
+    },
     "using mixed time components": function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.second = 50;

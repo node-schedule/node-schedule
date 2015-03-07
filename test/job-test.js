@@ -46,6 +46,37 @@ module.exports = {
 
       clock.tick(3250);
     },
+    "Cancel next job before it runs": function(test) {
+      test.expect(1);
+
+      var job = new schedule.Job(function() {
+        test.ok(true);
+      });
+
+      job.schedule(new Date(Date.now() + 1500));
+      job.schedule(new Date(Date.now() + 3000));
+      job.cancelNext();
+      setTimeout(function() {
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    },
+    "Run job on specified date": function(test) {
+      test.expect(1);
+
+      var job = new schedule.Job(function() {
+        test.ok(true);
+      });
+
+      job.runOnDate(new Date(Date.now() + 3000));
+     
+      setTimeout(function() {
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    },
     /* No jobs will run after this test for some reason - hide for now
     "Won't run job if scheduled in the past": function(test) {
       test.expect(0);
