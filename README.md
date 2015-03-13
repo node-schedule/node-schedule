@@ -15,7 +15,7 @@ Check out our wonderful [wiki] for usage instructions.
 
 We're committed to a loosely-coupled architecture for node-schedule and would love to get your contributions.
 
-Before jumping in, check out our **[Contributing] [contributing]** page on the wiki!
+Before jumping in, check out our [Contributing](https://github.com/mattpat/node-schedule/wiki/Contributing) page on the wiki!
 
 
 ## Core Team
