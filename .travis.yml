@@ -4,3 +4,4 @@ node_js:
   - "0.10"
   - "iojs"
 before_script: npm run lint
+script: ./node_modules/.bin/istanbul cover ./node_modules/.bin/nodeunit test && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls && rm -rf ./coverage

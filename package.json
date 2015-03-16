@@ -2,7 +2,12 @@
   "name": "node-schedule",
   "version": "0.2.6",
   "description": "A cron-like and not-cron-like job scheduler for Node.",
-  "keywords": ["schedule", "task", "job", "cron"],
+  "keywords": [
+    "schedule",
+    "task",
+    "job",
+    "cron"
+  ],
   "main": "./lib/schedule.js",
   "scripts": {
     "test": "./node_modules/.bin/nodeunit test",
@@ -22,7 +27,9 @@
     "long-timeout": "0.0.1"
   },
   "devDependencies": {
+    "coveralls": "^2.11.2",
     "eslint": "0.15.1",
+    "istanbul": "^0.3.8",
     "nodeunit": "0.9.1",
     "sinon": "1.12.2"
   }
