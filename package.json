@@ -18,12 +18,12 @@
     "url": "https://github.com/node-schedule/node-schedule.git"
   },
   "dependencies": {
-    "cron-parser": "0.6.1",
-    "long-timeout": "0.0.1"
+    "cron-parser": "~0.6.1",
+    "long-timeout": "~0.0.1"
   },
   "devDependencies": {
-    "eslint": "0.15.1",
-    "nodeunit": "0.8.1",
-    "sinon": "1.12.2"
+    "eslint": "^0.15.1",
+    "nodeunit": "~0.8.1",
+    "sinon": "~1.12.2"
   }
 }
