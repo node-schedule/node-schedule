@@ -31,6 +31,10 @@ This module was originally developed by [Matt Patenaude], but the new team is as
 
 - <https://github.com/santigimeno>
 
+**Jon Hester - Collaborator**
+
+- <https://github.com/jonhester>
+
 
 ## Copyright and license
 
