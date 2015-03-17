@@ -4,7 +4,7 @@
   },
   "rules": {
     "eqeqeq": [2, "smart"],
-    "curly": [2, "multi-line"],
+    "indent": [2, 2],
     "no-constant-condition": false,
     "no-redeclare": 1,
     "no-shadow": 1,
