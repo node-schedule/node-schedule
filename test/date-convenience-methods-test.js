@@ -28,7 +28,70 @@ module.exports = {
       test.ok(typeof Date.addMinute === 'function');
       test.ok(typeof Date.addSecond === 'function');
       test.done();
+    },
+    "Convenience methods should add correct amount of time when called" : {
+      "Should add year to date when addYear is called": function(test) {
+        schedule.addDateConvenienceMethods(Date);
+
+        var date = new Date(2010, 3, 29, 13, 1, 0, 0);
+        
+        date.addYear();
+        test.deepEqual(date, new Date(2011, 3, 29, 13, 1, 0, 0));
+
+        test.done();
+      },
+      "Should add month to date when addMonth is called": function(test) {
+        schedule.addDateConvenienceMethods(Date);
+
+        var date = new Date(2010, 3, 29, 13, 1, 0, 0);
+                
+        date.addMonth();
+        test.deepEqual(date, new Date(2010, 4, 1, 0, 0, 0, 0));
+
+        test.done();
+      },
+      "Should add day to date when addDay is called": function(test) {
+        schedule.addDateConvenienceMethods(Date);
+
+        var date = new Date(2010, 3, 29, 13, 1, 0, 0);
+
+        date.addDay();
+        test.deepEqual(date, new Date(2010, 3, 30, 0, 0, 0, 0));
+
+        test.done();
+      },
+      "Should add minute to date when addHour is called": function(test) {
+        schedule.addDateConvenienceMethods(Date);
+        
+        var date = new Date(2010, 3, 29, 13, 0, 0, 1);
+
+        date.addHour();
+        test.deepEqual(date, new Date(2010, 3, 29, 14, 0, 0, 1));
+
+        test.done();
+      },
+      "Should add minute to date when addMinute is called": function(test) {
+        schedule.addDateConvenienceMethods(Date);
+
+        var date = new Date(2010, 3, 29, 13, 3, 3, 1);
+        
+        date.addMinute();
+        test.deepEqual(date, new Date(2010, 3, 29, 13, 4, 0, 1));
+
+        test.done();
+      },
+      "Should add second to date when addSecond is called": function(test) {
+        schedule.addDateConvenienceMethods(Date);
+
+        var date = new Date(2010, 3, 29, 13, 3, 3, 1);
+
+        date.addSecond();
+        test.deepEqual(date, new Date(2010, 3, 29, 13, 3, 4, 1));
+
+        test.done();
+      }
     }
+    
   },
   "Date string": {
     "Should accept a valid date string": function(test) {
