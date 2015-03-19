@@ -60,6 +60,14 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 23, 0, 0, 0), next);
       test.done();
     },
+    "next 24th hour should throw error": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.hour = 24;
+
+      test.throws(function() {rule.nextInvocationDate(base);});
+
+      test.done();
+    },
     "next 3rd hour (days incremented)": function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.hour = 3;
