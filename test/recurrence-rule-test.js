@@ -33,6 +33,14 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 12, 31, 5, 0), next);
       test.done();
     },
+    "next 60th second (minutes incremented)": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.second = 60;
+
+      test.throws(function() {rule.nextInvocationDate(base);});
+
+      test.done();
+    },
     "next 40th minute": function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.minute = 40;
@@ -40,6 +48,14 @@ module.exports = {
       var next = rule.nextInvocationDate(base);
 
       test.deepEqual(new Date(2010, 3, 29, 12, 40, 0, 0), next);
+      test.done();
+    },
+    "next 60th minute": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.minute = 60;
+
+      test.throws(function() {rule.nextInvocationDate(base);});
+
       test.done();
     },
     "next 1st minute (hours incremented)": function(test) {
@@ -86,6 +102,14 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 30, 0, 0, 0, 0), next);
       test.done();
     },
+    "next 7th day should throw error": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.dayOfWeek = 7;
+
+      test.throws(function() {rule.nextInvocationDate(base);});
+
+      test.done();
+    },
     "next Monday (months incremented)": function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.dayOfWeek = 1;
@@ -104,6 +128,14 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 30, 0, 0, 0, 0), next);
       test.done();
     },
+    "next 31st date should throw error": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.date = 31;
+
+      test.throws(function() {rule.nextInvocationDate(base);});
+
+      test.done();
+    },
     "next 5th date (months incremented)": function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.date = 5;
@@ -120,6 +152,14 @@ module.exports = {
       var next = rule.nextInvocationDate(base);
 
       test.deepEqual(new Date(2010, 9, 1, 0, 0, 0, 0), next);
+      test.done();
+    },
+    "next invalid month should throw error": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.month = 12;
+
+      test.throws(function() {rule.nextInvocationDate(base);});
+
       test.done();
     },
     "next February (years incremented)": function(test) {
@@ -147,6 +187,14 @@ module.exports = {
       var next = rule.nextInvocationDate(base);
 
       test.equal(null, next);
+      test.done();
+    },
+    "invalid year should throw error": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.year = -30;
+
+      test.throws(function() {rule.nextInvocationDate(base);});
+
       test.done();
     },
     "using mixed time components": function(test) {
@@ -242,6 +290,30 @@ module.exports = {
 
       next = rule.nextInvocationDate(next);
       test.deepEqual(new Date(2010, 3, 29, 14, 2, 0, 0), next);
+
+      test.done();
+    },
+    "specify span and explicit components using Array of bad Ranges and Numbers": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.minute = [2, new schedule.Range(4, 60)];
+
+      test.throws(function() {rule.nextInvocationDate(base);});
+
+      test.done();
+    },
+    "specify span and explicit components using Array of Ranges and Bad Numbers": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.minute = [1, new schedule.Range(4, 6), 60];
+
+      test.throws(function() {rule.nextInvocationDate(base);});
+
+      test.done();
+    },
+    "specify span and explicit components using Array of Ranges and Invalid Types": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.minute = ['test', new schedule.Range(4, 6), {bad: 'value'}];
+
+      test.throws(function() {rule.nextInvocationDate(base);});
 
       test.done();
     }
