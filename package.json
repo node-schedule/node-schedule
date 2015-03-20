@@ -24,13 +24,13 @@
   },
   "dependencies": {
     "cron-parser": "0.6.1",
-    "long-timeout": "0.0.1"
+    "long-timeout": "0.0.2"
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
-    "eslint": "0.15.1",
+    "eslint": "^0.15.1",
     "istanbul": "^0.3.8",
-    "nodeunit": "0.9.1",
-    "sinon": "1.12.2"
+    "nodeunit": "^0.9.1",
+    "sinon": "^1.14.1"
   }
 }
