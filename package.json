@@ -10,8 +10,11 @@
   ],
   "main": "./lib/schedule.js",
   "scripts": {
-    "test": "./node_modules/.bin/nodeunit test",
-    "lint": "./node_modules/.bin/eslint lib"
+    "compile": "npm run clean && ./node_modules/.bin/babel src --out-dir lib",
+    "prepublish": "npm run compile",
+    "test": "npm run compile && ./node_modules/.bin/nodeunit test",
+    "lint": "./node_modules/.bin/eslint src",
+    "clean": "rm -rf lib"
   },
   "author": {
     "name": "Matt Patenaude",
@@ -27,8 +30,9 @@
     "long-timeout": "0.0.2"
   },
   "devDependencies": {
+    "babel": "^4.7.16",
+    "babel-eslint": "^2.0.2",
     "coveralls": "^2.11.2",
-    "eslint": "^0.15.1",
     "istanbul": "^0.3.8",
     "nodeunit": "^0.9.1",
     "sinon": "^1.14.1"

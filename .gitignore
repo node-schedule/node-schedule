@@ -1,4 +1,5 @@
 coverage
+lib
 node_modules
 node-schedule.tmproj
 .DS_Store
