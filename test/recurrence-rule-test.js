@@ -34,10 +34,16 @@ module.exports = {
       test.done();
     },
     "next 60th second (minutes incremented)": function(test) {
+      test.expect(1);
+
       var rule = new schedule.RecurrenceRule();
       rule.second = 60;
 
-      test.throws(function() {rule.nextInvocationDate(base);});
+      try {
+        rule.nextInvocationDate(base);
+      } catch (err) {
+        test.equal('Invalid RecurrenceRule: second is not in allowed range', err.message);
+      }
 
       test.done();
     },
@@ -51,10 +57,16 @@ module.exports = {
       test.done();
     },
     "next 60th minute": function(test) {
+      test.expect(1);
+
       var rule = new schedule.RecurrenceRule();
       rule.minute = 60;
 
-      test.throws(function() {rule.nextInvocationDate(base);});
+      try {
+        rule.nextInvocationDate(base);
+      } catch (err) {
+        test.equal('Invalid RecurrenceRule: minute is not in allowed range', err.message);
+      }
 
       test.done();
     },
@@ -77,10 +89,16 @@ module.exports = {
       test.done();
     },
     "next 24th hour should throw error": function(test) {
+      test.expect(1);
+
       var rule = new schedule.RecurrenceRule();
       rule.hour = 24;
 
-      test.throws(function() {rule.nextInvocationDate(base);});
+      try {
+        rule.nextInvocationDate(base);
+      } catch (err) {
+        test.equal('Invalid RecurrenceRule: hour is not in allowed range', err.message);
+      }
 
       test.done();
     },
@@ -103,10 +121,16 @@ module.exports = {
       test.done();
     },
     "next 7th day should throw error": function(test) {
+      test.expect(1);
+
       var rule = new schedule.RecurrenceRule();
       rule.dayOfWeek = 7;
 
-      test.throws(function() {rule.nextInvocationDate(base);});
+      try {
+        rule.nextInvocationDate(base);
+      } catch (err) {
+        test.equal('Invalid RecurrenceRule: dayOfWeek is not in allowed range', err.message);
+      }
 
       test.done();
     },
@@ -129,10 +153,16 @@ module.exports = {
       test.done();
     },
     "next 31st date should throw error": function(test) {
+      test.expect(1);
+
       var rule = new schedule.RecurrenceRule();
       rule.date = 31;
 
-      test.throws(function() {rule.nextInvocationDate(base);});
+      try {
+        rule.nextInvocationDate(base);
+      } catch (err) {
+        test.equal('Invalid RecurrenceRule: date is not in allowed range', err.message);
+      }
 
       test.done();
     },
@@ -155,10 +185,16 @@ module.exports = {
       test.done();
     },
     "next invalid month should throw error": function(test) {
+      test.expect(1);
+
       var rule = new schedule.RecurrenceRule();
       rule.month = 12;
 
-      test.throws(function() {rule.nextInvocationDate(base);});
+      try {
+        rule.nextInvocationDate(base);
+      } catch (err) {
+        test.equal('Invalid RecurrenceRule: month is not in allowed range', err.message);
+      }
 
       test.done();
     },
@@ -190,10 +226,16 @@ module.exports = {
       test.done();
     },
     "invalid year should throw error": function(test) {
+      test.expect(1);
+
       var rule = new schedule.RecurrenceRule();
       rule.year = -30;
 
-      test.throws(function() {rule.nextInvocationDate(base);});
+      try {
+        rule.nextInvocationDate(base);
+      } catch (err) {
+        test.equal('Invalid RecurrenceRule: year is not in allowed range', err.message);
+      }
 
       test.done();
     },
@@ -294,26 +336,44 @@ module.exports = {
       test.done();
     },
     "specify span and explicit components using Array of bad Ranges and Numbers": function(test) {
+      test.expect(1);
+
       var rule = new schedule.RecurrenceRule();
       rule.minute = [2, new schedule.Range(4, 60)];
 
-      test.throws(function() {rule.nextInvocationDate(base);});
+      try {
+        rule.nextInvocationDate(base);
+      } catch (err) {
+        test.equal('Invalid RecurrenceRule: minute is not in allowed range', err.message);
+      }
 
       test.done();
     },
     "specify span and explicit components using Array of Ranges and Bad Numbers": function(test) {
+      test.expect(1);
+      
       var rule = new schedule.RecurrenceRule();
       rule.minute = [1, new schedule.Range(4, 6), 60];
 
-      test.throws(function() {rule.nextInvocationDate(base);});
+      try {
+        rule.nextInvocationDate(base);
+      } catch (err) {
+        test.equal('Invalid RecurrenceRule: minute is not in allowed range', err.message);
+      }
 
       test.done();
     },
     "specify span and explicit components using Array of Ranges and Invalid Types": function(test) {
+      test.expect(1);
+      
       var rule = new schedule.RecurrenceRule();
       rule.minute = ['test', new schedule.Range(4, 6), {bad: 'value'}];
 
-      test.throws(function() {rule.nextInvocationDate(base);});
+      try {
+        rule.nextInvocationDate(base);
+      } catch (err) {
+        test.equal('Invalid RecurrenceRule: minute is not in allowed range', err.message);
+      }
 
       test.done();
     }
