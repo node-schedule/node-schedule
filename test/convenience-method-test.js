@@ -318,6 +318,49 @@ module.exports = {
       test.done();
     }
   },
+  '.getJob(id)': {
+    "Retrieve a specific job from an id": function(test) {
+      var job = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
+
+      var jobCopy = schedule.getJob(job.id);
+
+      test.deepEqual(job, jobCopy);
+
+      // Get job with a string "number"
+      var jobCopy2 = schedule.getJob(job.id.toString());
+
+      test.deepEqual(job, jobCopy2);
+
+      job.cancel();
+      test.done();
+    },
+    "Retrieve a specific job from a name": function(test) {
+      var job = schedule.scheduleJob('specific-job-name', new Date(Date.now() + 1000), function() {});
+
+      var jobCopy = schedule.getJob(job.name);
+
+      test.deepEqual(job, jobCopy);
+
+      job.cancel();
+      test.done();
+    },
+    "Test priority on getJob": function(test) {
+      var job0 = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
+      var job1 = schedule.scheduleJob('0', '5 * * * *', function() {});
+
+      // this will get the job with the name '0'
+      // not the job with the id 0
+      // This is the priority of the getJob
+      var jobCopy = schedule.getJob('0');
+
+      test.deepEqual(job1, jobCopy);
+
+      job0.cancel();
+      job1.cancel();
+
+      test.done();
+    }
+  },
   tearDown: function(cb) {
     clock.restore();
     cb();
