@@ -17,6 +17,49 @@ module.exports = {
 
       job.cancel();
       test.done();
+    },
+    "Job ids are incremental": function(test) {
+      // Create 4 new jobs
+      var job1 = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
+      var job2 = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
+      var job3 = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
+      var job4 = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
+
+      var jobsKeys = Object.keys(schedule.scheduledJobs);
+
+      // Sort numbers function
+      function sortNumber(a, b) {
+        return a - b;
+      }
+
+      // Sort it just to be sure
+      jobsKeys = jobsKeys.sort(sortNumber);
+
+      // Get the first job id
+      // we want to check that it
+      // increments from this id
+      var id = job1.id;
+
+      // Get index of the keys arrays of job1 id
+      var index = jobsKeys.indexOf(id.toString());
+
+      test.ok(index >= 0);
+
+      // Check if ids are incremental
+      for (var i = 0; i < 4; i++) {
+        test.ok(parseInt(jobsKeys[index], 10) === id);
+        index++;
+        id++;
+      }
+
+      // Cancel the jobs we created in
+      // this test
+      job1.cancel();
+      job2.cancel();
+      job3.cancel();
+      job4.cancel();
+
+      test.done();
     }
   },
   ".scheduleJob(Date, fn)": {
@@ -152,7 +195,7 @@ module.exports = {
         }, 2250);
 
         clock.tick(2250);
-      }
+      },
       /*,
         "Doesn't invoke job if object schedules it in the past": function(test) {
           var job = new schedule.scheduleJob({
@@ -344,7 +387,7 @@ module.exports = {
       job.cancel();
       test.done();
     },
-    "Test priority on getJob": function(test) {
+    "Priority on getJob": function(test) {
       var job0 = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
       var job1 = schedule.scheduleJob('0', '5 * * * *', function() {});
 
