@@ -32,6 +32,8 @@ module.exports = {
         return a - b;
       }
 
+      test.expect(5);
+
       // Sort it just to be sure
       jobsKeys = jobsKeys.sort(sortNumber);
 
