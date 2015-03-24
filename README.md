@@ -22,7 +22,7 @@ Before jumping in, check out our [Contributing](https://github.com/node-schedule
 
 ## Copyright and license
 
-node-schedule is Copyright 2015 Matt Patenaude.
+Copyright 2015 Matt Patenaude.
 
 Licensed under the **[MIT License] [license]**.
 
