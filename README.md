@@ -13,27 +13,11 @@ Check out our wonderful [wiki] for usage instructions.
 
 ## Contributing
 
-We're committed to a loosely-coupled architecture for node-schedule and would love to get your contributions.
+node-schedule was originally developed by [Matt Patenaude], and is now maintained by [Tejas Manohar] and [other wonderful contributors].
+
+We'd love to get your contributions. Individuals making significant and valuable contributions are given commit-access to the project to contribute as they see fit.
 
 Before jumping in, check out our [Contributing](https://github.com/mattpat/node-schedule/wiki/Contributing) page on the wiki!
-
-
-## Core Team
-
-This module was originally developed by [Matt Patenaude], but the new team is as follows:
-
-**Tejas Manohar - Maintainer**
-
-- <https://twitter.com/tejasmanohar>
-- <https://github.com/tejasmanohar>
-
-**Santiago Gimeno - Collaborator**
-
-- <https://github.com/santigimeno>
-
-**Jon Hester - Collaborator**
-
-- <https://github.com/jonhester>
 
 
 ## Copyright and license
@@ -48,3 +32,5 @@ Licensed under the **[MIT License] [license]**.
 [contributing]: https://github.com/mattpat/node-schedule/blob/master/CONTRIBUTING.md
 [Matt Patenaude]: https://github.com/mattpat
 [license]: https://github.com/mattpat/node-schedule/blob/master/LICENSE
+[Tejas Manohar]: https://github.com/tejasmanohar
+[other wonderful contributors]: https://github.com/node-schedule/node-schedule/graphs/contributors
