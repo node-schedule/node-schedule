@@ -4,7 +4,7 @@
 
 node-schedule is a flexible cron-like and not-cron-like job scheduler for Node.js. It allows you to schedule jobs (arbitrary functions) for execution at specific dates, with optional recurrence rules. It only uses a single timer at any given time (rather than reevaluating upcoming jobs every second/minute).
 
-Read more about the module's core functions on the [About](https://github.com/mattpat/node-schedule/wiki/About) page of the wiki.
+Read more about the module's core functions on the [About](https://github.com/node-schedule/node-schedule/wiki/About) page of the wiki.
 
 ## Usage
 
@@ -17,7 +17,7 @@ This module was originally developed by [Matt Patenaude], and is now maintained 
 
 We'd love to get your contributions. Individuals making significant and valuable contributions are given commit-access to the project to contribute as they see fit.
 
-Before jumping in, check out our [Contributing](https://github.com/mattpat/node-schedule/wiki/Contributing) page on the wiki!
+Before jumping in, check out our [Contributing](https://github.com/node-schedule/node-schedule/wiki/Contributing) page on the wiki!
 
 
 ## Copyright and license
