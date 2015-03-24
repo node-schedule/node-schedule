@@ -13,7 +13,7 @@ Check out our wonderful [wiki] for usage instructions.
 
 ## Contributing
 
-node-schedule was originally developed by [Matt Patenaude], and is now maintained by [Tejas Manohar] and [other wonderful contributors].
+This module was originally developed by [Matt Patenaude], and is now maintained by [Tejas Manohar] and [other wonderful contributors].
 
 We'd love to get your contributions. Individuals making significant and valuable contributions are given commit-access to the project to contribute as they see fit.
 
@@ -22,7 +22,7 @@ Before jumping in, check out our [Contributing](https://github.com/mattpat/node-
 
 ## Copyright and license
 
-node-schedule is copyright 2011-2015 Matt Patenaude.
+node-schedule is Copyright 2015 Matt Patenaude.
 
 Licensed under the **[MIT License] [license]**.
 
