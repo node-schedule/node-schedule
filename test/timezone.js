@@ -1,8 +1,13 @@
-var sinon = require('sinon');
-var time = require('time');
+delete require.cache[require.resolve('../')];
+delete require.cache[require.resolve('time')];
+delete require.cache[require.resolve('sinon')];
+
 var schedule = require('../');
+var time = require('time');
+var sinon = require('sinon');
 
 var clock;
+var currentTz = time.currentTimezone;
 
 module.exports = {
   setUp: function(cb) {
@@ -20,11 +25,12 @@ module.exports = {
     "Should fire just 1 after 2.5 secs": function(test) {
       test.expect(1);
 
-      schedule.scheduleJob({ hour : 3, minute : 0 }, function() {
+      var job = schedule.scheduleJob({ hour : 3, minute : 0 }, function() {
         test.ok(true);
       });
 
       setTimeout(function() {
+        job.cancel();
         test.done();
       }, 2500);
 
@@ -35,11 +41,12 @@ module.exports = {
     "Should not fire after 2.5 secs": function(test) {
       test.expect(0);
 
-      schedule.scheduleJob({ hour : 2, minute : 0 }, function() {
+      var job = schedule.scheduleJob({ hour : 2, minute : 0 }, function() {
         test.ok(true);
       });
 
       setTimeout(function() {
+        job.cancel();
         test.done();
       }, 2500);
 
@@ -50,11 +57,12 @@ module.exports = {
     "Should fire just 1 after 2.5 secs": function(test) {
       test.expect(1);
 
-      schedule.scheduleJob({ tz : 'UTC' }, { hour : 1, minute : 0 }, function() {
+      var job = schedule.scheduleJob({ tz : 'UTC' }, { hour : 1, minute : 0 }, function() {
         test.ok(true);
       });
 
       setTimeout(function() {
+        job.cancel();
         test.done();
       }, 2500);
 
@@ -70,23 +78,27 @@ module.exports = {
 
       test.expect(4);
 
-      schedule.scheduleJob({ hour : 3, minute : 0 }, function() {
+      var job1 = schedule.scheduleJob({ hour : 3, minute : 0 }, function() {
         local = true;
       });
 
-      schedule.scheduleJob({ tz : 'UTC' }, { hour : 1, minute : 0 }, function() {
+      var job2 = schedule.scheduleJob({ tz : 'UTC' }, { hour : 1, minute : 0 }, function() {
         utc = true;
       });
 
-      schedule.scheduleJob({ tz : 'Europe/Dublin' }, { hour : 2, minute : 0 }, function() {
+      var job3 = schedule.scheduleJob({ tz : 'Europe/Dublin' }, { hour : 2, minute : 0 }, function() {
         dublin = true;
       });
 
-      schedule.scheduleJob({ tz : 'Europe/Athens' }, { hour : 4, minute : 0 }, function() {
+      var job4 = schedule.scheduleJob({ tz : 'Europe/Athens' }, { hour : 4, minute : 0 }, function() {
         athens = true;
       });
 
       setTimeout(function() {
+        job1.cancel();
+        job2.cancel();
+        job3.cancel();
+        job4.cancel();
         test.ok(local);
         test.ok(utc);
         test.ok(dublin);
@@ -99,6 +111,7 @@ module.exports = {
   },
   tearDown: function(cb) {
     clock.restore();
+    time.tzset(currentTz);
     cb();
   }
 };
