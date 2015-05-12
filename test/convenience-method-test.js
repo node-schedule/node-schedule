@@ -45,17 +45,21 @@ module.exports = {
         }, 1250);
 
         clock.tick(1250);
-      }
-      /*,
-        "Won't run job if scheduled in the past": function(test) {
-          schedule.scheduleJob(new Date(Date.now() - 3000), function() {
+      },
+      "Won't run job if scheduled in the past": function(test) {
+        test.expect(1);
+        var job = schedule.scheduleJob(new Date(Date.now() - 3000), function() {
           test.ok(false);
-          });
+        });
 
-          setTimeout(function() {
+        test.equal(job, null);
+
+        setTimeout(function() {
           test.done();
-          }, 1000);
-        }*/
+        }, 1000);
+
+        clock.tick(1000);
+      }
   },
   ".scheduleJob(RecurrenceRule, fn)": {
     "Runs job at interval based on recur rule, repeating indefinitely": function(test) {
@@ -96,21 +100,24 @@ module.exports = {
         }, 3250);
 
         clock.tick(3250);
-      }
-      /*,
-        "Doesn't invoke job if recur rule schedules it in the past": function(test) {
-          var rule = new schedule.RecurrenceRule();
-          rule.year = 2000;
+      },
+      "Doesn't invoke job if recur rule schedules it in the past": function(test) {
+        test.expect(1);
+        var rule = new schedule.RecurrenceRule();
+        rule.year = 1960;
 
-          var job = schedule.scheduleJob(rule, function() {
+        var job = schedule.scheduleJob(rule, function() {
           test.ok(false);
-          });
+        });
+        
+        test.equal(job, null);
 
-          setTimeout(function() {
-          job.cancel();
+        setTimeout(function() {
           test.done();
-          }, 1000);
-        }*/
+        }, 1000);
+
+        clock.tick(1000);
+      }
   },
   ".scheduleJob({...}, fn)": {
     "Runs job at interval based on object, repeating indefinitely": function(test) {
@@ -152,20 +159,24 @@ module.exports = {
         }, 2250);
 
         clock.tick(2250);
-      }
-      /*,
-        "Doesn't invoke job if object schedules it in the past": function(test) {
-          var job = new schedule.scheduleJob({
-          year: 2000
-          }, function() {
+      },
+      "Doesn't invoke job if object schedules it in the past": function(test) {
+        test.expect(1);
+      
+        var job = schedule.scheduleJob({
+          year: 1960
+        }, function() {
           test.ok(false);
-          });
+        });
+        
+        test.equal(job, null);
 
-          setTimeout(function() {
-          job.cancel();
+        setTimeout(function() {
           test.done();
-          }, 1000);
-        }*/
+        }, 1000);
+
+        clock.tick(1000);
+      }
   },
   ".cancelJob(Job)": {
     "Prevents all future invocations of Job passed in": function(test) {
