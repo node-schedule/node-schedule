@@ -297,6 +297,23 @@ module.exports = {
       }, 2250);
 
       clock.tick(2250);
+    },
+    "Job is removed from scheduledJobs": function(test) {
+      test.expect(1);
+
+      var job = new schedule.Job('cancelJob', function() {});
+
+      job.schedule({
+        second: null // fire every second
+      });
+
+      setTimeout(function() {
+        job.cancel();
+        test.equal(schedule.scheduledJobs.cancelJob, null);
+        test.done();
+      }, 1250);
+
+      clock.tick(1250);
     }
   },
   "When invoked": {
