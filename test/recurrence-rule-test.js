@@ -236,6 +236,25 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 14, 2, 0, 0), next);
 
       test.done();
+    },
+    "From 31th May schedule the 1st of every June": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.second = 0;
+      rule.minute = 0;
+      rule.hour = 0;
+      rule.date = 1;
+      rule.month = 5;
+
+      var next;
+      var base1 = new Date(2010, 4, 31, 12, 30, 15, 0);
+
+      next = rule.nextInvocationDate(base1);
+      test.deepEqual(new Date(2010, 5, 1, 0, 0, 0, 0), next);
+
+      next = rule.nextInvocationDate(next);
+      test.deepEqual(new Date(2011, 5, 1, 0, 0, 0, 0), next);
+
+      test.done();
     }
   }
 };
