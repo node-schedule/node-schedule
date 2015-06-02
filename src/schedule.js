@@ -6,10 +6,10 @@
 */
 
 var events = require('events'),
-    util = require('util'),
-    cronParser = require('cron-parser'),
-    lt = require('long-timeout'),
-    time = require('time');
+  util = require('util'),
+  cronParser = require('cron-parser'),
+  lt = require('long-timeout'),
+  time = require('time');
 
 /* Extend Date to add timezone support */
 time(Date);
@@ -45,7 +45,7 @@ function Job() {
 
   // give us a random name if one wasn't provided
   if (name == null) {
-    name = '<Anonymous Job ' + ++anonJobCounter + '>';
+    name = '<Anonymous Job ' + (++anonJobCounter) + '>';
   }
 
   // setup a private pendingInvocations variable
@@ -59,7 +59,7 @@ function Job() {
   });
 
   // method that require private access
-  this.trackInvocation = function (invocation) {
+  this.trackInvocation = function(invocation) {
     // add to our invocation list
     pendingInvocations.push(invocation);
 
@@ -68,7 +68,7 @@ function Job() {
 
     return true;
   };
-  this.stopTrackingInvocation = function (invocation) {
+  this.stopTrackingInvocation = function(invocation) {
     var invIdx = pendingInvocations.indexOf(invocation);
     if (invIdx > -1) {
       pendingInvocations.splice(invIdx, 1);
@@ -77,8 +77,8 @@ function Job() {
 
     return false;
   };
-  this.cancel = function (reschedule) {
-    reschedule = typeof reschedule == 'boolean' ? reschedule : false;
+  this.cancel = function(reschedule) {
+    reschedule = (typeof reschedule == 'boolean') ? reschedule : false;
 
     var inv, newInv;
     var newInvs = [];
@@ -103,8 +103,8 @@ function Job() {
 
     return true;
   };
-  this.cancelNext = function (reschedule) {
-    reschedule = typeof reschedule == 'boolean' ? reschedule : true;
+  this.cancelNext = function(reschedule) {
+    reschedule = (typeof reschedule == 'boolean') ? reschedule : true;
 
     if (!pendingInvocations.length) {
       return false;
@@ -124,20 +124,20 @@ function Job() {
 
     return true;
   };
-  this.nextInvocation = function () {
+  this.nextInvocation = function() {
     if (!pendingInvocations.length) {
       return null;
     }
     return pendingInvocations[0].fireDate;
   };
-  this.pendingInvocations = function () {
+  this.pendingInvocations = function() {
     return pendingInvocations;
   };
 }
 
 util.inherits(Job, events.EventEmitter);
 
-Job.prototype.invoke = function () {
+Job.prototype.invoke = function() {
   if (typeof this.job == 'function') {
     this.job();
   } else {
@@ -145,11 +145,11 @@ Job.prototype.invoke = function () {
   }
 };
 
-Job.prototype.runOnDate = function (date) {
+Job.prototype.runOnDate = function(date) {
   return this.schedule(date);
 };
 
-Job.prototype.schedule = function (spec, tz) {
+Job.prototype.schedule = function(spec, tz) {
   var self = this;
   this.tz = tz;
   var success = false;
@@ -160,6 +160,7 @@ Job.prototype.schedule = function (spec, tz) {
     if (inv !== null) {
       success = self.trackInvocation(inv);
     }
+
   } catch (err) {
     var type = typeof spec;
     if (type === 'string') {
@@ -238,7 +239,7 @@ function Invocation(job, fireDate, recurrenceRule) {
 }
 
 function sorter(a, b) {
-  return a.fireDate.getTime() - b.fireDate.getTime();
+  return (a.fireDate.getTime() - b.fireDate.getTime());
 }
 
 /* Range object */
@@ -248,9 +249,9 @@ function Range(start, end, step) {
   this.step = step || 1;
 }
 
-Range.prototype.contains = function (val) {
+Range.prototype.contains = function(val) {
   if (this.step === null || this.step === 1) {
-    return val >= this.start && val <= this.end;
+    return (val >= this.start && val <= this.end);
   } else {
     for (var i = this.start; i < this.end; i += this.step) {
       if (i === val) {
@@ -275,24 +276,24 @@ Range.prototype.contains = function (val) {
 function RecurrenceRule(year, month, date, dayOfWeek, hour, minute, second) {
   this.recurs = true;
 
-  this.year = year == null ? null : year;
-  this.month = month == null ? null : month;
-  this.date = date == null ? null : date;
-  this.dayOfWeek = dayOfWeek == null ? null : dayOfWeek;
-  this.hour = hour == null ? null : hour;
-  this.minute = minute == null ? null : minute;
-  this.second = second == null ? 0 : second;
+  this.year = (year == null) ? null : year;
+  this.month = (month == null) ? null : month;
+  this.date = (date == null) ? null : date;
+  this.dayOfWeek = (dayOfWeek == null) ? null : dayOfWeek;
+  this.hour = (hour == null) ? null : hour;
+  this.minute = (minute == null) ? null : minute;
+  this.second = (second == null) ? 0 : second;
 }
 
-RecurrenceRule.prototype.nextInvocationDate = function (base, tz) {
+RecurrenceRule.prototype.nextInvocationDate = function(base, tz) {
   var now = newDate({ tz: tz });
 
-  base = base instanceof Date ? base : now;
+  base = (base instanceof Date) ? base : now;
   if (!this.recurs) {
     return null;
   }
 
-  if (this.year !== null && typeof this.year == 'number' && this.year < now.getFullYear()) {
+  if (this.year !== null && (typeof this.year == 'number') && this.year < now.getFullYear()) {
     return null;
   }
 
@@ -359,10 +360,10 @@ function recurMatch(val, matcher) {
   }
 
   if (typeof matcher === 'number' || typeof matcher === 'string') {
-    return val === matcher;
+    return (val === matcher);
   } else if (matcher instanceof Range) {
     return matcher.contains(val);
-  } else if (Array.isArray(matcher) || matcher instanceof Array) {
+  } else if (Array.isArray(matcher) || (matcher instanceof Array)) {
     for (var i = 0; i < matcher.length; i++) {
       if (recurMatch(val, matcher[i])) {
         return true;
@@ -384,7 +385,7 @@ function runOnDate(date, job) {
     return null;
   }
 
-  return lt.setTimeout(job, then - now);
+  return lt.setTimeout(job, (then - now));
 }
 
 var invocations = [];
@@ -409,7 +410,7 @@ function prepareNextInvocation() {
 
     var job = currentInvocation.job;
     var cinv = currentInvocation;
-    currentInvocation.timerID = runOnDate(currentInvocation.fireDate, function () {
+    currentInvocation.timerID = runOnDate(currentInvocation.fireDate, function() {
       currentInvocationFinished();
 
       if (cinv.recurrenceRule.recurs || cinv.recurrenceRule._endDate === null) {
@@ -452,9 +453,9 @@ function cancelInvocation(invocation) {
 
 /* Recurrence scheduler */
 function scheduleNextRecurrence(rule, job, prevDate) {
-  prevDate = prevDate instanceof Date ? prevDate : newDate({ tz: job.tz });
+  prevDate = (prevDate instanceof Date) ? prevDate : newDate({ tz: job.tz });
 
-  var date = rule instanceof RecurrenceRule ? rule.nextInvocationDate(prevDate, job.tz) : rule.next();
+  var date = (rule instanceof RecurrenceRule) ? rule.nextInvocationDate(prevDate, job.tz) : rule.next();
   if (date === null) {
     return null;
   }
@@ -495,18 +496,18 @@ function scheduleJob() {
   var name;
   var tz;
 
-  var options = arguments.length >= 3 ? arguments[0] : null;
-  var spec = arguments.length >= 3 ? arguments[1] : arguments[0];
-  var method = arguments.length >= 3 ? arguments[2] : arguments[1];
+  var options = (arguments.length >= 3) ? arguments[0] : null;
+  var spec = (arguments.length >= 3) ? arguments[1] : arguments[0];
+  var method = (arguments.length >= 3) ? arguments[2] : arguments[1];
   if (options) {
     switch (typeof options) {
       case 'string':
         name = options;
-        break;
+      break;
       case 'object':
         name = options.name;
         tz = options.tz;
-        break;
+      break;
     }
   }
 
@@ -531,38 +532,28 @@ function scheduleJob() {
   return null;
 }
 
-function cancelJob(_x) {
-  var _again = true;
-
-  _function: while (_again) {
-    var job = _x;
-    success = name = findJob = undefined;
-    _again = false;
-
-    var success = false;
-    if (job instanceof Job) {
-      success = job.cancel();
-      if (success) {
-        for (var name in scheduledJobs) {
-          if (scheduledJobs.hasOwnProperty(name)) {
-            if (scheduledJobs[name] === job) {
-              scheduledJobs[name] = null;
-              break;
-            }
+function cancelJob(job) {
+  var success = false;
+  if (job instanceof Job) {
+    success = job.cancel();
+    if (success) {
+      for (var name in scheduledJobs) {
+        if (scheduledJobs.hasOwnProperty(name)) {
+          if (scheduledJobs[name] === job) {
+            scheduledJobs[name] = null;
+            break;
           }
         }
       }
-    } else {
-      var findJob = getJob(job);
-      if (findJob instanceof Job) {
-        _x = findJob;
-        _again = true;
-        continue _function;
-      }
     }
-
-    return success;
+  } else {
+    var findJob = getJob(job);
+    if (findJob instanceof Job) {
+      return cancelJob(findJob);
+    }
   }
+
+  return success;
 }
 
 function getJob(job) {
@@ -588,9 +579,10 @@ function getJob(job) {
 
     // Check if it's a valid number, make parseInt strict and search if the
     // index exists
-    if (!isNaN(job) && job.toString().length === len && scheduledJobs[job]) {
+    if( (!isNaN(job)) && job.toString().length === len && scheduledJobs[job]) {
       return scheduledJobs[job];
     }
+
   } else if (typeof job === 'number') {
     return scheduledJobs[job];
   }
