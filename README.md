@@ -1,4 +1,4 @@
-# node-schedule [![NPM version](http://img.shields.io/npm/v/node-schedule.svg)](https://www.npmjs.com/package/node-schedule) [![Downloads](https://img.shields.io/npm/dm/node-schedule.svg)](https://www.npmjs.com/package/node-schedule) [![Coverage Status](https://coveralls.io/repos/tejasmanohar/node-schedule/badge.svg?branch=master)](https://coveralls.io/r/tejasmanohar/node-schedule?branch=master) [![Build Status](https://travis-ci.org/tejasmanohar/node-schedule.svg?branch=master)](https://travis-ci.org/tejasmanohar/node-schedule)
+# node-schedule [![NPM version](http://img.shields.io/npm/v/node-schedule.svg)](https://www.npmjs.com/package/node-schedule) [![Downloads](https://img.shields.io/npm/dm/node-schedule.svg)](https://www.npmjs.com/package/node-schedule) [![Coverage Status](https://coveralls.io/repos/tejasmanohar/node-schedule/badge.svg)](https://coveralls.io/r/tejasmanohar/node-schedule) [![Build Status](https://travis-ci.org/tejasmanohar/node-schedule.svg?branch=master)](https://travis-ci.org/tejasmanohar/node-schedule)
 
 [![NPM](https://nodei.co/npm/node-schedule.png?downloads=true)](https://nodei.co/npm/node-schedule/)
 
