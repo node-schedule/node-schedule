@@ -1,6 +1,6 @@
 # node-schedule
 
-[![NPM version](http://img.shields.io/npm/v/node-schedule.svg)](https://www.npmjs.com/package/node-schedule) [![Downloads](https://img.shields.io/npm/dm/node-schedule.svg)](https://www.npmjs.com/package/node-schedule)  [![Dependency Status][daviddm-url]][daviddm-image] [![Build Status](https://travis-ci.org/tejasmanohar/node-schedule.svg?branch=master)](https://travis-ci.org/tejasmanohar/node-schedule) [![Join the chat at https://gitter.im/tejasmanohar/node-schedule](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tejasmanohar/node-schedule?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![NPM version](http://img.shields.io/npm/v/node-schedule.svg)](https://www.npmjs.com/package/node-schedule) [![Downloads](https://img.shields.io/npm/dm/node-schedule.svg)](https://www.npmjs.com/package/node-schedule)  [![Build Status](https://travis-ci.org/tejasmanohar/node-schedule.svg?branch=master)](https://travis-ci.org/tejasmanohar/node-schedule) [![Join the chat at https://gitter.im/tejasmanohar/node-schedule](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tejasmanohar/node-schedule?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![NPM](https://nodei.co/npm/node-schedule.png?downloads=true)](https://nodei.co/npm/node-schedule/)
 
@@ -36,5 +36,3 @@ Licensed under the **[MIT License] [license]**.
 [license]: https://github.com/tejasmanohar/node-schedule/blob/master/LICENSE
 [Tejas Manohar]: https://github.com/tejasmanohar
 [other wonderful contributors]: https://github.com/tejasmanohar/node-schedule/graphs/contributors
-[daviddm-url]: https://david-dm.org/tejasmanohar/node-schedule.svg?theme=shields.io
-[daviddm-image]: https://david-dm.org/tejasmanohar/node-schedule
