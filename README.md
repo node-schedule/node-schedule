@@ -1,5 +1,7 @@
 # node-schedule [![NPM version](http://img.shields.io/npm/v/node-schedule.svg)](https://www.npmjs.com/package/node-schedule) [![Downloads](https://img.shields.io/npm/dm/node-schedule.svg)](https://www.npmjs.com/package/node-schedule) [![Coverage Status](https://coveralls.io/repos/tejasmanohar/node-schedule/badge.svg)](https://coveralls.io/r/tejasmanohar/node-schedule) [![Build Status](https://travis-ci.org/tejasmanohar/node-schedule.svg?branch=master)](https://travis-ci.org/tejasmanohar/node-schedule)
 
+[![Join the chat at https://gitter.im/tejasmanohar/node-schedule](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tejasmanohar/node-schedule?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![NPM](https://nodei.co/npm/node-schedule.png?downloads=true)](https://nodei.co/npm/node-schedule/)
 
 node-schedule is a flexible cron-like and not-cron-like job scheduler for Node.js. It allows you to schedule jobs (arbitrary functions) for execution at specific dates, with optional recurrence rules. It only uses a single timer at any given time (rather than reevaluating upcoming jobs every second/minute).
