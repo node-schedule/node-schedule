@@ -1,4 +1,5 @@
-var schedule = require('../');
+var main = require('../package.json').main;
+var schedule = require('../' + main);
 
 // 12:30:15 pm Thursday 29 April 2010 in the timezone this code is being run in
 var base = new Date(2010, 3, 29, 12, 30, 15, 0);
@@ -122,13 +123,13 @@ module.exports = {
       test.deepEqual(new Date(2011, 1, 1, 0, 0, 0, 0), next);
       test.done();
     },
-    "in the year 2038": function(test) {
+    "in the year 2040": function(test) {
       var rule = new schedule.RecurrenceRule();
-      rule.year = 2038;
+      rule.year = 2040;
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new Date(2038, 0, 1, 0, 0, 0, 0), next);
+      test.deepEqual(new Date(2040, 0, 1, 0, 0, 0, 0), next);
       test.done();
     },
     "using past year": function(test) {

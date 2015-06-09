@@ -8,26 +8,13 @@
 var events = require('events'),
   util = require('util'),
   cronParser = require('cron-parser'),
-  lt = require('long-timeout'),
-  time = require('time');
-
-/* Extend Date to add timezone support */
-time(Date);
+  lt = require('long-timeout');
 
 /* Job object */
 var anonJobCounter = 0;
 
 /* Jobs names corresponding to Jobs indexes */
 var jobsIndexName = {};
-
-function newDate(opts) {
-  var args = opts ? opts.args : null;
-  var tz = opts ? opts.tz : null;
-  tz = tz || time.currentTimezone;
-  var date = args ? new Date(args) : new Date();
-  date.setTimezone(tz);
-  return date;
-}
 
 function Job() {
   var name;
@@ -149,9 +136,8 @@ Job.prototype.runOnDate = function(date) {
   return this.schedule(date);
 };
 
-Job.prototype.schedule = function(spec, tz) {
+Job.prototype.schedule = function(spec) {
   var self = this;
-  this.tz = tz;
   var success = false;
   var inv;
   try {
@@ -168,10 +154,6 @@ Job.prototype.schedule = function(spec, tz) {
     }
 
     if (spec instanceof Date) {
-      if (tz) {
-        spec.setTimezone(tz);
-      }
-
       inv = new Invocation(self, spec);
       scheduleInvocation(inv);
       success = self.trackInvocation(inv);
@@ -285,19 +267,18 @@ function RecurrenceRule(year, month, date, dayOfWeek, hour, minute, second) {
   this.second = (second == null) ? 0 : second;
 }
 
-RecurrenceRule.prototype.nextInvocationDate = function(base, tz) {
-  var now = newDate({ tz: tz });
-
-  base = (base instanceof Date) ? base : now;
+RecurrenceRule.prototype.nextInvocationDate = function(base) {
+  base = (base instanceof Date) ? base : (new Date());
   if (!this.recurs) {
     return null;
   }
 
+  var now = new Date();
   if (this.year !== null && (typeof this.year == 'number') && this.year < now.getFullYear()) {
     return null;
   }
 
-  var next = newDate({ args: base.getTime(), tz: tz });
+  var next = new Date(base.getTime());
   next.addSecond();
 
   while (true) {
@@ -376,8 +357,7 @@ function recurMatch(val, matcher) {
 
 /* Date-based scheduler */
 function runOnDate(date, job) {
-  var d = newDate({ tz: job.tz });
-  var now = d.getTime();
+  var now = (new Date()).getTime();
   var then = date.getTime();
 
   if (then < now) {
@@ -453,9 +433,9 @@ function cancelInvocation(invocation) {
 
 /* Recurrence scheduler */
 function scheduleNextRecurrence(rule, job, prevDate) {
-  prevDate = (prevDate instanceof Date) ? prevDate : newDate({ tz: job.tz });
+  prevDate = (prevDate instanceof Date) ? prevDate : (new Date());
 
-  var date = (rule instanceof RecurrenceRule) ? rule.nextInvocationDate(prevDate, job.tz) : rule.next();
+  var date = (rule instanceof RecurrenceRule) ? rule.nextInvocationDate(prevDate) : rule.next();
   if (date === null) {
     return null;
   }
@@ -493,27 +473,13 @@ function scheduleJob() {
     return null;
   }
 
-  var name;
-  var tz;
-
-  var options = (arguments.length >= 3) ? arguments[0] : null;
+  var name = (arguments.length >= 3) ? arguments[0] : null;
   var spec = (arguments.length >= 3) ? arguments[1] : arguments[0];
   var method = (arguments.length >= 3) ? arguments[2] : arguments[1];
-  if (options) {
-    switch (typeof options) {
-      case 'string':
-        name = options;
-      break;
-      case 'object':
-        name = options.name;
-        tz = options.tz;
-      break;
-    }
-  }
 
   var job = new Job(name, method);
 
-  if (job.schedule(spec, tz)) {
+  if (job.schedule(spec)) {
     // Generate a id
     var key = genJobId();
 

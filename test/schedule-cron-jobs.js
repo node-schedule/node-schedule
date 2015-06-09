@@ -1,5 +1,6 @@
-var schedule = require('../');
 var sinon = require('sinon');
+var main = require('../package.json').main;
+var schedule = require('../' + main);
 
 var clock;
 
