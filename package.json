@@ -28,8 +28,7 @@
   },
   "dependencies": {
     "cron-parser": "0.6.1",
-    "long-timeout": "0.0.2",
-    "time": "^0.11.2"
+    "long-timeout": "0.0.2"
   },
   "devDependencies": {
     "babel": "^5.4.7",
