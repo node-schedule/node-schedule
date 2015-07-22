@@ -70,7 +70,7 @@ module.exports = {
       });
 
       job.runOnDate(new Date(Date.now() + 3000));
-     
+
       setTimeout(function() {
         test.done();
       }, 3250);
@@ -245,6 +245,26 @@ module.exports = {
           test.done();
           }, 1000);
         }*/
+  },
+  "#schedule({...}, {...})": {
+    "Runs job and run callback when job is done if callback is provided": function(test) {
+      test.expect(3);
+
+      var job = new schedule.Job(function() {}, function() {
+        test.ok(true);
+      });
+
+      job.schedule({
+        second: null // fire every second
+      });
+
+      setTimeout(function() {
+        job.cancel();
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    }
   },
   "#cancel": {
     "Prevents all future invocations": function(test) {
