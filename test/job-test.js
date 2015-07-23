@@ -125,6 +125,23 @@ module.exports = {
       clock.tick(3250);
     }
   },
+  "#schedule(Date, fn)": {
+    "Runs job once at some date, calls callback when done": function(test) {
+      test.expect(1);
+
+      var job = new schedule.Job(function() {}, function() {
+        test.ok(true);
+      });
+
+      job.schedule(new Date(Date.now() + 3000));
+
+      setTimeout(function() {
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    }
+  },
   "#schedule(RecurrenceRule)": {
     "Runs job at interval based on recur rule, repeating indefinitely": function(test) {
       test.expect(3);
