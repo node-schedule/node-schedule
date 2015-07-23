@@ -255,7 +255,6 @@ module.exports = {
         test.ok(true);
       });
 
-
       setTimeout(function() {
         schedule.cancelJob(job.name);
       }, 2250);
