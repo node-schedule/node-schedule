@@ -167,6 +167,24 @@ module.exports = {
           }, 1000);
         }*/
   },
+  ".scheduleJob({...}, {...}, fn)": {
+    "Callback called for each job if callback is provided": function(test) {
+      test.expect(3);
+
+      var job = new schedule.scheduleJob({
+        second: null // Fire every second
+      }, function() {}, function() {
+        test.ok(true);
+      });
+
+      setTimeout(function() {
+        job.cancel();
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    }
+  },
   ".cancelJob(Job)": {
     "Prevents all future invocations of Job passed in": function(test) {
       test.expect(2);
