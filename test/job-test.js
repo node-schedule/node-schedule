@@ -328,18 +328,26 @@ module.exports = {
 
       clock.tick(2250);
     },
-    "Job is removed from scheduledJobs": function(test) {
-      test.expect(1);
+    "Job is added to scheduledJobs when created and removed when cancelled": function(test) {
+      test.expect(4);
 
-      var job = new schedule.Job('cancelJob', function() {});
-
-      job.schedule({
+      var job1 = new schedule.Job('cancelJob', function() {});
+      job1.schedule({
         second: null // fire every second
       });
 
+      var job2 = schedule.scheduleJob('second',
+                                      { second: null },
+                                      function() {},
+                                      function() {});
+
+      test.equal(schedule.scheduledJobs.cancelJob, job1);
+      test.equal(schedule.scheduledJobs.second, job2);
       setTimeout(function() {
-        job.cancel();
+        job1.cancel();
+        job2.cancel();
         test.equal(schedule.scheduledJobs.cancelJob, null);
+        test.equal(schedule.scheduledJobs.second, null);
         test.done();
       }, 1250);
 
