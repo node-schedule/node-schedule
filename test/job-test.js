@@ -263,12 +263,50 @@ module.exports = {
           }, 1000);
         }*/
   },
+  "#schedule('jobName', {...})": {
+    "Runs job with a custom name input": function(test) {
+      test.expect(3);
+
+      var job = new schedule.Job('jobName', function() {
+        test.equal(job.name, 'jobName');
+      });
+
+      job.schedule({
+        second: null // fire every second
+      });
+
+      setTimeout(function() {
+        job.cancel();
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    }
+  },
   "#schedule({...}, {...})": {
     "Runs job and run callback when job is done if callback is provided": function(test) {
       test.expect(3);
 
       var job = new schedule.Job(function() {}, function() {
         test.ok(true);
+      });
+
+      job.schedule({
+        second: null // fire every second
+      });
+
+      setTimeout(function() {
+        job.cancel();
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    },
+    "Runs job with a custom name input and run callback when job is done": function(test) {
+      test.expect(3);
+
+      var job = new schedule.Job('MyJob', function() {}, function() {
+        test.equal(job.name, 'MyJob');
       });
 
       job.schedule({
