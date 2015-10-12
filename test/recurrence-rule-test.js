@@ -255,6 +255,60 @@ module.exports = {
       test.deepEqual(new Date(2011, 5, 1, 0, 0, 0, 0), next);
 
       test.done();
+    },
+    "specify 5 second variation (test that variation is within specified range)": function(test) {
+      test.expect(8);
+
+      var rule = new schedule.RecurrenceRule();
+      rule.second = [0,15,30,45];
+      rule.variation = 5;
+
+      var scheduledDates = [
+        new Date(2010, 3, 29, 12, 30, 30, 0),
+        new Date(2010, 3, 29, 12, 30, 45, 0),
+        new Date(2010, 3, 29, 12, 31, 00, 0),
+        new Date(2010, 3, 29, 12, 31, 15, 0)
+      ]
+
+      var next = base;
+      scheduledDates.forEach(function(date){
+        var inv = new schedule.Invocation(null, rule.nextInvocationDate(next), rule);
+        next = inv.scheduleDate;
+
+        test.deepEqual(date, inv.scheduleDate);
+        test.ok(Math.abs(inv.fireDate - inv.scheduleDate) <= 5000);
+      });
+
+      test.done();
+    },
+    "specify 5 second variation (override variation to test exact fireDate)": function(test) {
+      test.expect(8);
+
+      var rule = new schedule.RecurrenceRule();
+      rule.second = [0,15,30,45];
+      rule.variation = 5;
+
+      schedule.Invocation.prototype.random = function(){
+        return 0.7;
+      };
+
+      var scheduledDates = [
+        new Date(2010, 3, 29, 12, 30, 30, 0),
+        new Date(2010, 3, 29, 12, 30, 45, 0),
+        new Date(2010, 3, 29, 12, 31, 00, 0),
+        new Date(2010, 3, 29, 12, 31, 15, 0)
+      ]
+
+      var next = base;
+      scheduledDates.forEach(function(date){
+        var inv = new schedule.Invocation(null, rule.nextInvocationDate(next), rule);
+        next = inv.scheduleDate;
+
+        test.deepEqual(date, inv.scheduleDate);
+        test.deepEqual(inv.fireDate, new Date(inv.scheduleDate.getTime() + 2000));
+      });
+
+      test.done();
     }
   }
 };
