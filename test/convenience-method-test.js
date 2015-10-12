@@ -167,6 +167,25 @@ module.exports = {
           }, 1000);
         }*/
   },
+  ".scheduleJob({...}, fn)": {
+    "Runs job at interval based on object, repeating indefinitely, with 5 second variation": function(test) {
+      test.expect(4);
+
+      var job = new schedule.scheduleJob({
+        second: [0,15,30,45],
+        variation: 5
+      }, function() {
+        test.ok(true);
+      });
+
+      setTimeout(function() {
+        job.cancel();
+        test.done();
+      }, 65250);
+
+      clock.tick(65250);
+    }
+  },
   ".scheduleJob({...}, {...}, fn)": {
     "Callback called for each job if callback is provided": function(test) {
       test.expect(3);

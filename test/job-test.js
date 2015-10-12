@@ -118,7 +118,7 @@ module.exports = {
       });
 
       job.on('scheduled', function(runAtDate) {
-        test.equal(runAtDate, date);
+        test.deepEqual(runAtDate, date);
       });
 
       job.schedule(date);
