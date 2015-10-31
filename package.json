@@ -10,8 +10,8 @@
   ],
   "main": "./lib/schedule.js",
   "scripts": {
-    "test": "./node_modules/.bin/nodeunit test",
-    "lint": "./node_modules/.bin/eslint lib"
+    "test": "nodeunit",
+    "lint": "eslint lib"
   },
   "author": {
     "name": "Matt Patenaude",
