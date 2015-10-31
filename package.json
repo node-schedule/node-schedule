@@ -10,8 +10,8 @@
   ],
   "main": "./lib/schedule.js",
   "scripts": {
-    "test": "nodeunit",
-    "lint": "eslint lib"
+    "test": "nodeunit && npm run lint",
+    "lint": "standard lib/"
   },
   "author": {
     "name": "Matt Patenaude",
@@ -28,9 +28,9 @@
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
-    "eslint": "^0.15.1",
     "istanbul": "^0.3.8",
     "nodeunit": "^0.9.1",
-    "sinon": "^1.14.1"
+    "sinon": "^1.14.1",
+    "standard": "^5.3.1"
   }
 }
