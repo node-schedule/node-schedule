@@ -10,7 +10,7 @@
   ],
   "main": "./lib/schedule.js",
   "scripts": {
-    "test": "nodeunit",
+    "test": "nodeunit && npm run lint",
     "lint": "eslint lib"
   },
   "author": {
