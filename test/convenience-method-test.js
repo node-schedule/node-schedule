@@ -36,6 +36,19 @@ module.exports = {
 
       clock.tick(3250);
     },
+    "Runs job once at some date with a bound function": function (test) {
+      test.expect(1);
+
+      schedule.scheduleJob(new Date(Date.now() + 3000), function() {
+        test.ok(this === null);
+      }.bind(null));
+
+      setTimeout(function() {
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    },
     "Job doesn't emit initial 'scheduled' event": function(test) {
         var job = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
 
