@@ -46,6 +46,16 @@ module.exports = {
       }, 1250);
 
       clock.tick(1250);
+    },
+    "Should not accept invalid string as valid date": function(test) {
+      test.expect(1);
+
+      var job = schedule.scheduleJob("hello!!", function() {
+      });
+
+      test.equal(job, null);
+      test.done();
+
     }
   },
   "UTC": {
