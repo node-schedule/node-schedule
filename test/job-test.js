@@ -5,10 +5,10 @@ var sinon = require('sinon');
 var main = require('../package.json').main;
 var schedule = require('../' + main);
 
-var supportsGenerators = false;
+var es6;
 try {
   eval('(function* () {})()');
-  supportsGenerators = true;
+  es6 = require('./es6/job-test')(schedule);
 } catch (e) {}
 
 var clock;
@@ -87,23 +87,13 @@ module.exports = {
       clock.tick(3250);
     },
     "Run job in generator": function(test) {
-      if (!supportsGenerators) {
+      if (!es6) {
         test.expect(0);
         test.done();
         return;
       }
 
-      test.expect(1);
-
-      var job = new schedule.Job(function*() {
-        test.ok(true);
-      });
-
-      job.runOnDate(new Date(Date.now() + 3000));
-
-      setTimeout(function() {
-        test.done();
-      }, 3250);
+      es6.jobInGenerator(test);
 
       clock.tick(3250);
     },
