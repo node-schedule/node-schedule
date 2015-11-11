@@ -5,6 +5,12 @@ var sinon = require('sinon');
 var main = require('../package.json').main;
 var schedule = require('../' + main);
 
+var es6;
+try {
+  eval('(function* () {})()');
+  es6 = require('./es6/job-test')(schedule);
+} catch (e) {}
+
 var clock;
 
 module.exports = {
@@ -77,6 +83,17 @@ module.exports = {
       setTimeout(function() {
         test.done();
       }, 3250);
+
+      clock.tick(3250);
+    },
+    "Run job in generator": function(test) {
+      if (!es6) {
+        test.expect(0);
+        test.done();
+        return;
+      }
+
+      es6.jobInGenerator(test);
 
       clock.tick(3250);
     },
