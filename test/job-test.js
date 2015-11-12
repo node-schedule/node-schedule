@@ -97,6 +97,17 @@ module.exports = {
 
       clock.tick(3250);
     },
+    "Context is passed into generator correctly": function(test) {
+      if (!es6) {
+        test.expect(0);
+        test.done();
+        return;
+      }
+
+      es6.jobContextInGenerator(test);
+
+      clock.tick(3250);
+    },
     /* No jobs will run after this test for some reason - hide for now
     "Won't run job if scheduled in the past": function(test) {
       test.expect(0);

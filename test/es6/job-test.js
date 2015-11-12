@@ -15,6 +15,19 @@ module.exports = function(schedule) {
       setTimeout(function() {
         test.done();
       }, 3250);
+    },
+    jobContextInGenerator: function(test) {
+      test.expect(1);
+
+      var job = new schedule.Job('name of job', function*() {
+        test.ok(this.name === 'name of job');
+      });
+
+      job.runOnDate(new Date(Date.now() + 3000));
+
+      setTimeout(function() {
+        test.done();
+      }, 3250);
     }
   }
 }
