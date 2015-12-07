@@ -161,7 +161,6 @@ Licensed under the **[MIT License] [license]**.
 
 
 [cron]: http://unixhelp.ed.ac.uk/CGI/man-cgi?crontab+5
-[wiki]: https://github.com/node-schedule/node-schedule/wiki
 [contributing]: https://github.com/node-schedule/node-schedule/blob/master/CONTRIBUTING.md
 [Matt Patenaude]: https://github.com/mattpat
 [license]: https://github.com/node-schedule/node-schedule/blob/master/LICENSE
