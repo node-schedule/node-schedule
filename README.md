@@ -134,7 +134,7 @@ var j = schedule.scheduleJob(rule, function(){
 
 It's worth noting that the default value of a component of a recurrence rule is `null` (except for seconds, which is 0 for familiarity with cron). If we did not explicitly set `minute` to 0 above, the message would have instead been logged at 5:00pm, 5:01pm, 5:02pm, ..., 5:59pm. Probably not what you want.
 
-### Object Literal Syntax
+#### Object Literal Syntax
 
 To make things a little easier, an object literal syntax is also supported, like in this example which will log a message every Sunday at 2:30pm:
 
