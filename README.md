@@ -1,4 +1,4 @@
-# node-schedule
+# Node Schedule
 
 [![NPM version](http://img.shields.io/npm/v/node-schedule.svg)](https://www.npmjs.com/package/node-schedule) [![Downloads](https://img.shields.io/npm/dm/node-schedule.svg)](https://www.npmjs.com/package/node-schedule)  [![Build Status](https://travis-ci.org/node-schedule/node-schedule.svg?branch=master)](https://travis-ci.org/node-schedule/node-schedule) [![Join the chat at https://gitter.im/node-schedule/node-schedule](https://img.shields.io/badge/gitter-chat-green.svg)](https://gitter.im/node-schedule/node-schedule?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -6,7 +6,7 @@
 
 >__Announcement:__ Node Schedule is looking for add additional collaborators with commit access. If you are actively involved in open source, ping [Tejas Manohar](http://tejas.io) (via [email](mailto:me@tejas.io), [Twitter](https://twitter.com/tejasmanohar), etc.) to express interest. Those who already contribute to the project are preferred.
 
-node-schedule is a flexible cron-like and not-cron-like job scheduler for Node.js. It allows you to schedule jobs (arbitrary functions) for execution at specific dates, with optional recurrence rules. It only uses a single timer at any given time (rather than reevaluating upcoming jobs every second/minute).
+Node Schedule is a flexible cron-like and not-cron-like job scheduler for Node.js. It allows you to schedule jobs (arbitrary functions) for execution at specific dates, with optional recurrence rules. It only uses a single timer at any given time (rather than reevaluating upcoming jobs every second/minute).
 
 ## Usage
 
@@ -20,13 +20,13 @@ npm install node-schedule
 
 ### Overview
 
-node-schedule is for time-based scheduling, not interval-based scheduling. While you can easily bend it to your will, if you only want to do something like "run this function every 5 minutes", you'll find `setInterval` much easier to use, and far more appropriate. But if you want to, say, "run this function at the :20 and :50 of every hour on the third Tuesday of every month," you'll find that node-schedule suits your needs better. Additionally, node-schedule has Windows support unlike true cron since the node runtime is now fully supported.
+Node Schedule is for time-based scheduling, not interval-based scheduling. While you can easily bend it to your will, if you only want to do something like "run this function every 5 minutes", you'll find `setInterval` much easier to use, and far more appropriate. But if you want to, say, "run this function at the :20 and :50 of every hour on the third Tuesday of every month," you'll find that Node Schedule suits your needs better. Additionally, Node Schedule has Windows support unlike true cron since the node runtime is now fully supported.
 
-Note that node-schedule is designed for in-process scheduling, i.e. scheduled jobs will only fire as long as your script is running, and the schedule will disappear when execution completes. If you need to schedule jobs that will persist even when your script *isn't* running, consider using the actual [cron].
+Note that Node Schedule is designed for in-process scheduling, i.e. scheduled jobs will only fire as long as your script is running, and the schedule will disappear when execution completes. If you need to schedule jobs that will persist even when your script *isn't* running, consider using the actual [cron].
 
 ### Jobs and Scheduling
 
-Every scheduled job in node-schedule is represented by a `Job` object. You can create jobs manually, then execute the `schedule()` method to apply a schedule, or use the convenience function `scheduleJob()` as demonstrated below.
+Every scheduled job in Node Schedule is represented by a `Job` object. You can create jobs manually, then execute the `schedule()` method to apply a schedule, or use the convenience function `scheduleJob()` as demonstrated below.
 
 `Job` objects are `EventEmitter`'s, and emit a `run` event after each execution. They also emit a `scheduled` event each time they're scheduled to run, and a `canceled` event when an invocation is canceled before it's executed (both events receive a JavaScript date object as a parameter). Note that jobs are scheduled the first time immediately, so if you create a job using the `scheduleJob()` convenience method, you'll miss the first `scheduled` event. Also note that `canceled` is the single-L American spelling.
 
