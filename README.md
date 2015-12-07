@@ -150,7 +150,7 @@ This module was originally developed by [Matt Patenaude], and is now maintained 
 
 We'd love to get your contributions. Individuals making significant and valuable contributions are given commit-access to the project to contribute as they see fit.
 
-Before jumping in, check out our [Contributing](https://github.com/node-schedule/node-schedule/wiki/Contributing) page on the wiki!
+Before jumping in, check out our [Contributing](https://github.com/node-schedule/node-schedule/blob/master/CONTRIBUTING.md) page guide!
 
 
 ## Copyright and license
