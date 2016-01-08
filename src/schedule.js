@@ -113,19 +113,20 @@ function Job() {
   };
   this.reschedule = function(spec) {
     var inv;
-    var success = false;
+    var cInvs = pendingInvocations.slice();
 
-    for (var j = 0; j < pendingInvocations.length; j++) {
-      inv = pendingInvocations[j];
+    if (this.schedule(spec)) {
+      for (var j = 0; j < cInvs.length; j++) {
+        inv = cInvs[j];
 
-      cancelInvocation(inv);
+        cancelInvocation(inv);
+        this.stopTrackingInvocation(inv);
+      }
+
+      return true;
     }
 
-    pendingInvocations = [];
-
-    success = this.schedule(spec);
-
-    return success;
+    return null;
   };
   this.nextInvocation = function() {
     if (!pendingInvocations.length) {
@@ -462,6 +463,9 @@ function scheduleNextRecurrence(rule, job, prevDate) {
   return inv;
 }
 
+/* Convenience methods */
+var scheduledJobs = {};
+
 /* Private function to generate a job id */
 function genJobId() {
   var keys = Object.keys(scheduledJobs);
@@ -480,9 +484,6 @@ function genJobId() {
 
   return parseInt(keys[0], 10) + 1;
 }
-
-/* Convenience methods */
-var scheduledJobs = {};
 
 function scheduleJob() {
   if (arguments.length < 2) {
