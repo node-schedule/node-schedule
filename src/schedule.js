@@ -111,6 +111,22 @@ function Job() {
 
     return true;
   };
+  this.reschedule = function(spec) {
+    var inv;
+    var success = false;
+
+    for (var j = 0; j < pendingInvocations.length; j++) {
+      inv = pendingInvocations[j];
+
+      cancelInvocation(inv);
+    }
+
+    pendingInvocations = [];
+
+    success = this.schedule(spec);
+
+    return success;
+  };
   this.nextInvocation = function() {
     if (!pendingInvocations.length) {
       return null;
@@ -498,6 +514,20 @@ function scheduleJob() {
   return null;
 }
 
+function rescheduleJob(job, spec) {
+  var success = false;
+  if (job instanceof Job) {
+    success = job.reschedule(spec);
+  } else {
+    var findJob = getJob(job);
+    if (findJob instanceof Job) {
+      return rescheduleJob(findJob, spec);
+    }
+  }
+
+  return success;
+}
+
 function cancelJob(job) {
   var success = false;
   if (job instanceof Job) {
@@ -569,6 +599,7 @@ exports.RecurrenceRule = RecurrenceRule;
 exports.Invocation = Invocation;
 exports.scheduleJob = scheduleJob;
 exports.scheduledJobs = scheduledJobs; // Maybe we should remove this from the public api
+exports.rescheduleJob = rescheduleJob;
 exports.cancelJob = cancelJob;
 exports.getJob = getJob;
 exports.getJobs = getJobs;

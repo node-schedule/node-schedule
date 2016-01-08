@@ -292,6 +292,31 @@ module.exports = {
       clock.tick(2250);
     }
   },
+  "#reschedule": {
+    "Reschedule jobs from every second to every minutes": function(test) {
+      test.expect(3);
+
+      var job = new schedule.Job(function() {
+        test.ok(true);
+      });
+
+      job.schedule({
+        second: null // fire every second
+      });
+
+      setTimeout(function() {
+        job.reschedule({
+          minute: null
+        });
+      }, 3250);
+
+      setTimeout(function() {
+        test.done();
+      }, 5000);
+
+      clock.tick(5000);
+    }
+  },
   "When invoked": {
     "Job emits 'run' event": function(test) {
       test.expect(1);
