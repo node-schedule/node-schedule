@@ -81,7 +81,7 @@ module.exports = {
 
       var timeout = 3 * 7 * 24 * 60 * 60 * 1000;
 
-      var job = schedule.scheduleJob('0 0 0 * * 1', function() {
+      var job = schedule.scheduleJob('0 0 0 * * 0', function() {
         test.ok(true);
       });
 

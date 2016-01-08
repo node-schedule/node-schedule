@@ -111,6 +111,23 @@ function Job() {
 
     return true;
   };
+  this.reschedule = function(spec) {
+    var inv;
+    var cInvs = pendingInvocations.slice();
+
+    if (this.schedule(spec)) {
+      for (var j = 0; j < cInvs.length; j++) {
+        inv = cInvs[j];
+
+        cancelInvocation(inv);
+        this.stopTrackingInvocation(inv);
+      }
+
+      return true;
+    }
+
+    return null;
+  };
   this.nextInvocation = function() {
     if (!pendingInvocations.length) {
       return null;
@@ -446,6 +463,9 @@ function scheduleNextRecurrence(rule, job, prevDate) {
   return inv;
 }
 
+/* Convenience methods */
+var scheduledJobs = {};
+
 /* Private function to generate a job id */
 function genJobId() {
   var keys = Object.keys(scheduledJobs);
@@ -464,9 +484,6 @@ function genJobId() {
 
   return parseInt(keys[0], 10) + 1;
 }
-
-/* Convenience methods */
-var scheduledJobs = {};
 
 function scheduleJob() {
   if (arguments.length < 2) {
@@ -496,6 +513,20 @@ function scheduleJob() {
   }
 
   return null;
+}
+
+function rescheduleJob(job, spec) {
+  var success = false;
+  if (job instanceof Job) {
+    success = job.reschedule(spec);
+  } else {
+    var findJob = getJob(job);
+    if (findJob instanceof Job) {
+      return rescheduleJob(findJob, spec);
+    }
+  }
+
+  return success;
 }
 
 function cancelJob(job) {
@@ -569,6 +600,7 @@ exports.RecurrenceRule = RecurrenceRule;
 exports.Invocation = Invocation;
 exports.scheduleJob = scheduleJob;
 exports.scheduledJobs = scheduledJobs; // Maybe we should remove this from the public api
+exports.rescheduleJob = rescheduleJob;
 exports.cancelJob = cancelJob;
 exports.getJob = getJob;
 exports.getJobs = getJobs;
