@@ -315,6 +315,29 @@ module.exports = {
       }, 5000);
 
       clock.tick(5000);
+    },
+    "Reschedule jobs from every minutes to every second": function(test) {
+      test.expect(3);
+
+      var job = new schedule.Job(function() {
+        test.ok(true);
+      });
+
+      job.schedule({
+        second: 5 // fire every second
+      });
+
+      setTimeout(function() {
+        job.reschedule({
+          second: null
+        });
+      }, 5150);
+
+      setTimeout(function() {
+        test.done();
+      }, 7500);
+
+      clock.tick(7500);
     }
   },
   "When invoked": {
