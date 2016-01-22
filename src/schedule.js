@@ -8,7 +8,8 @@
 var events = require('events'),
   util = require('util'),
   cronParser = require('cron-parser'),
-  lt = require('long-timeout');
+  lt = require('long-timeout'),
+  increment = require('./increment');
 
 /* Job object */
 var anonJobCounter = 0;
@@ -279,6 +280,7 @@ RecurrenceRule.prototype.nextInvocationDate = function(base) {
   }
 
   var next = new Date(base.getTime());
+  increment.addDateConvenienceMethods(next);
   next.addSecond();
 
   while (true) {
