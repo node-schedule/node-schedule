@@ -417,13 +417,13 @@ module.exports = {
                                       function() {},
                                       function() {});
 
-      test.equal(schedule.scheduledJobs.cancelJob, job1);
-      test.equal(schedule.scheduledJobs.second, job2);
+      test.strictEqual(schedule.scheduledJobs.cancelJob, job1);
+      test.strictEqual(schedule.scheduledJobs.second, job2);
       setTimeout(function() {
         job1.cancel();
         job2.cancel();
-        test.equal(schedule.scheduledJobs.cancelJob, null);
-        test.equal(schedule.scheduledJobs.second, null);
+        test.strictEqual(schedule.scheduledJobs.cancelJob, undefined);
+        test.strictEqual(schedule.scheduledJobs.second, undefined);
         test.done();
       }, 1250);
 
