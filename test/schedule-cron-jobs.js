@@ -18,7 +18,7 @@ module.exports = {
     "Runs job every second": function(test) {
       test.expect(3);
 
-      var timeout = 3 * 1000;
+      var timeout = 3 * 1000 + 150;
 
       var job = schedule.scheduleJob('* * * * * *', function() {
         test.ok(true);
