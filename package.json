@@ -1,6 +1,6 @@
 {
   "name": "node-schedule",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": "A cron-like and not-cron-like job scheduler for Node.",
   "keywords": [
     "schedule",
