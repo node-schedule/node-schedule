@@ -3,11 +3,22 @@
 
 var main = require('../package.json').main;
 var schedule = require('../' + main);
+var sinon = require('sinon');
+var clock;
 
 // 12:30:15 pm Thursday 29 April 2010 in the timezone this code is being run in
 var base = new Date(2010, 3, 29, 12, 30, 15, 0);
+var baseMs = base.getTime();
 
 module.exports = {
+  "setUp": function(cb) {
+    clock = sinon.useFakeTimers(baseMs);
+    cb();
+  },
+  "tearDown": function(cb) {
+    clock.restore();
+    cb();
+  },
   "#nextInvocationDate(Date)": {
     "next second": function(test) {
       var rule = new schedule.RecurrenceRule();
@@ -256,6 +267,26 @@ module.exports = {
 
       next = rule.nextInvocationDate(next);
       test.deepEqual(new Date(2011, 5, 1, 0, 0, 0, 0), next);
+
+      test.done();
+    },
+    "With the year set should not loop indefinetely": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.second = 0;
+      rule.minute = 0;
+      rule.hour = 0;
+      rule.date = 1;
+      rule.month = 5;
+      rule.year = 2010;
+
+      var next;
+      var base1 = new Date(2010, 4, 31, 12, 30, 15, 0);
+
+      next = rule.nextInvocationDate(base1);
+      test.deepEqual(new Date(2010, 5, 1, 0, 0, 0, 0), next);
+
+      next = rule.nextInvocationDate(next);
+      test.equal(next, null);
 
       test.done();
     }
