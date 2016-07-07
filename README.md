@@ -180,6 +180,20 @@ var j = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 0}, function(){
 });
 ```
 
+#### Set StartTime and EndTime
+
+It will run after 5 seconds and stop after 10 seconds in this example.
+The ruledat supports the above.
+
+```js
+let startTime = new Date(Date.now() + 5000);
+let endTime = new Date(now.getTime() + 5000);
+var j = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * * * * *', function(){
+  console.log('Time for tea!');
+});
+```
+
+
 ## Contributing
 
 This module was originally developed by [Matt Patenaude], and is now maintained by
