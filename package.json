@@ -8,6 +8,7 @@
     "job",
     "cron"
   ],
+  "license": "MIT",
   "main": "./lib/schedule.js",
   "scripts": {
     "test": "nodeunit",
