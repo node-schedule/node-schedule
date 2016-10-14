@@ -70,7 +70,7 @@ The cron format consists of:
 │    └──────────────────── minute (0 - 59)
 └───────────────────────── second (0 - 59, OPTIONAL)
 ```
-CRON has 5 params, while node-schedule has 6.  The CRON lowest resolution is limited to 1 minute, while node-schedule resolution does to 1 second.
+CRON has 5 params, while node-schedule has 6.  The CRON lowest resolution is limited to 1 minute, while node-schedule resolution goes down to 1 second.
 
 Examples with the cron format:
 
@@ -91,10 +91,10 @@ var j = schedule.scheduleJob(JobUniqueName, '0 17 ? * 0,4-6', function(){
 ```
 
 Execute a cron job every 5 Minutes = */5 * * * *
+The JobUniqueName is facultative.  It helps to find back the job in the schedule object.
 
 #### Unsupported Cron Features
 
-The JobUniqueName is facultative.  It helps to find back the job in the schedule object.
 
 Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (nth weekday
 of the month) are not supported. Most other features supported by popular cron
