@@ -70,7 +70,7 @@ The cron format consists of:
 │    └──────────────────── minute (0 - 59)
 └───────────────────────── second (0 - 59, OPTIONAL)
 ```
-CRON has 5 params, while node-schedule has 5.  The CRO lowest resolution is limited to 1 minute
+CRON has 5 params, while node-schedule has 6.  The CRON lowest resolution is limited to 1 minute, while node-schedule resolution does to 1 second.
 
 Examples with the cron format:
 
