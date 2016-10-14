@@ -70,13 +70,14 @@ The cron format consists of:
 │    └──────────────────── minute (0 - 59)
 └───────────────────────── second (0 - 59, OPTIONAL)
 ```
+CRON has 5 params, while node-schedule has 5.  The CRO lowest resolution is limited to 1 minute
 
 Examples with the cron format:
 
 ```js
 var schedule = require('node-schedule');
 
-var j = schedule.scheduleJob('42 * * * *', function(){
+var j = schedule.scheduleJob(JobUniqueName, '42 * * * *', function(){
   console.log('The answer to life, the universe, and everything!');
 });
 ```
@@ -84,7 +85,7 @@ var j = schedule.scheduleJob('42 * * * *', function(){
 And:
 
 ```js
-var j = schedule.scheduleJob('0 17 ? * 0,4-6', function(){
+var j = schedule.scheduleJob(JobUniqueName, '0 17 ? * 0,4-6', function(){
   console.log('Today is recognized by Rebecca Black!');
 });
 ```
@@ -92,6 +93,8 @@ var j = schedule.scheduleJob('0 17 ? * 0,4-6', function(){
 Execute a cron job every 5 Minutes = */5 * * * *
 
 #### Unsupported Cron Features
+
+The JobUniqueName is facultative.  It helps to find back the job in the schedule object.
 
 Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (nth weekday
 of the month) are not supported. Most other features supported by popular cron
@@ -111,6 +114,18 @@ var date = new Date(2012, 11, 21, 5, 30, 0);
 var j = schedule.scheduleJob(date, function(){
   console.log('The world is going to end today.');
 });
+
+```
+It's a good idea to round the scheduled date to the entire second to avoid multiple
+calls to the same event.
+
+```js
+function roundSeconds(date) {
+  // suppress milliseconds because node-schedule lowest unit is 1 second
+  date.setMilliseconds(0);
+  return date;
+}
+
 ```
 
 You can invalidate the job with the `cancel()` method:
