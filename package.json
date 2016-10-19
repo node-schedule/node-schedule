@@ -24,7 +24,7 @@
     "url": "https://github.com/node-schedule/node-schedule.git"
   },
   "dependencies": {
-    "cron-parser": "1.1.0",
+    "cron-parser": "^2.4.0",
     "long-timeout": "0.1.1",
     "sorted-array-functions": "^1.0.0"
   },
