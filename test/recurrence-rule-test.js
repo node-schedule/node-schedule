@@ -289,6 +289,17 @@ module.exports = {
       test.equal(next, null);
 
       test.done();
+    },
+    "using rule with string properties": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.second = '50';
+      rule.minute = '5';
+      rule.hour = '10';
+
+      var next = rule.nextInvocationDate(base);
+
+      test.deepEqual(new Date(2010, 3, 30, 10, 5, 50, 0), next);
+      test.done();
     }
   }
 };
