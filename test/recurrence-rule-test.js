@@ -272,6 +272,28 @@ module.exports = {
 
       test.done();
     },
+    "From 31th May schedule the 1st of every June in Vancouver": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.second = 0;
+      rule.minute = 0;
+      rule.hour = 0;
+      rule.date = 1;
+      rule.month = 5;
+      rule.timezone = 'America/Vancouver';
+
+      var next;
+      var base1 = new CronDate("2010-05-31T12:30:15", "America/Vancouver");
+
+      next = rule.nextInvocationDate(base1);
+      var testdate1 = new CronDate("2010-06-01T00:00:00", "America/Vancouver");
+      test.deepEqual(testdate1.getTime(), next.getTime());
+
+      next = rule.nextInvocationDate(next);
+      var testdate2 = new CronDate("2011-06-01T00:00:00", "America/Vancouver");
+      test.deepEqual(testdate2.getTime(), next.getTime());
+
+      test.done();
+    },
     "With the year set should not loop indefinetely": function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.second = 0;
