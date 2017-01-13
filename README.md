@@ -159,10 +159,20 @@ var j = schedule.scheduleJob(rule, function(){
 });
 ```
 
+#### RecurrenceRule properties
+
+- `second`
+- `minute`
+- `hour`
+- `date`
+- `month`
+- `year`
+- `dayOfWeek`
+
 > **Note**: It's worth noting that the default value of a component of a recurrence rule is
-`null` (except for seconds, which is 0 for familiarity with cron). *If we did not
-explicitly set `minute` to 0 above, the message would have instead been logged at
-5:00pm, 5:01pm, 5:02pm, ..., 5:59pm.* Probably not what you want.
+> `null` (except for second, which is 0 for familiarity with cron). *If we did not
+> explicitly set `minute` to 0 above, the message would have instead been logged at
+> 5:00pm, 5:01pm, 5:02pm, ..., 5:59pm.* Probably not what you want.
 
 #### Object Literal Syntax
 
