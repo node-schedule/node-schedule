@@ -76,6 +76,8 @@ var j = schedule.scheduleJob('42 * * * *', function(){
 });
 ```
 
+Execute a cron job when the minute is 42 (e.g. 19:42, 20:42, etc.).
+
 And:
 
 ```js
