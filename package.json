@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "cron-parser": "1.1.0",
-    "long-timeout": "0.1.1"
+    "long-timeout": "0.1.1",
+    "sorted-array-functions": "^1.0.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
