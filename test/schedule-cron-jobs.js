@@ -128,6 +128,38 @@ module.exports = {
 
       clock.tick(timeout);
     },
+    "Runs job every year in Vancouver": function(test) {
+      test.expect(4);
+
+      var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
+
+      var job = schedule.scheduleJob({rule: '0 0 0 1 1 *', timezone: 'America/Vancouver'}, function() {
+        test.ok(true);
+      });
+
+      setTimeout(function() {
+        job.cancel();
+        test.done();
+      }, timeout);
+
+      clock.tick(timeout);
+    },
+    "Runs job every year in Kuala Lumpur": function(test) {
+      test.expect(4);
+
+      var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
+
+      var job = schedule.scheduleJob({rule: '0 0 0 1 1 *', timezone: 'Asia/Kuala_Lumpur'}, function() {
+        test.ok(true);
+      });
+
+      setTimeout(function() {
+        job.cancel();
+        test.done();
+      }, timeout);
+
+      clock.tick(timeout);
+    },
     tearDown: function(cb) {
       clock.restore();
       cb();
