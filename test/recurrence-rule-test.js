@@ -295,10 +295,80 @@ module.exports = {
       rule.second = '50';
       rule.minute = '5';
       rule.hour = '10';
-
       var next = rule.nextInvocationDate(base);
-
       test.deepEqual(new Date(2010, 3, 30, 10, 5, 50, 0), next);
+      test.done();
+    },
+    "nextInvocationDate on an invalid month should return null": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.month = 12;
+      var next = rule.nextInvocationDate(next);
+      test.equal(next, null);
+
+      var rule = new schedule.RecurrenceRule();
+      rule.month = 'asdfasdf';
+      next = rule.nextInvocationDate(next);
+      test.equal(next, null);
+
+      test.done();
+    },
+    "nextInvocationDate on an invalid second should return null": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.second = 60;
+      var next = rule.nextInvocationDate(next);
+      test.equal(next, null);
+
+      var rule = new schedule.RecurrenceRule();
+      rule.second = 'asdfasdf';
+      next = rule.nextInvocationDate(next);
+      test.equal(next, null);
+
+      test.done();
+    },
+    "nextInvocationDate on an invalid hour should return null": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.hour = 24;
+      var next = rule.nextInvocationDate(next);
+      test.equal(next, null);
+
+      var rule = new schedule.RecurrenceRule();
+      rule.hour = 'asdfasdf';
+      next = rule.nextInvocationDate(next);
+      test.equal(next, null);
+
+      test.done();
+    },
+    "nextInvocationDate on an invalid date should return null": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.date = 90;
+      var next = rule.nextInvocationDate(next);
+      test.equal(next, null);
+
+      // Test February
+      var rule = new schedule.RecurrenceRule();
+      rule.month = 1;
+      rule.date = 30;
+      next = rule.nextInvocationDate(next);
+      test.equal(next, null);
+
+      var rule = new schedule.RecurrenceRule();
+      rule.date = 'asdfasdf';
+      next = rule.nextInvocationDate(next);
+      test.equal(next, null);
+
+      test.done();
+    },
+    "nextInvocationDate on an invalid dayOfWeek should return null": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.dayOfWeek = 90;
+      var next = rule.nextInvocationDate(next);
+      test.equal(next, null);
+
+      var rule = new schedule.RecurrenceRule();
+      rule.dayOfWeek = 'asdfasdf';
+      next = rule.nextInvocationDate(next);
+      test.equal(next, null);
+
       test.done();
     }
   }
