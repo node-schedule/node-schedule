@@ -88,6 +88,14 @@ var j = schedule.scheduleJob('0 17 ? * 0,4-6', function(){
 
 Execute a cron job every 5 Minutes = */5 * * * *
 
+You can specify a timezone as well:
+
+```js
+var j = schedule.scheduleJob('0 14 * * *', 'Asia/Shanghai', function(){
+  console.log('Will execute on 14:00:00 GMT+8:00 (CST) everyday');
+});
+```
+
 #### Unsupported Cron Features
 
 Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (nth weekday
@@ -155,6 +163,7 @@ var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(4, 6)];
 rule.hour = 17;
 rule.minute = 0;
+rule.tz = 'Asia/Shanghai'; // You can specify a timezone!
 
 var j = schedule.scheduleJob(rule, function(){
   console.log('Today is recognized by Rebecca Black!');
@@ -170,6 +179,7 @@ var j = schedule.scheduleJob(rule, function(){
 - `month`
 - `year`
 - `dayOfWeek`
+- `tz`
 
 > **Note**: It's worth noting that the default value of a component of a recurrence rule is
 > `null` (except for second, which is 0 for familiarity with cron). *If we did not
