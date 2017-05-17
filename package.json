@@ -1,12 +1,13 @@
 {
-  "name": "node-schedule",
+  "name": "node-schedule-tz",
   "version": "1.2.1",
-  "description": "A cron-like and not-cron-like job scheduler for Node.",
+  "description": "A cron-like and not-cron-like job scheduler with timezone support for Node.",
   "keywords": [
     "schedule",
     "task",
     "job",
-    "cron"
+    "cron",
+    "timezone"
   ],
   "license": "MIT",
   "main": "./lib/schedule.js",
@@ -19,9 +20,10 @@
     "email": "matt@mattpatenaude.com",
     "url": "http://mattpatenaude.com"
   },
+  "contributors": ["KUANG Qi <kqwd@163.com>"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/node-schedule/node-schedule.git"
+    "url": "git@github.com:kqkq/node-schedule-tz.git"
   },
   "dependencies": {
     "cron-parser": "^2.4.0",
