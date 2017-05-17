@@ -1,11 +1,11 @@
 # Node Schedule
 
-[![NPM version](http://img.shields.io/npm/v/node-schedule.svg)](https://www.npmjs.com/package/node-schedule)
-[![Downloads](https://img.shields.io/npm/dm/node-schedule.svg)](https://www.npmjs.com/package/node-schedule)
-[![Build Status](https://travis-ci.org/node-schedule/node-schedule.svg?branch=master)](https://travis-ci.org/node-schedule/node-schedule)
-[![Join the chat at https://gitter.im/node-schedule/node-schedule](https://img.shields.io/badge/gitter-chat-green.svg)](https://gitter.im/node-schedule/node-schedule?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![NPM version](http://img.shields.io/npm/v/node-schedule-tz.svg)](https://www.npmjs.com/package/node-schedule-tz)
+[![Downloads](https://img.shields.io/npm/dm/node-schedule-tz.svg)](https://www.npmjs.com/package/node-schedule-tz)
+[![Build Status](https://travis-ci.org/node-schedule-tz/node-schedule-tz.svg?branch=master)](https://travis-ci.org/node-schedule/node-schedule-tz)
+[![Join the chat at https://gitter.im/node-schedule-tz/node-schedule-tz](https://img.shields.io/badge/gitter-chat-green.svg)](https://gitter.im/node-schedule-tz/node-schedule-tz?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![NPM](https://nodei.co/npm/node-schedule.png?downloads=true)](https://nodei.co/npm/node-schedule/)
+[![NPM](https://nodei.co/npm/node-schedule-tz.png?downloads=true)](https://nodei.co/npm/node-schedule-tz/)
 
 Node Schedule is a flexible cron-like and not-cron-like job scheduler for Node.js.
 It allows you to schedule jobs (arbitrary functions) for execution at
@@ -16,7 +16,7 @@ at any given time (rather than reevaluating upcoming jobs every second/minute).
 
 ### Installation
 
-You can install using [npm](https://www.npmjs.com/package/node-schedule).
+You can install using [npm](https://www.npmjs.com/package/node-schedule-tz).
 
 ```
 npm install node-schedule-tz
@@ -69,7 +69,7 @@ The cron format consists of:
 Examples with the cron format:
 
 ```js
-var schedule = require('node-schedule');
+var schedule = require('node-schedule-tz');
 
 var j = schedule.scheduleJob('42 * * * *', function(){
   console.log('The answer to life, the universe, and everything!');
@@ -110,7 +110,7 @@ Say you very specifically want a function to execute at 5:30am on December 21, 2
 Remember - in JavaScript - 0 - January, 11 - December.
 
 ```js
-var schedule = require('node-schedule');
+var schedule = require('node-schedule-tz');
 var date = new Date(2012, 11, 21, 5, 30, 0);
 
 var j = schedule.scheduleJob(date, function(){
@@ -127,7 +127,7 @@ j.cancel();
 To use current data in the future you can use binding:
 
 ```js
-var schedule = require('node-schedule');
+var schedule = require('node-schedule-tz');
 var date = new Date(2012, 11, 21, 5, 30, 0);
 var x = 'Tada!';
 var j = schedule.scheduleJob(date, function(y){
@@ -144,7 +144,7 @@ You can build recurrence rules to specify when a job should recur. For instance,
 consider this rule, which executes the function every hour at 42 minutes after the hour:
 
 ```js
-var schedule = require('node-schedule');
+var schedule = require('node-schedule-tz');
 
 var rule = new schedule.RecurrenceRule();
 rule.minute = 42;
