@@ -1,4 +1,4 @@
-# Node Schedule
+# Node Schedule with Timezone Support
 
 [![NPM version](http://img.shields.io/npm/v/node-schedule-tz.svg)](https://www.npmjs.com/package/node-schedule-tz)
 [![Downloads](https://img.shields.io/npm/dm/node-schedule-tz.svg)](https://www.npmjs.com/package/node-schedule-tz)
@@ -7,7 +7,7 @@
 
 [![NPM](https://nodei.co/npm/node-schedule-tz.png?downloads=true)](https://nodei.co/npm/node-schedule-tz/)
 
-Node Schedule is a flexible cron-like and not-cron-like job scheduler for Node.js.
+Node Schedule is a flexible cron-like and not-cron-like job scheduler with timezone support for Node.js.
 It allows you to schedule jobs (arbitrary functions) for execution at
 specific dates, with optional recurrence rules. It only uses a single timer
 at any given time (rather than reevaluating upcoming jobs every second/minute).
