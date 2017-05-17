@@ -19,7 +19,7 @@ at any given time (rather than reevaluating upcoming jobs every second/minute).
 You can install using [npm](https://www.npmjs.com/package/node-schedule).
 
 ```
-npm install node-schedule
+npm install node-schedule-tz
 ```
 
 ### Overview
