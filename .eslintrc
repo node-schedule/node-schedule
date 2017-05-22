@@ -1,16 +1,17 @@
 {
   "env": {
-    "node": true
+    "node": true,
+    "es6": true
   },
   "rules": {
-    "eqeqeq": [2, "smart"],
-    "indent": [2, 2],
-    "no-constant-condition": false,
-    "no-redeclare": 1,
-    "no-underscore-dangle": false,
-    "no-use-before-define": [true,"nofunc"],
-    "quotes": [2, "single"],
-    "space-before-blocks": 2,
-    "strict": 2
+    "eqeqeq": ["error", "smart"],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "no-constant-condition": "off",
+    "no-redeclare": "warn",
+    "no-underscore-dangle": "off",
+    "no-use-before-define": ["warn","nofunc"],
+    "quotes": ["error", "single"],
+    "space-before-blocks": "error",
+    "strict": "error"
   }
 }

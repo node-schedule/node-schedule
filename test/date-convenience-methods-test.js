@@ -38,7 +38,7 @@ module.exports = {
     }
   },
   "UTC": {
-     "Should accept a valid UTC date in milliseconds": function(test) {
+    "Should accept a valid UTC date in milliseconds": function(test) {
       test.expect(1);
 
       schedule.scheduleJob(new Date(Date.now() + 1000).getTime(), function() {
