@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
-    "eslint": "^0.15.1",
+    "eslint": "^3.19.0",
     "istanbul": "^0.4.5",
     "nodeunit": "^0.10.2",
     "sinon": "^1.14.1"
