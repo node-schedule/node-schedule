@@ -12,7 +12,7 @@
   "main": "./lib/schedule.js",
   "scripts": {
     "test": "nodeunit",
-    "lint": "eslint lib"
+    "lint": "eslint lib test"
   },
   "author": {
     "name": "Matt Patenaude",

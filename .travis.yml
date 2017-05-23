@@ -8,7 +8,7 @@ node_js:
 before_script: >
   if nvm ls-remote --lts | grep "$(nvm current)"; then
     echo "running on a LTS node version, linting"
-    eslint .
+    npm test
   else
     echo "running on a non-LTS node version, skipping linting"
   fi
