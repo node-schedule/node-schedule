@@ -126,6 +126,23 @@ module.exports = {
 
       clock.tick(timeout);
     },
+    "Cope with invalid cron spec": function(test) {
+      test.expect(2);
+      var timeout = 1 * 24 * 60 * 60 * 1000;
+      var job1 = schedule.scheduleJob('0 0 0 * * *',function(){test.ok(true);});
+      var job2 = schedule.scheduleJob('error',function(){test.ok(true);});
+      var job3 = schedule.scheduleJob('0 2 0 * * *',function(){test.ok(true);});
+
+      setTimeout(function() {
+        job1.cancel();
+        job2.cancel();
+        job3.cancel();
+        test.done();
+      }, timeout);
+
+      clock.tick(timeout);
+
+    },
     tearDown: function(cb) {
       clock.restore();
       cb();
