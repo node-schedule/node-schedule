@@ -112,7 +112,7 @@ module.exports = {
         var job = schedule.scheduleJob(rule, function() {
           test.ok(false);
         });
-        
+
         test.equal(job, null);
 
         setTimeout(function() {
@@ -165,13 +165,13 @@ module.exports = {
       },
       "Doesn't invoke job if object schedules it in the past": function(test) {
         test.expect(1);
-      
+
         var job = schedule.scheduleJob({
           year: 1960
         }, function() {
           test.ok(false);
         });
-        
+
         test.equal(job, null);
 
         setTimeout(function() {
@@ -705,6 +705,81 @@ module.exports = {
       job.cancel();
       test.done();
     }
+  },
+  "#nextDates": {
+    "Correct number of dates are returned for RecurrenceRule": function(test) {
+      var job = schedule.scheduleJob({
+        second: null
+      }, function() {});
+
+      var dates = job.nextDates();
+      test.equal(dates.length, 1);
+
+      var dates = job.nextDates(5);
+      test.equal(dates.length, 5);
+
+      job.cancel();
+      test.done();
+    },
+    "Correct number of dates are returned for RecurrenceRule with endTime": function(test) {
+      var rule = new schedule.RecurrenceRule();
+      rule.second = null; // every second
+
+      var job = schedule.scheduleJob({
+        end: new Date(Date.now() + 2000),
+        rule: rule
+      }, function() {});
+
+      var dates = job.nextDates(5);
+      test.equal(dates.length, 2);
+
+      job.cancel();
+      test.done();
+    },
+  },
+  "Correct number of dates are returned for CronExpression": function(test) {
+    var job = schedule.scheduleJob('* * * * * *', function() {});
+
+    var dates = job.nextDates();
+    test.equal(dates.length, 1);
+
+    var dates = job.nextDates(5);
+    test.equal(dates.length, 5);
+
+    job.cancel();
+    test.done();
+  },
+  "Correct number of dates returned for CronExpression with endTime": function(test) {
+    var job = schedule.scheduleJob({
+      end: new Date(Date.now() + 2000),
+      rule: '* * * * * *'
+    }, function() {});
+
+    var dates = job.nextDates(5);
+    test.equal(dates.length, 2);
+
+    job.cancel();
+    test.done();
+  },
+  "Iterating next dates doesn't interfere with CronExpression schedule": function(test) {
+    test.expect(3);
+
+    var job = schedule.scheduleJob({
+      end: new Date(Date.now() + 3000),
+      rule: '* * * * * *'
+    }, function() {
+      console.log('thing', Date.now());
+      test.ok(true);
+    });
+
+    setTimeout(function() {
+      job.cancel();
+      test.done();
+    }, 3250);
+
+    var dates = job.nextDates(10);
+
+    clock.tick(3250);
   },
   tearDown: function(cb) {
     clock.restore();
