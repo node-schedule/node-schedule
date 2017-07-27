@@ -216,7 +216,7 @@ When you set the parameter ***reschedule*** to true then the Job is newly schedu
 afterwards.
 
 #### job.reschedule(spec)
-This method cancels all pending invication and registers the Job completely new again using the given specification.
+This method cancels all pending invocation and registers the Job completely new again using the given specification.
 Return true/false on success/failure.
 
 #### job.nextInvocation()
