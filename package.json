@@ -1,6 +1,6 @@
 {
   "name": "node-schedule",
-  "version": "1.2.0",
+  "version": "1.2.5",
   "description": "A cron-like and not-cron-like job scheduler for Node.",
   "keywords": [
     "schedule",
@@ -12,7 +12,7 @@
   "main": "./lib/schedule.js",
   "scripts": {
     "test": "nodeunit",
-    "lint": "eslint lib"
+    "lint": "eslint lib test"
   },
   "author": {
     "name": "Matt Patenaude",
@@ -25,11 +25,14 @@
   },
   "dependencies": {
     "cron-parser": "^2.2.1",
-    "long-timeout": "0.1.1"
+    "long-timeout": "0.1.1",
+    "cron-parser": "^2.4.0",
+    "long-timeout": "0.1.1",
+    "sorted-array-functions": "^1.0.0"
   },
   "devDependencies": {
     "coveralls": "^2.11.2",
-    "eslint": "^0.15.1",
+    "eslint": "^3.19.0",
     "istanbul": "^0.4.5",
     "nodeunit": "^0.10.2",
     "sinon": "^1.14.1"

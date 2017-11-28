@@ -28,6 +28,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -49,6 +50,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -70,6 +72,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -91,6 +94,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -113,6 +117,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -133,6 +138,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -151,6 +157,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -169,6 +176,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -187,6 +195,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -206,6 +215,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -226,6 +236,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -244,6 +255,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -262,6 +274,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -280,6 +293,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 
@@ -299,6 +313,7 @@ module.exports = {
       });
 
       setTimeout(function () {
+        job.cancel();
         test.done();
       }, 3250);
 

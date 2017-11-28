@@ -7,11 +7,6 @@
 
 [![NPM](https://nodei.co/npm/node-schedule.png?downloads=true)](https://nodei.co/npm/node-schedule/)
 
->__Announcement:__ Node Schedule is looking for add additional collaborators
-with commit access. If you are actively involved in open source,
-ping [Tejas Manohar] via [email](mailto:me@tejas.io) to express interest.
-Those who already contribute to the project are preferred.
-
 Node Schedule is a flexible cron-like and not-cron-like job scheduler for Node.js.
 It allows you to schedule jobs (arbitrary functions) for execution at
 specific dates, with optional recurrence rules. It only uses a single timer
@@ -53,8 +48,9 @@ They also emit a `scheduled` event each time they're scheduled to run, and a
 `canceled` event when an invocation is canceled before it's executed (both events
 receive a JavaScript date object as a parameter). Note that jobs are scheduled the
 first time immediately, so if you create a job using the `scheduleJob()`
-convenience method, you'll miss the first `scheduled` event. Also note that
-`canceled` is the single-L American spelling.
+convenience method, you'll miss the first `scheduled` event, but you can query the
+invocation manually (see below). Also note that `canceled` is the single-L American
+spelling.
 
 ### Cron-style Scheduling
 
@@ -80,6 +76,8 @@ var j = schedule.scheduleJob('42 * * * *', function(){
   console.log('The answer to life, the universe, and everything!');
 });
 ```
+
+Execute a cron job when the minute is 42 (e.g. 19:42, 20:42, etc.).
 
 And:
 
@@ -111,12 +109,6 @@ var date = new Date(2012, 11, 21, 5, 30, 0);
 var j = schedule.scheduleJob(date, function(){
   console.log('The world is going to end today.');
 });
-```
-
-You can invalidate the job with the `cancel()` method:
-
-```js
-j.cancel();
 ```
 
 To use current data in the future you can use binding:
@@ -164,10 +156,20 @@ var j = schedule.scheduleJob(rule, function(){
 });
 ```
 
+#### RecurrenceRule properties
+
+- `second`
+- `minute`
+- `hour`
+- `date`
+- `month`
+- `year`
+- `dayOfWeek`
+
 > **Note**: It's worth noting that the default value of a component of a recurrence rule is
-`null` (except for seconds, which is 0 for familiarity with cron). *If we did not
-explicitly set `minute` to 0 above, the message would have instead been logged at
-5:00pm, 5:01pm, 5:02pm, ..., 5:59pm.* Probably not what you want.
+> `null` (except for second, which is 0 for familiarity with cron). *If we did not
+> explicitly set `minute` to 0 above, the message would have instead been logged at
+> 5:00pm, 5:01pm, 5:02pm, ..., 5:59pm.* Probably not what you want.
 
 #### Object Literal Syntax
 
@@ -187,12 +189,38 @@ The ruledat supports the above.
 
 ```js
 let startTime = new Date(Date.now() + 5000);
-let endTime = new Date(now.getTime() + 5000);
+let endTime = new Date(startTime.getTime() + 5000);
 var j = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * * * * *' }, function(){
   console.log('Time for tea!');
 });
 ```
 
+### Handle Jobs and Job Invocations
+
+There are some function to get informations for a Job and to handle the Job and
+Invocations.
+
+
+#### job.cancel(reshedule)
+You can invalidate any job with the `cancel()` method:
+
+```js
+j.cancel();
+```
+All planned invocations will be canceled. When you set the parameter ***reschedule***
+to true then the Job is newly scheduled afterwards.
+
+#### job.cancelNext(reshedule)
+This method invalidates the next planned invocation or the job.
+When you set the parameter ***reschedule*** to true then the Job is newly scheduled
+afterwards.
+
+#### job.reschedule(spec)
+This method cancels all pending invocation and registers the Job completely new again using the given specification.
+Return true/false on success/failure.
+
+#### job.nextInvocation()
+This method returns a Date object for the planned next Invocation for this Job. If no invocation is planned the method returns null.
 
 ## Contributing
 
