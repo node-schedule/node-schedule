@@ -485,6 +485,29 @@ module.exports = {
       }, 2250);
 
       clock.tick(2250);
+    },
+    "Job gets invoked with the fire date": function (test) {
+      test.expect(2);
+      var prevFireDate;
+      var job = new schedule.Job(function (fireDate) {
+        if (!prevFireDate) {
+          test.ok(fireDate instanceof Date);
+        } else {
+          test.equal(fireDate.getTime() - prevFireDate.getTime(), 1000);
+        }
+        prevFireDate = fireDate;
+      });
+
+      job.schedule({
+        second: null // fire every second
+      });
+
+      setTimeout(function () {
+        job.cancel();
+        test.done();
+      }, 2250);
+
+      clock.tick(2250);
     }
   },
   tearDown: function(cb) {
