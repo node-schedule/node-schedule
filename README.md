@@ -89,6 +89,13 @@ var j = schedule.scheduleJob('0 17 ? * 0,4-6', function(){
 
 Execute a cron job every 5 Minutes = */5 * * * *
 
+You can also get when it is scheduled to run for every invocation of the job:
+```js
+var j = schedule.scheduleJob('0 1 * * *', function(fireDate){
+  console.log('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
+});
+```
+This is useful when you need to check if there is a delay of the job invocation when the system is busy, or save a record of all invocations of a job for audit purpose.
 #### Unsupported Cron Features
 
 Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (nth weekday
