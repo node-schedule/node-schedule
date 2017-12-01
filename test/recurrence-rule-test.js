@@ -3,12 +3,11 @@
 
 var main = require('../package.json').main;
 var schedule = require('../' + main);
-var CronDate = require('cron-parser/lib/date');
 var sinon = require('sinon');
 var clock;
 
 // 12:30:15 pm Thursday 29 April 2010 in the timezone this code is being run in
-var base = new CronDate(new Date(2010, 3, 29, 12, 30, 15, 0));
+var base = new Date(2010, 3, 29, 12, 30, 15, 0);
 var baseMs = base.getTime();
 
 module.exports = {
@@ -27,7 +26,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 12, 30, 16,0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 12, 30, 16, 0), next);
       test.done();
     },
     "next 25th second": function(test) {
@@ -36,7 +35,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 12, 30, 25, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 12, 30, 25, 0), next);
       test.done();
     },
     "next 5th second (minutes incremented)": function(test) {
@@ -45,17 +44,16 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 12, 31, 5, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 12, 31, 5, 0), next);
       test.done();
-    }
-    ,
+    },
     "next 40th minute": function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.minute = 40;
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 12, 40, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 12, 40, 0, 0), next);
       test.done();
     },
     "next 1st minute (hours incremented)": function(test) {
@@ -64,7 +62,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 13, 1, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 13, 1, 0, 0), next);
       test.done();
     },
     "next 23rd hour": function(test) {
@@ -73,7 +71,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 23, 0, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 23, 0, 0, 0), next);
       test.done();
     },
     "next 3rd hour (days incremented)": function(test) {
@@ -82,7 +80,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 3, 30, 3, 0, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 30, 3, 0, 0, 0), next);
       test.done();
     },
     "next Friday": function(test) {
@@ -91,7 +89,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 3, 30, 0, 0, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 30, 0, 0, 0, 0), next);
       test.done();
     },
     "next Monday (months incremented)": function(test) {
@@ -100,7 +98,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 4, 3, 0, 0, 0, 0)), next);
+      test.deepEqual(new Date(2010, 4, 3, 0, 0, 0, 0), next);
       test.done();
     },
     "next 30th date": function(test) {
@@ -109,7 +107,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 3, 30, 0, 0, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 30, 0, 0, 0, 0), next);
       test.done();
     },
     "next 5th date (months incremented)": function(test) {
@@ -118,7 +116,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 4, 5, 0, 0, 0, 0)), next);
+      test.deepEqual(new Date(2010, 4, 5, 0, 0, 0, 0), next);
       test.done();
     },
     "next October": function(test) {
@@ -127,7 +125,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 9, 1, 0, 0, 0, 0)), next);
+      test.deepEqual(new Date(2010, 9, 1, 0, 0, 0, 0), next);
       test.done();
     },
     "next February (years incremented)": function(test) {
@@ -136,7 +134,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2011, 1, 1, 0, 0, 0, 0)), next);
+      test.deepEqual(new Date(2011, 1, 1, 0, 0, 0, 0), next);
       test.done();
     },
     "in the year 2040": function(test) {
@@ -145,7 +143,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2040, 0, 1, 0, 0, 0, 0)), next);
+      test.deepEqual(new Date(2040, 0, 1, 0, 0, 0, 0), next);
       test.done();
     },
     "using past year": function(test) {
@@ -165,7 +163,7 @@ module.exports = {
 
       var next = rule.nextInvocationDate(base);
 
-      test.deepEqual(new CronDate(new Date(2010, 3, 30, 10, 5, 50, 0)), next);
+      test.deepEqual(new Date(2010, 3, 30, 10, 5, 50, 0), next);
       test.done();
     },
     /*
@@ -195,16 +193,16 @@ module.exports = {
       var next;
 
       next = rule.nextInvocationDate(base);
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 13, 4, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 13, 4, 0, 0), next);
 
       next = rule.nextInvocationDate(next);
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 13, 5, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 13, 5, 0, 0), next);
 
       next = rule.nextInvocationDate(next);
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 13, 6, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 13, 6, 0, 0), next);
 
       next = rule.nextInvocationDate(next);
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 14, 4, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 14, 4, 0, 0), next);
 
       test.done();
     },
@@ -215,10 +213,10 @@ module.exports = {
       var next;
 
       next = rule.nextInvocationDate(base);
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 13, 4, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 13, 4, 0, 0), next);
 
       next = rule.nextInvocationDate(next);
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 13, 6, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 13, 6, 0, 0), next);
 
       /* Should Range stay inclusive on both ends when step > 1
       next = rule.nextInvocationDate(next);
@@ -226,7 +224,7 @@ module.exports = {
       */
 
       next = rule.nextInvocationDate(next);
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 14, 4, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 14, 4, 0, 0), next);
 
       test.done();
     },
@@ -237,19 +235,19 @@ module.exports = {
       var next;
 
       next = rule.nextInvocationDate(base);
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 13, 2, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 13, 2, 0, 0), next);
 
       next = rule.nextInvocationDate(next);
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 13, 4, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 13, 4, 0, 0), next);
 
       next = rule.nextInvocationDate(next);
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 13, 5, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 13, 5, 0, 0), next);
 
       next = rule.nextInvocationDate(next);
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 13, 6, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 13, 6, 0, 0), next);
 
       next = rule.nextInvocationDate(next);
-      test.deepEqual(new CronDate(new Date(2010, 3, 29, 14, 2, 0, 0)), next);
+      test.deepEqual(new Date(2010, 3, 29, 14, 2, 0, 0), next);
 
       test.done();
     },
@@ -262,35 +260,13 @@ module.exports = {
       rule.month = 5;
 
       var next;
-      var base1 = new CronDate(new Date(2010, 4, 31, 12, 30, 15, 0));
+      var base1 = new Date(2010, 4, 31, 12, 30, 15, 0);
 
       next = rule.nextInvocationDate(base1);
-      test.deepEqual(new CronDate(new Date(2010, 5, 1, 0, 0, 0, 0)), next);
+      test.deepEqual(new Date(2010, 5, 1, 0, 0, 0, 0), next);
 
       next = rule.nextInvocationDate(next);
-      test.deepEqual(new CronDate(new Date(2011, 5, 1, 0, 0, 0, 0)), next);
-
-      test.done();
-    },
-    "From 31th May schedule the 1st of every June in Vancouver": function(test) {
-      var rule = new schedule.RecurrenceRule();
-      rule.second = 0;
-      rule.minute = 0;
-      rule.hour = 0;
-      rule.date = 1;
-      rule.month = 5;
-      rule.timezone = 'America/Vancouver';
-
-      var next;
-      var base1 = new CronDate("2010-05-31T12:30:15", "America/Vancouver");
-
-      next = rule.nextInvocationDate(base1);
-      var testdate1 = new CronDate("2010-06-01T00:00:00", "America/Vancouver");
-      test.deepEqual(testdate1.getTime(), next.getTime());
-
-      next = rule.nextInvocationDate(next);
-      var testdate2 = new CronDate("2011-06-01T00:00:00", "America/Vancouver");
-      test.deepEqual(testdate2.getTime(), next.getTime());
+      test.deepEqual(new Date(2011, 5, 1, 0, 0, 0, 0), next);
 
       test.done();
     },
@@ -304,10 +280,10 @@ module.exports = {
       rule.year = 2010;
 
       var next;
-      var base1 = new CronDate(new Date(2010, 4, 31, 12, 30, 15, 0));
+      var base1 = new Date(2010, 4, 31, 12, 30, 15, 0);
 
       next = rule.nextInvocationDate(base1);
-      test.deepEqual(new CronDate(new Date(2010, 5, 1, 0, 0, 0, 0)), next);
+      test.deepEqual(new Date(2010, 5, 1, 0, 0, 0, 0), next);
 
       next = rule.nextInvocationDate(next);
       test.equal(next, null);
