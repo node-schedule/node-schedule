@@ -25,33 +25,32 @@ module.exports = {
       }, 1250);
 
       clock.tick(1250);
-    },
-    
-  //   "Should not accept invalid string as valid date": function(test) {
-  //     test.expect(1);
+    },    
+    "Should not accept invalid string as valid date": function(test) {
+      test.expect(1);
 
-  //     var job = schedule.scheduleJob("hello!!", function() {
-  //     });
+      var job = schedule.scheduleJob("hello!!", function() {
+      });
 
-  //     test.equal(job, null);
-  //     test.done();
+      test.equal(job, null);
+      test.done();
 
-  //   }
-  // },
-  // "UTC": {
-  //   "Should accept a valid UTC date in milliseconds": function(test) {
-  //     test.expect(1);
+    }
+  },
+  "UTC": {
+    "Should accept a valid UTC date in milliseconds": function(test) {
+      test.expect(1);
 
-  //     schedule.scheduleJob(new Date(Date.now() + 1000).getTime(), function() {
-  //       test.ok(true);
-  //     });
+      schedule.scheduleJob(new Date(Date.now() + 1000).getTime(), function() {
+        test.ok(true);
+      });
 
-  //     setTimeout(function() {
-  //       test.done();
-  //     }, 1250);
+      setTimeout(function() {
+        test.done();
+      }, 1250);
 
-  //     clock.tick(1250);
-  //   }
+      clock.tick(1250);
+    }
   },
   tearDown: function(cb) {
     clock.restore();
