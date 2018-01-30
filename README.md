@@ -165,13 +165,13 @@ var j = schedule.scheduleJob(rule, function(){
 
 #### RecurrenceRule properties
 
-- `second`
-- `minute`
-- `hour`
-- `date`
-- `month`
+- `second (0-59)`
+- `minute (0-59)`
+- `hour  (0-23)`
+- `date  (1-31)`
+- `month (0-11)`
 - `year`
-- `dayOfWeek`
+- `dayOfWeek (0-6) Starting with Sunday`
 
 > **Note**: It's worth noting that the default value of a component of a recurrence rule is
 > `null` (except for second, which is 0 for familiarity with cron). *If we did not
