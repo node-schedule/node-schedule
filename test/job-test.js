@@ -4,6 +4,7 @@
 var sinon = require('sinon');
 var main = require('../package.json').main;
 var schedule = require('../' + main);
+var CronDate = require('cron-parser/lib/date');
 
 var es6;
 try {
@@ -12,10 +13,13 @@ try {
 } catch (e) {}
 
 var clock;
+// 7:05:00 pm Thursday 29 April 2010 in the timezone Europe/Madrid
+var base = new CronDate(new Date(2010, 3, 29, 7, 5, 0, 0), 'Europe/Madrid')
+var baseMs = base.getTime();
 
 module.exports = {
   setUp: function(cb) {
-    clock = sinon.useFakeTimers();
+    clock = sinon.useFakeTimers(baseMs);
     cb();
   },
   "Job constructor": {
@@ -197,6 +201,29 @@ module.exports = {
       }, 3250);
 
       clock.tick(3250);
+    },
+    "Runs job at time based on recur rule with timezone": function(test) {
+      test.expect(1);
+
+      var timeout = 60 * 60 * 1000 + 150; // 1 hour
+
+      var job = new schedule.Job(function() {
+        test.ok(true);
+      });
+
+      var rule = new schedule.RecurrenceRule();
+      rule.hour = 9; // 55 minutes from now
+      rule.minute = 0
+      rule.tz = 'Europe/Helsinki'
+
+      job.schedule(rule);
+
+      setTimeout(function() {
+        job.cancel();
+        test.done();
+      }, timeout);
+
+      clock.tick(timeout);
     },
     "Job emits 'scheduled' event for every next invocation": function(test) {
       // Job will run 3 times but be scheduled 4 times, 4th run never happens
