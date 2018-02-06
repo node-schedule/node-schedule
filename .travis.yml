@@ -5,6 +5,8 @@ node_js:
   - "4"
   - "6"
   - "7"
+before_install:
+- export TZ=Europe/Madrid
 before_script: >
   if nvm ls-remote --lts | grep "$(nvm current)"; then
     echo "running on a LTS node version, linting"
