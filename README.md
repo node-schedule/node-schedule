@@ -204,11 +204,11 @@ var j = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * * * 
 
 ### Handle Jobs and Job Invocations
 
-There are some function to get informations for a Job and to handle the Job and
+There are some function to get information for a Job and to handle the Job and
 Invocations.
 
 
-#### job.cancel(reshedule)
+#### job.cancel(reschedule)
 You can invalidate any job with the `cancel()` method:
 
 ```js
@@ -217,7 +217,7 @@ j.cancel();
 All planned invocations will be canceled. When you set the parameter ***reschedule***
 to true then the Job is newly scheduled afterwards.
 
-#### job.cancelNext(reshedule)
+#### job.cancelNext(reschedule)
 This method invalidates the next planned invocation or the job.
 When you set the parameter ***reschedule*** to true then the Job is newly scheduled
 afterwards.
