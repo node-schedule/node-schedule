@@ -204,7 +204,7 @@ var j = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * * * 
 
 ### Handle Jobs and Job Invocations
 
-There are some function to get informations for a Job and to handle the Job and
+There are some function to get information for a Job and to handle the Job and
 Invocations.
 
 
