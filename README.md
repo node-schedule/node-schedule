@@ -172,6 +172,9 @@ var j = schedule.scheduleJob(rule, function(){
 - `month (0-11)`
 - `year`
 - `dayOfWeek (0-6) Starting with Sunday`
+- `tz`
+
+A list of acceptable tz (timezone) values can be found at <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>
 
 > **Note**: It's worth noting that the default value of a component of a recurrence rule is
 > `null` (except for second, which is 0 for familiarity with cron). *If we did not
