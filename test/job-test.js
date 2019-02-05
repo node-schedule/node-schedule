@@ -381,6 +381,50 @@ module.exports = {
 
       clock.tick(2250);
     },
+    "Cancelled job reschedules": function(test) {
+      test.expect(1);
+      var ok = false;
+
+      var job = schedule.scheduleJob('*/1 * * * * *', function () {});
+
+      job.on('scheduled', function() {
+        ok = true;
+      });
+
+      setTimeout(function() {
+        job.cancel(true);
+      }, 1250);
+
+      setTimeout(function() {
+        job.cancel();
+        test.ok(ok);
+        test.done();
+      }, 2250);
+
+      clock.tick(2250);
+    },
+    "CancelNext job reschedules": function(test) {
+      test.expect(1);
+      var ok = false;
+
+      var job = schedule.scheduleJob('*/1 * * * * *', function () {});
+
+      job.on('scheduled', function() {
+        ok = true;
+      });
+
+      setTimeout(function() {
+        job.cancelNext();
+      }, 1250);
+
+      setTimeout(function() {
+        job.cancel();
+        test.ok(ok);
+        test.done();
+      }, 2250);
+
+      clock.tick(2250);
+    },
     "Job emits 'canceled' event": function(test) {
       test.expect(1);
 
