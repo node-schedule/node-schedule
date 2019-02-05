@@ -387,12 +387,9 @@ module.exports = {
 
       var job = schedule.scheduleJob('*/1 * * * * *', function () {});
 
-      job.on('scheduled', function() {
-        ok = true;
-      });
-
       setTimeout(function() {
         job.cancel(true);
+        if (job.nextInvocation() !== null) ok = true;
       }, 1250);
 
       setTimeout(function() {
@@ -409,12 +406,9 @@ module.exports = {
 
       var job = schedule.scheduleJob('*/1 * * * * *', function () {});
 
-      job.on('scheduled', function() {
-        ok = true;
-      });
-
       setTimeout(function() {
         job.cancelNext();
+        if (job.nextInvocation() !== null) ok = true;
       }, 1250);
 
       setTimeout(function() {
