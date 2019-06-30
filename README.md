@@ -229,6 +229,9 @@ Return true/false on success/failure.
 #### job.nextInvocation()
 This method returns a Date object for the planned next Invocation for this Job. If no invocation is planned the method returns null.
 
+#### job.lastExecution()
+This method returns a Date object for the last Invocation for this Job. If no invocation not runned the method returns null.
+
 ## Contributing
 
 This module was originally developed by [Matt Patenaude], and is now maintained by
