@@ -548,6 +548,24 @@ module.exports = {
       clock.tick(2250);
     }
   },
+  "#lastExecution": {
+    "Get job last execution date": function(test) {
+      test.expect(2);
+      var date = (new Date(Date.now() + 3000));
+      var job = new schedule.Job(function() {
+        test.ok(true);
+      });
+
+      job.runOnDate(date);
+
+      setTimeout(function() {
+        test.equal(job.lastExecution().getTime(), date.getTime());
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    },
+  },
   tearDown: function(cb) {
     clock.restore();
     cb();
