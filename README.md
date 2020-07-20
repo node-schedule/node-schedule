@@ -12,6 +12,8 @@ It allows you to schedule jobs (arbitrary functions) for execution at
 specific dates, with optional recurrence rules. It only uses a single timer
 at any given time (rather than reevaluating upcoming jobs every second/minute).
 
+Need a job scheduler that uses sandboxed workers with cron, date, and human-friendly support?  Try the [Bree](https://github.com/breejs/bree) job scheduler.
+
 ## Usage
 
 ### Installation
