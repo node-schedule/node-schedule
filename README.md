@@ -1,25 +1,42 @@
-# Node Schedule
+# WORK IN PROGRESS
 
-[![NPM version](http://img.shields.io/npm/v/node-schedule.svg)](https://www.npmjs.com/package/node-schedule)
-[![Downloads](https://img.shields.io/npm/dm/node-schedule.svg)](https://www.npmjs.com/package/node-schedule)
-[![Build Status](https://travis-ci.org/node-schedule/node-schedule.svg?branch=master)](https://travis-ci.org/node-schedule/node-schedule)
-[![Join the chat at https://gitter.im/node-schedule/node-schedule](https://img.shields.io/badge/gitter-chat-green.svg)](https://gitter.im/node-schedule/node-schedule?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+**Do not use this library yet. It's functional, but alot remains until it's production ready.**
 
-[![NPM](https://nodei.co/npm/node-schedule.png?downloads=true)](https://nodei.co/npm/node-schedule/)
+- Update Matts test suite to comply with RRule instead of cron
+- Update the documentation
+- Make the scheduleJob function take an options-object instead of just an rrule string
+- Performance testing/optimizing
 
-Node Schedule is a flexible cron-like and not-cron-like job scheduler for Node.js.
-It allows you to schedule jobs (arbitrary functions) for execution at
-specific dates, with optional recurrence rules. It only uses a single timer
-at any given time (rather than reevaluating upcoming jobs every second/minute).
+# Node Schedule RRule
+
+This is an RRule version of Matt Patenaude's node-schedule.
+
+The very nice core of Matts library is kept in order to handle many scheduled jobs with only one timer.
+
+This version has no cron functionality whatsoever. Dependencies on **cron-parser** and **cron-date** is exchanged for dependency on **rrule**.
+
+## Why an RRule version?
+
+RRule is a neat way to store recurrence definitions for use in iCal compatible applications. If you have iCal recurrances at the client side and need to trigger actions at the server for the very same recurrences you will be better of using an RRule parser at the server instead of trying to convert your iCal stuff to cron stuff.
+
+## Caveats
+
+RRule is well suited for calendar occurrences which often has an occurence-count of 10:s or 100:s, whereas cron is more suited for server tasks where occurrence-count can be hudreds of thousands. In the calendar use case we might need to look at both past and future occurrences (when the user browses the calendar). In the server task use case we only need to look forward.
+
+The most called funtion in the rrule parser is `after()` which returns the next occurence after a given date. Rrule.js has to iterate all the way from the start date (dtstart) every time in order to calculate the next occurrence. This can be a real bottleneck for rules with a massive amount of occurences, for example where frequence is "every second".
+
+In order to handle this bottleneck **node-schedule-rrule** pushes the start date (dtstart) of each RRule forward regularly in order to shorten the tail with occurrences we are not interested in. Altering dtstart needs to be done in a safe maner without compromising the rules, i.e. we cannot simply reset dtstart to `new Date()` without considering the rules.
+
+# THE REST OF THIS README NEEDS UPDATING
+
+Much of Matt's text can probably be kept. Will keep it as is for now.
 
 ## Usage
 
 ### Installation
 
-You can install using [npm](https://www.npmjs.com/package/node-schedule).
-
 ```
-npm install node-schedule
+npm install node-schedule-rrule
 ```
 
 ### Overview
@@ -35,7 +52,7 @@ support unlike true cron since the node runtime is now fully supported.
 Note that Node Schedule is designed for in-process scheduling, i.e. scheduled jobs
 will only fire as long as your script is running, and the schedule will disappear
 when execution completes. If you need to schedule jobs that will persist even when
-your script *isn't* running, consider using actual [cron].
+your script _isn't_ running, consider using actual [cron].
 
 ### Jobs and Scheduling
 
@@ -55,6 +72,7 @@ spelling.
 ### Cron-style Scheduling
 
 The cron format consists of:
+
 ```
 *    *    *    *    *    *
 ┬    ┬    ┬    ┬    ┬    ┬
@@ -72,7 +90,7 @@ Examples with the cron format:
 ```js
 var schedule = require('node-schedule');
 
-var j = schedule.scheduleJob('42 * * * *', function(){
+var j = schedule.scheduleJob('42 * * * *', function() {
   console.log('The answer to life, the universe, and everything!');
 });
 ```
@@ -82,20 +100,25 @@ Execute a cron job when the minute is 42 (e.g. 19:42, 20:42, etc.).
 And:
 
 ```js
-var j = schedule.scheduleJob('0 17 ? * 0,4-6', function(){
+var j = schedule.scheduleJob('0 17 ? * 0,4-6', function() {
   console.log('Today is recognized by Rebecca Black!');
 });
 ```
 
-Execute a cron job every 5 Minutes = */5 * * * *
+Execute a cron job every 5 Minutes = _/5 _ \* \* \*
 
 You can also get when it is scheduled to run for every invocation of the job:
+
 ```js
-var j = schedule.scheduleJob('0 1 * * *', function(fireDate){
-  console.log('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
+var j = schedule.scheduleJob('0 1 * * *', function(fireDate) {
+  console.log(
+    'This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date()
+  );
 });
 ```
+
 This is useful when you need to check if there is a delay of the job invocation when the system is busy, or save a record of all invocations of a job for audit purpose.
+
 #### Unsupported Cron Features
 
 Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (nth weekday
@@ -113,7 +136,7 @@ Remember - in JavaScript - 0 - January, 11 - December.
 var schedule = require('node-schedule');
 var date = new Date(2012, 11, 21, 5, 30, 0);
 
-var j = schedule.scheduleJob(date, function(){
+var j = schedule.scheduleJob(date, function() {
   console.log('The world is going to end today.');
 });
 ```
@@ -124,11 +147,15 @@ To use current data in the future you can use binding:
 var schedule = require('node-schedule');
 var date = new Date(2012, 11, 21, 5, 30, 0);
 var x = 'Tada!';
-var j = schedule.scheduleJob(date, function(y){
-  console.log(y);
-}.bind(null,x));
+var j = schedule.scheduleJob(
+  date,
+  function(y) {
+    console.log(y);
+  }.bind(null, x)
+);
 x = 'Changing Data';
 ```
+
 This will log 'Tada!' when the scheduled Job runs, rather than 'Changing Data',
 which x changes to immediately after scheduling.
 
@@ -143,7 +170,7 @@ var schedule = require('node-schedule');
 var rule = new schedule.RecurrenceRule();
 rule.minute = 42;
 
-var j = schedule.scheduleJob(rule, function(){
+var j = schedule.scheduleJob(rule, function() {
   console.log('The answer to life, the universe, and everything!');
 });
 ```
@@ -158,7 +185,7 @@ rule.dayOfWeek = [0, new schedule.Range(4, 6)];
 rule.hour = 17;
 rule.minute = 0;
 
-var j = schedule.scheduleJob(rule, function(){
+var j = schedule.scheduleJob(rule, function() {
   console.log('Today is recognized by Rebecca Black!');
 });
 ```
@@ -167,16 +194,16 @@ var j = schedule.scheduleJob(rule, function(){
 
 - `second (0-59)`
 - `minute (0-59)`
-- `hour  (0-23)`
-- `date  (1-31)`
+- `hour (0-23)`
+- `date (1-31)`
 - `month (0-11)`
 - `year`
 - `dayOfWeek (0-6) Starting with Sunday`
 
 > **Note**: It's worth noting that the default value of a component of a recurrence rule is
-> `null` (except for second, which is 0 for familiarity with cron). *If we did not
+> `null` (except for second, which is 0 for familiarity with cron). _If we did not
 > explicitly set `minute` to 0 above, the message would have instead been logged at
-> 5:00pm, 5:01pm, 5:02pm, ..., 5:59pm.* Probably not what you want.
+> 5:00pm, 5:01pm, 5:02pm, ..., 5:59pm._ Probably not what you want.
 
 #### Object Literal Syntax
 
@@ -184,7 +211,7 @@ To make things a little easier, an object literal syntax is also supported, like
 in this example which will log a message every Sunday at 2:30pm:
 
 ```js
-var j = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 0}, function(){
+var j = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 0}, function() {
   console.log('Time for tea!');
 });
 ```
@@ -197,7 +224,7 @@ The ruledat supports the above.
 ```js
 let startTime = new Date(Date.now() + 5000);
 let endTime = new Date(startTime.getTime() + 5000);
-var j = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * * * * *' }, function(){
+var j = schedule.scheduleJob({start: startTime, end: endTime, rule: '*/1 * * * * *'}, function() {
   console.log('Time for tea!');
 });
 ```
@@ -207,26 +234,30 @@ var j = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * * * 
 There are some function to get information for a Job and to handle the Job and
 Invocations.
 
-
 #### job.cancel(reschedule)
+
 You can invalidate any job with the `cancel()` method:
 
 ```js
 j.cancel();
 ```
-All planned invocations will be canceled. When you set the parameter ***reschedule***
+
+All planned invocations will be canceled. When you set the parameter **_reschedule_**
 to true then the Job is newly scheduled afterwards.
 
 #### job.cancelNext(reschedule)
+
 This method invalidates the next planned invocation or the job.
-When you set the parameter ***reschedule*** to true then the Job is newly scheduled
+When you set the parameter **_reschedule_** to true then the Job is newly scheduled
 afterwards.
 
 #### job.reschedule(spec)
+
 This method cancels all pending invocation and registers the Job completely new again using the given specification.
 Return true/false on success/failure.
 
 #### job.nextInvocation()
+
 This method returns a Date object for the planned next Invocation for this Job. If no invocation is planned the method returns null.
 
 ## Contributing
@@ -243,14 +274,13 @@ Before jumping in, check out our [Contributing] page guide!
 
 Copyright 2015 Matt Patenaude.
 
-Licensed under the **[MIT License] [license]**.
-
+Licensed under the **[MIT License][license]**.
 
 [cron]: http://unixhelp.ed.ac.uk/CGI/man-cgi?crontab+5
-[Contributing]: https://github.com/node-schedule/node-schedule/blob/master/CONTRIBUTING.md
-[Matt Patenaude]: https://github.com/mattpat
-[Tejas Manohar]: http://tejas.io
+[contributing]: https://github.com/node-schedule/node-schedule/blob/master/CONTRIBUTING.md
+[matt patenaude]: https://github.com/mattpat
+[tejas manohar]: http://tejas.io
 [license]: https://github.com/node-schedule/node-schedule/blob/master/LICENSE
-[Tejas Manohar]: https://github.com/tejasmanohar
+[tejas manohar]: https://github.com/tejasmanohar
 [other wonderful contributors]: https://github.com/node-schedule/node-schedule/graphs/contributors
 [cron-parser]: https://github.com/harrisiirak/cron-parser
