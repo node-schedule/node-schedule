@@ -1,12 +1,12 @@
 {
-  "name": "node-schedule",
-  "version": "1.3.2",
-  "description": "A cron-like and not-cron-like job scheduler for Node.",
+  "name": "node-schedule-rrule",
+  "version": "0.9.0",
+  "description": "An RRule version of Matt Patenaude's node-scheduler",
   "keywords": [
     "schedule",
     "task",
     "job",
-    "cron"
+    "rrule"
   ],
   "license": "MIT",
   "main": "./lib/schedule.js",
@@ -15,17 +15,16 @@
     "lint": "eslint lib test"
   },
   "author": {
-    "name": "Matt Patenaude",
-    "email": "matt@mattpatenaude.com",
-    "url": "http://mattpatenaude.com"
+    "name": "Michawel Sageryd",
+    "email": "michael@sageryd.se"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/node-schedule/node-schedule.git"
+    "url": "https://github.com/msageryd/node-schedule-rrule.git"
   },
   "dependencies": {
-    "cron-parser": "^2.7.3",
     "long-timeout": "0.1.1",
+    "rrule": "^2.6.4",
     "sorted-array-functions": "^1.0.0"
   },
   "devDependencies": {

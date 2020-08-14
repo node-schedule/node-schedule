@@ -1,4 +1,3 @@
-
 'use strict';
 
 var main = require('../package.json').main;
@@ -10,17 +9,22 @@ var clock;
 var base = new Date(2010, 3, 29, 12, 30, 15, 0);
 var baseMs = base.getTime();
 
+const RR_EVERY_SECOND = 'DTSTART;TZID=America/Adak:20200803T190600;RRULE:FREQ=SECONDLY;WKST=MO';
+const RR_EVERY_MINUTE = 'DTSTART;TZID=America/Adak:20200803T190600;RRULE:FREQ=MINUTELY;WKST=MO';
+const RR_UNTIL_1960 =
+  'DTSTART;TZID=America/Adak:19600803T190600;RRULE:FREQ=SECONDLY;UNTIL=19600803T190700;WKST=MO';
+
 module.exports = {
-  "setUp": function(cb) {
+  setUp: function(cb) {
     clock = sinon.useFakeTimers(baseMs);
     cb();
   },
-  "tearDown": function(cb) {
+  tearDown: function(cb) {
     clock.restore();
     cb();
   },
-  "#nextInvocationDate(Date)": {
-    "next second": function(test) {
+  '#nextInvocationDate(Date)': {
+    'next second': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.second = null;
 
@@ -29,7 +33,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 12, 30, 16, 0), next);
       test.done();
     },
-    "next 25th second": function(test) {
+    'next 25th second': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.second = 25;
 
@@ -38,7 +42,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 12, 30, 25, 0), next);
       test.done();
     },
-    "next 5th second (minutes incremented)": function(test) {
+    'next 5th second (minutes incremented)': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.second = 5;
 
@@ -47,7 +51,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 12, 31, 5, 0), next);
       test.done();
     },
-    "next 40th minute": function(test) {
+    'next 40th minute': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.minute = 40;
 
@@ -56,7 +60,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 12, 40, 0, 0), next);
       test.done();
     },
-    "next 1st minute (hours incremented)": function(test) {
+    'next 1st minute (hours incremented)': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.minute = 1;
 
@@ -65,7 +69,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 13, 1, 0, 0), next);
       test.done();
     },
-    "next 23rd hour": function(test) {
+    'next 23rd hour': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.hour = 23;
 
@@ -74,7 +78,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 29, 23, 0, 0, 0), next);
       test.done();
     },
-    "next 3rd hour (days incremented)": function(test) {
+    'next 3rd hour (days incremented)': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.hour = 3;
 
@@ -83,7 +87,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 30, 3, 0, 0, 0), next);
       test.done();
     },
-    "next Friday": function(test) {
+    'next Friday': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.dayOfWeek = 5;
 
@@ -92,7 +96,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 30, 0, 0, 0, 0), next);
       test.done();
     },
-    "next Monday (months incremented)": function(test) {
+    'next Monday (months incremented)': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.dayOfWeek = 1;
 
@@ -101,7 +105,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 4, 3, 0, 0, 0, 0), next);
       test.done();
     },
-    "next 30th date": function(test) {
+    'next 30th date': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.date = 30;
 
@@ -110,7 +114,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 30, 0, 0, 0, 0), next);
       test.done();
     },
-    "next 5th date (months incremented)": function(test) {
+    'next 5th date (months incremented)': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.date = 5;
 
@@ -119,7 +123,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 4, 5, 0, 0, 0, 0), next);
       test.done();
     },
-    "next October": function(test) {
+    'next October': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.month = 9;
 
@@ -128,7 +132,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 9, 1, 0, 0, 0, 0), next);
       test.done();
     },
-    "next February (years incremented)": function(test) {
+    'next February (years incremented)': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.month = 1;
 
@@ -137,7 +141,7 @@ module.exports = {
       test.deepEqual(new Date(2011, 1, 1, 0, 0, 0, 0), next);
       test.done();
     },
-    "in the year 2040": function(test) {
+    'in the year 2040': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.year = 2040;
 
@@ -146,7 +150,7 @@ module.exports = {
       test.deepEqual(new Date(2040, 0, 1, 0, 0, 0, 0), next);
       test.done();
     },
-    "using past year": function(test) {
+    'using past year': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.year = 2000;
 
@@ -155,7 +159,7 @@ module.exports = {
       test.equal(null, next);
       test.done();
     },
-    "using mixed time components": function(test) {
+    'using mixed time components': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.second = 50;
       rule.minute = 5;
@@ -177,7 +181,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 1, 0, 0, 0, 0), next);
       test.done();
     }*/
-    "returns null when no invocations left": function(test) {
+    'returns null when no invocations left': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.year = 2000;
 
@@ -186,7 +190,7 @@ module.exports = {
       test.strictEqual(null, next);
       test.done();
     },
-    "specify span of components using Range": function(test) {
+    'specify span of components using Range': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.minute = new schedule.Range(4, 6);
 
@@ -206,7 +210,7 @@ module.exports = {
 
       test.done();
     },
-    "specify intervals within span of components using Range with step": function(test) {
+    'specify intervals within span of components using Range with step': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.minute = new schedule.Range(4, 8, 2);
 
@@ -228,7 +232,7 @@ module.exports = {
 
       test.done();
     },
-    "specify span and explicit components using Array of Ranges and Numbers": function(test) {
+    'specify span and explicit components using Array of Ranges and Numbers': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.minute = [2, new schedule.Range(4, 6)];
 
@@ -251,7 +255,7 @@ module.exports = {
 
       test.done();
     },
-    "From 31th May schedule the 1st of every June": function(test) {
+    'From 31th May schedule the 1st of every June': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.second = 0;
       rule.minute = 0;
@@ -270,7 +274,7 @@ module.exports = {
 
       test.done();
     },
-    "With the year set should not loop indefinetely": function(test) {
+    'With the year set should not loop indefinetely': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.second = 0;
       rule.minute = 0;
@@ -290,7 +294,7 @@ module.exports = {
 
       test.done();
     },
-    "using rule with string properties": function(test) {
+    'using rule with string properties': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.second = '50';
       rule.minute = '5';
@@ -299,7 +303,7 @@ module.exports = {
       test.deepEqual(new Date(2010, 3, 30, 10, 5, 50, 0), next);
       test.done();
     },
-    "nextInvocationDate on an invalid month should return null": function(test) {
+    'nextInvocationDate on an invalid month should return null': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.month = 12;
       var next = rule.nextInvocationDate();
@@ -312,7 +316,7 @@ module.exports = {
 
       test.done();
     },
-    "nextInvocationDate on an invalid second should return null": function(test) {
+    'nextInvocationDate on an invalid second should return null': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.second = 60;
       var next = rule.nextInvocationDate();
@@ -325,7 +329,7 @@ module.exports = {
 
       test.done();
     },
-    "nextInvocationDate on an invalid hour should return null": function(test) {
+    'nextInvocationDate on an invalid hour should return null': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.hour = 24;
       var next = rule.nextInvocationDate();
@@ -338,7 +342,7 @@ module.exports = {
 
       test.done();
     },
-    "nextInvocationDate on an invalid date should return null": function(test) {
+    'nextInvocationDate on an invalid date should return null': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.date = 90;
       var next = rule.nextInvocationDate();
@@ -358,7 +362,7 @@ module.exports = {
 
       test.done();
     },
-    "nextInvocationDate on an invalid dayOfWeek should return null": function(test) {
+    'nextInvocationDate on an invalid dayOfWeek should return null': function(test) {
       var rule = new schedule.RecurrenceRule();
       rule.dayOfWeek = 90;
       var next = rule.nextInvocationDate();
@@ -370,6 +374,6 @@ module.exports = {
       test.equal(next2, null);
 
       test.done();
-    }
-  }
+    },
+  },
 };
