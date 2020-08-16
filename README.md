@@ -158,7 +158,7 @@ Licensed under the **[MIT License][license]**.
 
 ## Links
 
-[Brian Moeskau on recurrences](https://github.com/bmoeskau/Extensible/blob/master/recurrence-overview.mdb)
+[Brian Moeskau on recurrences](https://github.com/bmoeskau/Extensible/blob/master/recurrence-overview.md)
 
 [RRule](https://github.com/jakubroztocil/rrule)
 
