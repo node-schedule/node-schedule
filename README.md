@@ -2,15 +2,11 @@
 
 **Do not use this library yet. It's functional, but alot remains until it's production ready.**
 
-- [ ] Update Matts test suite to comply with RRule instead of cron
-
+- [ ] Update test suite to comply with RRule instead of cron
 - [x] Update the documentation
-
-- [ ] Schedule jobs via object literal
-
+- [ ] Schedule jobs via object literal
 - [ ] Support for RRuleSet
-
-- [ ] Performance testing/optimizing
+- [ ] Performance testing/optimizing
 
 # Node Schedule RRule
 
