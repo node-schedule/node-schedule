@@ -2,34 +2,31 @@
 
 **Do not use this library yet. It's functional, but alot remains until it's production ready.**
 
-- Update Matts test suite to comply with RRule instead of cron
-- Update the documentation
-- Make the scheduleJob function take an options-object instead of just an rrule string
-- Performance testing/optimizing
+- [ ] Update Matts test suite to comply with RRule instead of cron
+- [x] Update the documentation
+- [ ] Schedule jobs via object literal
+- [ ] Support for RRuleSet
+- [ ] Performance testing/optimizing
 
 # Node Schedule RRule
 
 This is an RRule version of Matt Patenaude's node-schedule.
 
-The very nice core of Matts library is kept in order to handle many scheduled jobs with only one timer.
+The very nice core of Matt's library is kept in order to handle many scheduled jobs with only one timer.
 
 This version has no cron functionality whatsoever. Dependencies on **cron-parser** and **cron-date** is exchanged for dependency on **rrule**.
 
 ## Why an RRule version?
 
-RRule is a neat way to store recurrence definitions for use in iCal compatible applications. If you have iCal recurrances at the client side and need to trigger actions at the server for the very same recurrences you will be better of using an RRule parser at the server instead of trying to convert your iCal stuff to cron stuff.
+RRule is a neat way to store recurrence definitions for use in iCal compatible applications. If you have iCal recurrances at the client side and need to trigger actions at the server for the very same recurrences (sending reminders etc) you will probably be better of using an RRule parser at the server instead of trying to convert your iCal stuff to cron stuff. Many times this isn't even possible because rrule can describe more complicated recurrences than cron.
 
 ## Caveats
 
-RRule is well suited for calendar occurrences which often has an occurence-count of 10:s or 100:s, whereas cron is more suited for server tasks where occurrence-count can be hudreds of thousands. In the calendar use case we might need to look at both past and future occurrences (when the user browses the calendar). In the server task use case we only need to look forward.
+RRule is well suited for calendar occurrences which often has an occurence-count of 10:s or 100:s, whereas cron is more suited for scheduling tasks server-side where occurrence count can be hudreds of thousands. In the calendar use case we might need to look at both past and future occurrences (when the user browses the calendar). In the server use case we only need to look forward.
 
-The most called funtion in the rrule parser is `after()` which returns the next occurence after a given date. Rrule.js has to iterate all the way from the start date (dtstart) every time in order to calculate the next occurrence. This can be a real bottleneck for rules with a massive amount of occurences, for example where frequence is "every second".
+The most called funtion in the rrule parser is `after()` which returns the next occurence after a given date. Rrule.js iterates all the way from the start date (dtstart) every time in order to calculate the next occurrence. This can be a real bottleneck for rules with a massive amount of occurences, for example where frequence is "every second".
 
 In order to handle this bottleneck **node-schedule-rrule** pushes the start date (dtstart) of each RRule forward regularly in order to shorten the tail with occurrences we are not interested in. Altering dtstart needs to be done in a safe maner without compromising the rules, i.e. we cannot simply reset dtstart to `new Date()` without considering the rules.
-
-# THE REST OF THIS README NEEDS UPDATING
-
-Much of Matt's text can probably be kept. Will keep it as is for now.
 
 ## Usage
 
@@ -41,22 +38,12 @@ npm install node-schedule-rrule
 
 ### Overview
 
-Node Schedule is for time-based scheduling, not interval-based scheduling.
-While you can easily bend it to your will, if you only want to do something like
-"run this function every 5 minutes", you'll find `setInterval` much easier to use,
-and far more appropriate. But if you want to, say, "run this function at the :20
-and :50 of every hour on the third Tuesday of every month," you'll find that
-Node Schedule suits your needs better. Additionally, Node Schedule has Windows
-support unlike true cron since the node runtime is now fully supported.
-
-Note that Node Schedule is designed for in-process scheduling, i.e. scheduled jobs
-will only fire as long as your script is running, and the schedule will disappear
-when execution completes. If you need to schedule jobs that will persist even when
-your script _isn't_ running, consider using actual [cron].
+Just like it's parent library, Node Schedule RRule is for time-based scheduling, not interval-based scheduling. While you can easily bend it to your will, if you only want to do something like "run this function every 5 minutes", you'll find `setInterval` much easier to use, and far more appropriate. But if you want to, say, "run this function at the :20
+and :50 of every hour on the third Tuesday of every month," you'll find that Node Schedule RRule suits your needs better.
 
 ### Jobs and Scheduling
 
-Every scheduled job in Node Schedule is represented by a `Job` object. You can
+Every scheduled job in Node Schedule RRule is represented by a `Job` object. You can
 create jobs manually, then execute the `schedule()` method to apply a schedule,
 or use the convenience function `scheduleJob()` as demonstrated below.
 
@@ -69,163 +56,63 @@ convenience method, you'll miss the first `scheduled` event, but you can query t
 invocation manually (see below). Also note that `canceled` is the single-L American
 spelling.
 
-### Cron-style Scheduling
+Jobs can be scheduled in any way RRule can be created, i.e.:
 
-The cron format consists of:
+- with an iCal RFC compliant rrule string
+- with an RRule object literal
+- with a precreated RRule or RRuleSet
 
-```
-*    *    *    *    *    *
-┬    ┬    ┬    ┬    ┬    ┬
-│    │    │    │    │    │
-│    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
-│    │    │    │    └───── month (1 - 12)
-│    │    │    └────────── day of month (1 - 31)
-│    │    └─────────────── hour (0 - 23)
-│    └──────────────────── minute (0 - 59)
-└───────────────────────── second (0 - 59, OPTIONAL)
-```
+RRule library: https://github.com/jakubroztocil/rrule
 
-Examples with the cron format:
+### iCal RFC string
+
+Easily create iCal strings with the rrule demo app: http://jakubroztocil.github.io/rrule/
+N.B: if the demo app gives you a multiline iCal string you need to insert a newline char in the string, i.e. `\n`
+
+Example:
 
 ```js
-var schedule = require('node-schedule');
+const schedule = require('node-schedule-rrule');
 
-var j = schedule.scheduleJob('42 * * * *', function() {
-  console.log('The answer to life, the universe, and everything!');
-});
-```
-
-Execute a cron job when the minute is 42 (e.g. 19:42, 20:42, etc.).
-
-And:
-
-```js
-var j = schedule.scheduleJob('0 17 ? * 0,4-6', function() {
-  console.log('Today is recognized by Rebecca Black!');
-});
-```
-
-Execute a cron job every 5 Minutes = _/5 _ \* \* \*
-
-You can also get when it is scheduled to run for every invocation of the job:
-
-```js
-var j = schedule.scheduleJob('0 1 * * *', function(fireDate) {
-  console.log(
-    'This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date()
-  );
-});
-```
-
-This is useful when you need to check if there is a delay of the job invocation when the system is busy, or save a record of all invocations of a job for audit purpose.
-
-#### Unsupported Cron Features
-
-Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (nth weekday
-of the month) are not supported. Most other features supported by popular cron
-implementations should work just fine.
-
-[cron-parser] is used to parse crontab instructions.
-
-### Date-based Scheduling
-
-Say you very specifically want a function to execute at 5:30am on December 21, 2012.
-Remember - in JavaScript - 0 - January, 11 - December.
-
-```js
-var schedule = require('node-schedule');
-var date = new Date(2012, 11, 21, 5, 30, 0);
-
-var j = schedule.scheduleJob(date, function() {
-  console.log('The world is going to end today.');
-});
-```
-
-To use current data in the future you can use binding:
-
-```js
-var schedule = require('node-schedule');
-var date = new Date(2012, 11, 21, 5, 30, 0);
-var x = 'Tada!';
-var j = schedule.scheduleJob(
-  date,
-  function(y) {
-    console.log(y);
-  }.bind(null, x)
+const j = schedule.scheduleJob(
+  'DTSTART:20200815T092630\nRRULE:FREQ=SECONDLY;INTERVAL=1;WKST=MO;BYSECOND=30',
+  function() {
+    console.log('This will be logged every half minute, when the second hand is at 30');
+  }
 );
-x = 'Changing Data';
 ```
 
-This will log 'Tada!' when the scheduled Job runs, rather than 'Changing Data',
-which x changes to immediately after scheduling.
-
-### Recurrence Rule Scheduling
-
-You can build recurrence rules to specify when a job should recur. For instance,
-consider this rule, which executes the function every hour at 42 minutes after the hour:
+RRule also supports the BYSETPOS attribute, which makes it possible to schedule tasks for the last workday every month.
 
 ```js
-var schedule = require('node-schedule');
+const schedule = require('node-schedule-rrule');
 
-var rule = new schedule.RecurrenceRule();
-rule.minute = 42;
-
-var j = schedule.scheduleJob(rule, function() {
-  console.log('The answer to life, the universe, and everything!');
-});
+const j = schedule.scheduleJob(
+  'DTSTART:20200901T090000Z\nRRULE:FREQ=MONTHLY;INTERVAL=1;WKST=MO;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=-1',
+  function() {
+    console.log('This will be logged the last workday every month');
+  }
+);
 ```
 
-You can also use arrays to specify a list of acceptable values, and the `Range`
-object to specify a range of start and end values, with an optional step parameter.
-For instance, this will print a message on Thursday, Friday, Saturday, and Sunday at 5pm:
+### Object Literal Syntax
+
+You'll need to install the rrule library if you want to use the RRule constants.
 
 ```js
-var rule = new schedule.RecurrenceRule();
-rule.dayOfWeek = [0, new schedule.Range(4, 6)];
-rule.hour = 17;
-rule.minute = 0;
+const schedule = require('node-schedule-rrule');
+const {RRule} = require('rrule');
 
-var j = schedule.scheduleJob(rule, function() {
-  console.log('Today is recognized by Rebecca Black!');
-});
-```
+const options = {
+  freq: RRule.MONTHLY,
+  dtstart: new Date(Date.UTC(2020, 8, 1, 9, 0, 0)),
+  interval: 1,
+  byweekday: [RRule.MO, RRule.TU, RRule.WE, RRule.TH, RRule.FR],
+  bysetpos: [-1],
+};
 
-#### RecurrenceRule properties
-
-- `second (0-59)`
-- `minute (0-59)`
-- `hour (0-23)`
-- `date (1-31)`
-- `month (0-11)`
-- `year`
-- `dayOfWeek (0-6) Starting with Sunday`
-
-> **Note**: It's worth noting that the default value of a component of a recurrence rule is
-> `null` (except for second, which is 0 for familiarity with cron). _If we did not
-> explicitly set `minute` to 0 above, the message would have instead been logged at
-> 5:00pm, 5:01pm, 5:02pm, ..., 5:59pm._ Probably not what you want.
-
-#### Object Literal Syntax
-
-To make things a little easier, an object literal syntax is also supported, like
-in this example which will log a message every Sunday at 2:30pm:
-
-```js
-var j = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 0}, function() {
-  console.log('Time for tea!');
-});
-```
-
-#### Set StartTime and EndTime
-
-It will run after 5 seconds and stop after 10 seconds in this example.
-The ruledat supports the above.
-
-```js
-let startTime = new Date(Date.now() + 5000);
-let endTime = new Date(startTime.getTime() + 5000);
-var j = schedule.scheduleJob({start: startTime, end: endTime, rule: '*/1 * * * * *'}, function() {
-  console.log('Time for tea!');
+const j = schedule.scheduleJob(options, function() {
+  console.log('This will be logged the last workday every month');
 });
 ```
 
@@ -260,27 +147,12 @@ Return true/false on success/failure.
 
 This method returns a Date object for the planned next Invocation for this Job. If no invocation is planned the method returns null.
 
-## Contributing
-
-This module was originally developed by [Matt Patenaude], and is now maintained by
-[Tejas Manohar] and [other wonderful contributors].
-
-We'd love to get your contributions. Individuals making significant and valuable
-contributions are given commit-access to the project to contribute as they see fit.
-
-Before jumping in, check out our [Contributing] page guide!
-
 ## Copyright and license
 
-Copyright 2015 Matt Patenaude.
+Core functionality: Copyright 2015 Matt Patenaude.
+RRule implementation: Copyright 2020 Michael Sageryd
 
 Licensed under the **[MIT License][license]**.
 
-[cron]: http://unixhelp.ed.ac.uk/CGI/man-cgi?crontab+5
-[contributing]: https://github.com/node-schedule/node-schedule/blob/master/CONTRIBUTING.md
-[matt patenaude]: https://github.com/mattpat
-[tejas manohar]: http://tejas.io
-[license]: https://github.com/node-schedule/node-schedule/blob/master/LICENSE
-[tejas manohar]: https://github.com/tejasmanohar
-[other wonderful contributors]: https://github.com/node-schedule/node-schedule/graphs/contributors
-[cron-parser]: https://github.com/harrisiirak/cron-parser
+[brian moeskau on recurrences]: https://github.com/bmoeskau/Extensible/blob/master/recurrence-overview.mdb
+[rrule]: https://github.com/jakubroztocil/rrule
