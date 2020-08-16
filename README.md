@@ -3,9 +3,13 @@
 **Do not use this library yet. It's functional, but alot remains until it's production ready.**
 
 - [ ] Update Matts test suite to comply with RRule instead of cron
+
 - [x] Update the documentation
+
 - [ ] Schedule jobs via object literal
+
 - [ ] Support for RRuleSet
+
 - [ ] Performance testing/optimizing
 
 # Node Schedule RRule
@@ -67,6 +71,7 @@ RRule library: https://github.com/jakubroztocil/rrule
 ### iCal RFC string
 
 Easily create iCal strings with the rrule demo app: http://jakubroztocil.github.io/rrule/
+
 N.B: if the demo app gives you a multiline iCal string you need to insert a newline char in the string, i.e. `\n`
 
 Example:
@@ -150,9 +155,15 @@ This method returns a Date object for the planned next Invocation for this Job. 
 ## Copyright and license
 
 Core functionality: Copyright 2015 Matt Patenaude.
+
 RRule implementation: Copyright 2020 Michael Sageryd
 
 Licensed under the **[MIT License][license]**.
 
-[brian moeskau on recurrences]: https://github.com/bmoeskau/Extensible/blob/master/recurrence-overview.mdb
-[rrule]: https://github.com/jakubroztocil/rrule
+## Links
+
+[Brian Moeskau on recurrences](https://github.com/bmoeskau/Extensible/blob/master/recurrence-overview.mdb)
+
+[RRule](https://github.com/jakubroztocil/rrule)
+
+[RRule demo](http://jakubroztocil.github.io/rrule/)
