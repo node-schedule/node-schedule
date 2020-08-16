@@ -38,7 +38,7 @@ npm install node-schedule-rrule
 
 ### Overview
 
-Just like it's parent library, Node Schedule RRule is for time-based scheduling, not interval-based scheduling. While you can easily bend it to your will, if you only want to do something like "run this function every 5 minutes", you'll find `setInterval` much easier to use, and far more appropriate. But if you want to, say, "run this function at the :20
+Just like its' parent library, Node Schedule RRule is for time-based scheduling, not interval-based scheduling. While you can easily bend it to your will, if you only want to do something like "run this function every 5 minutes", you'll find `setInterval` much easier to use, and far more appropriate. But if you want to, say, "run this function at the :20
 and :50 of every hour on the third Tuesday of every month," you'll find that Node Schedule RRule suits your needs better.
 
 ### Jobs and Scheduling
