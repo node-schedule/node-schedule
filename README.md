@@ -158,7 +158,7 @@ Licensed under the **[MIT License][license]**.
 
 ## Repo
 
-Instead of just copying the original code and start over I've left this repo as a fork in order to keep the credits where crdits are due. That said, I have cleaned up the repo somewhat by removing old branches and tags.
+Instead of just copying the original code and start over I've left this repo as a fork in order to keep the credits where credits are due. That said, I have cleaned up the repo somewhat by removing old branches and tags.
 
 ## Links
 
