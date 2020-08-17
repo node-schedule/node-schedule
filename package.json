@@ -28,10 +28,10 @@
     "sorted-array-functions": "^1.0.0"
   },
   "devDependencies": {
-    "coveralls": "^2.11.2",
-    "eslint": "^3.19.0",
-    "istanbul": "^0.4.5",
-    "nodeunit": "^0.10.2",
+    "coveralls": "^3.1.0",
+    "eslint": "^7.7.0",
+    "nodeunit": "^0.11.3",
+    "nyc": "^15.1.0",
     "sinon": "^1.14.1"
   }
 }
