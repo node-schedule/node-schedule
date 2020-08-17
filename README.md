@@ -156,6 +156,10 @@ RRule implementation: Copyright 2020 Michael Sageryd
 
 Licensed under the **[MIT License][license]**.
 
+## Repo
+
+Instead of just copying the original code and start over I've left this repo as a fork in order to keep the credits where crdits are due. That said, I have cleaned up the repo somewhat by removing old branches and tags.
+
 ## Links
 
 [Brian Moeskau on recurrences](https://github.com/bmoeskau/Extensible/blob/master/recurrence-overview.md)
