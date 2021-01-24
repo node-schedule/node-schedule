@@ -546,7 +546,53 @@ module.exports = {
       }, 2250);
 
       clock.tick(2250);
+    },
+    "Job emits 'error' event when the job synchronously throws an error": function(test) {
+      test.expect(1);
+
+      var error = new Error('test');
+
+      var job = new schedule.Job(function() { throw error; });
+
+      job.on('error', function(err) {
+        test.strictEqual(err, error);
+        test.done()
+      });
+
+      job.schedule(new Date(Date.now() + 3000));
+
+      clock.tick(3250);
+    },
+    "Job emits 'error' event when the job returns a rejected Promise": function(test) {
+      test.expect(1);
+
+      var error = new Error('test');
+
+      var job = new schedule.Job(function() { return Promise.reject(error); });
+
+      job.on('error', function(err) {
+        test.strictEqual(err, error);
+        test.done()
+      });
+
+      job.schedule(new Date(Date.now() + 3000));
+
+      clock.tick(3250);
     }
+  },
+  "When invoked manually": {
+    "It returns the result of the job": function(test) {
+      test.expect(1);
+
+      var job = new schedule.Job(function() {
+        return 1;
+      });
+
+      var result = job.invoke();
+
+      test.strictEqual(result, 1);
+      test.done();
+    },
   },
   tearDown: function(cb) {
     clock.restore();
