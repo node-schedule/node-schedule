@@ -35,7 +35,7 @@
     "coveralls": "^3.1.0",
     "eslint": "^3.19.0",
     "istanbul": "^0.4.5",
-    "nodeunit": "^0.10.2",
+    "nodeunit": "^0.11.3",
     "sinon": "^1.14.1"
   }
 }
