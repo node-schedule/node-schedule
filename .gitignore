@@ -5,3 +5,4 @@ node-schedule.tmproj
 npm-debug.log
 
 /.idea/
+/package-lock.json

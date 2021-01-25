@@ -1,19 +1,16 @@
 ---
 
-name: linting
+name: coverage
 
 on:
   push:
-    branches:
-      - master
-  pull_request:
     branches:
       - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: linting
+    name: coverage
 
     strategy:
       matrix:
@@ -34,7 +31,13 @@ jobs:
       - name: Run npm install
         run: npm install
 
-      - name: Run lint
-        run: npm run lint
+      - name: Run Tests
+        run: npm run test:coverage
         env:
           CI: true
+
+      - name: Update Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+        if: success()

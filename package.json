@@ -12,6 +12,8 @@
   "main": "./lib/schedule.js",
   "scripts": {
     "test": "nodeunit",
+    "test:coverage": "istanbul cover ./node_modules/.bin/nodeunit test",
+    "test:coverage-win": "istanbul cover ./node_modules/nodeunit/bin/nodeunit test",
     "lint": "eslint lib test"
   },
   "author": {
