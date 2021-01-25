@@ -12,7 +12,10 @@
   "main": "./lib/schedule.js",
   "scripts": {
     "test": "nodeunit",
-    "lint": "eslint lib test"
+    "test:coverage": "istanbul cover ./node_modules/.bin/nodeunit test",
+    "test:coverage-win": "istanbul cover ./node_modules/nodeunit/bin/nodeunit test",
+    "lint": "eslint lib test",
+    "lint:fix": "eslint --fix lib test"
   },
   "author": {
     "name": "Matt Patenaude",
@@ -24,15 +27,14 @@
     "url": "https://github.com/node-schedule/node-schedule.git"
   },
   "dependencies": {
-    "cron-parser": "^2.7.3",
+    "cron-parser": "^2.18.0",
     "long-timeout": "0.1.1",
-    "sorted-array-functions": "^1.0.0"
+    "sorted-array-functions": "^1.3.0"
   },
   "devDependencies": {
-    "coveralls": "^2.11.2",
-    "eslint": "^3.19.0",
+    "eslint": "^7.18.0",
     "istanbul": "^0.4.5",
-    "nodeunit": "^0.10.2",
-    "sinon": "^1.14.1"
+    "nodeunit": "~0.10.2",
+    "sinon": "^2.4.1"
   }
 }
