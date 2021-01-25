@@ -104,9 +104,9 @@ var j = schedule.scheduleJob('0 1 * * *', function(fireDate){
 This is useful when you need to check if there is a delay of the job invocation when the system is busy, or save a record of all invocations of a job for audit purpose.
 #### Unsupported Cron Features
 
-Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (nth weekday
-of the month) are not supported. Most other features supported by popular cron
-implementations should work just fine.
+Currently, `W` (nearest weekday) and `L` (last day of month/week) are not supported. 
+Most other features supported by popular cron implementations should work just fine, 
+including `#` (nth weekday of the month).
 
 [cron-parser] is used to parse crontab instructions.
 
