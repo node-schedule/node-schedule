@@ -451,9 +451,9 @@ module.exports = {
       });
 
       var job2 = schedule.scheduleJob('second',
-                                      { second: null },
-                                      function() {},
-                                      function() {});
+        { second: null },
+        function() {},
+        function() {});
 
       test.strictEqual(schedule.scheduledJobs.cancelJob, job1);
       test.strictEqual(schedule.scheduledJobs.second, job2);
