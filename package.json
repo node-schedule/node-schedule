@@ -12,7 +12,10 @@
   "main": "./lib/schedule.js",
   "scripts": {
     "test": "nodeunit",
-    "lint": "eslint lib test"
+    "test:coverage": "istanbul cover ./node_modules/.bin/nodeunit test",
+    "test:coverage-win": "istanbul cover ./node_modules/nodeunit/bin/nodeunit test",
+    "lint": "eslint lib test",
+    "lint:fix": "eslint --fix lib test"
   },
   "author": {
     "name": "Matt Patenaude",
