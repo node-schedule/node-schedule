@@ -4,6 +4,7 @@
 var sinon = require('sinon');
 var main = require('../package.json').main;
 var schedule = require('../' + main);
+var nodeVersionUtils = require('../lib/nodeVersionUtils')
 
 var es6;
 try {
@@ -564,6 +565,10 @@ module.exports = {
       clock.tick(3250);
     },
     "Job emits 'error' event when the job returns a rejected Promise": function(test) {
+      if (!nodeVersionUtils.arePromisesSupported(nodeVersionUtils.getNodeVersion(nodeVersionUtils.nodeVersionString))) {
+        return test.done()
+      }
+
       test.expect(1);
 
       var error = new Error('test');
