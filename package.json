@@ -34,7 +34,7 @@
   "devDependencies": {
     "eslint": "^7.18.0",
     "istanbul": "^0.4.5",
-    "nodeunit": "^0.11.3",
+    "nodeunit": "~0.10.2",
     "sinon": "^1.14.1"
   }
 }
