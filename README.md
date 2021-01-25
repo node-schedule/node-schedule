@@ -2,7 +2,8 @@
 
 [![NPM version](http://img.shields.io/npm/v/node-schedule.svg)](https://www.npmjs.com/package/node-schedule)
 [![Downloads](https://img.shields.io/npm/dm/node-schedule.svg)](https://www.npmjs.com/package/node-schedule)
-[![Build Status](https://travis-ci.org/node-schedule/node-schedule.svg?branch=master)](https://travis-ci.org/node-schedule/node-schedule)
+[![Build Status](https://github.com/node-schedule/node-schedule/workflows/ci/badge.svg)](https://github.com/node-schedule/node-schedule/actions)
+[![Coverage Status](https://coveralls.io/repos/node-schedule/node-schedule/badge.svg?branch=master)](https://coveralls.io/r/node-schedule/node-schedule?branch=master)
 [![Join the chat at https://gitter.im/node-schedule/node-schedule](https://img.shields.io/badge/gitter-chat-green.svg)](https://gitter.im/node-schedule/node-schedule?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [![NPM](https://nodei.co/npm/node-schedule.png?downloads=true)](https://nodei.co/npm/node-schedule/)
@@ -43,14 +44,19 @@ Every scheduled job in Node Schedule is represented by a `Job` object. You can
 create jobs manually, then execute the `schedule()` method to apply a schedule,
 or use the convenience function `scheduleJob()` as demonstrated below.
 
-`Job` objects are `EventEmitter`'s, and emit a `run` event after each execution.
-They also emit a `scheduled` event each time they're scheduled to run, and a
-`canceled` event when an invocation is canceled before it's executed (both events
-receive a JavaScript date object as a parameter). Note that jobs are scheduled the
-first time immediately, so if you create a job using the `scheduleJob()`
-convenience method, you'll miss the first `scheduled` event, but you can query the
-invocation manually (see below). Also note that `canceled` is the single-L American
-spelling.
+`Job` objects are `EventEmitter`s, and emit the following events:
+* A `run` event after each execution.
+* A `scheduled` event each time they're scheduled to run.
+* A `canceled` event when an invocation is canceled before it's executed.  
+  Note that `canceled` is the single-L American spelling.
+* An `error` event when a job invocation triggered by a schedule throws or returns
+  a rejected `Promise`.
+
+(Both the `scheduled` and `canceled` events receive a JavaScript date object as
+a parameter).  
+Note that jobs are scheduled the first time immediately, so if you create a job
+using the `scheduleJob()` convenience method, you'll miss the first `scheduled`
+event, but you can query the invocation manually (see below).
 
 ### Cron-style Scheduling
 
@@ -163,6 +169,20 @@ var j = schedule.scheduleJob(rule, function(){
 });
 ```
 
+Timezones are also supported. Here is an example of executing at the start of every day in the UTC timezone.
+
+```js
+var rule = new schedule.RecurrenceRule();
+rule.hour = 0;
+rule.tz = 'Etc/UTC';
+
+var j = schedule.scheduleJob(rule, function(){
+  console.log('A new day has begun in the UTC timezone!');
+});
+```
+
+A list of acceptable tz (timezone) values can be found at <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>
+
 #### RecurrenceRule properties
 
 - `second (0-59)`
@@ -172,6 +192,8 @@ var j = schedule.scheduleJob(rule, function(){
 - `month (0-11)`
 - `year`
 - `dayOfWeek (0-6) Starting with Sunday`
+- `tz`
+
 
 > **Note**: It's worth noting that the default value of a component of a recurrence rule is
 > `null` (except for second, which is 0 for familiarity with cron). *If we did not
