@@ -253,8 +253,9 @@ This method returns a Date object for the planned next Invocation for this Job. 
 
 ## Contributing
 
-This module was originally developed by [Matt Patenaude], and is now maintained by
-[Tejas Manohar] and [other wonderful contributors].
+This module was originally developed by [Matt Patenaude] who eventually passed over maintainer's mantle over to [Tejas Manohar].   
+
+Currently it is being maintained by [Igor Savin] and [our amazing community].
 
 We'd love to get your contributions. Individuals making significant and valuable
 contributions are given commit-access to the project to contribute as they see fit.
@@ -272,7 +273,8 @@ Licensed under the **[MIT License] [license]**.
 [Contributing]: https://github.com/node-schedule/node-schedule/blob/master/CONTRIBUTING.md
 [Matt Patenaude]: https://github.com/mattpat
 [Tejas Manohar]: http://tejas.io
+[Igor Savin]: https://twitter.com/kibertoad
 [license]: https://github.com/node-schedule/node-schedule/blob/master/LICENSE
 [Tejas Manohar]: https://github.com/tejasmanohar
-[other wonderful contributors]: https://github.com/node-schedule/node-schedule/graphs/contributors
+[our amazing community]: https://github.com/node-schedule/node-schedule/graphs/contributors
 [cron-parser]: https://github.com/harrisiirak/cron-parser
