@@ -1,6 +1,6 @@
 {
   "name": "node-schedule",
-  "version": "1.3.3",
+  "version": "2.0.0",
   "description": "A cron-like and not-cron-like job scheduler for Node.",
   "keywords": [
     "schedule",
@@ -41,8 +41,11 @@
   "devDependencies": {
     "eslint": "^7.18.0",
     "istanbul": "^0.4.5",
-    "nodeunit": "~0.10.2",
+    "nodeunit": "~0.11.3",
     "sinon": "^2.4.1"
+  },
+  "engines": {
+    "node": ">=6"
   },
   "files": [
     "README.md",

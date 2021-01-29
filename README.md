@@ -13,6 +13,8 @@ It allows you to schedule jobs (arbitrary functions) for execution at
 specific dates, with optional recurrence rules. It only uses a single timer
 at any given time (rather than reevaluating upcoming jobs every second/minute).
 
+Node 6+ is supported.
+
 ## Usage
 
 ### Installation
