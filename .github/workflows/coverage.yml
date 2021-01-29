@@ -36,6 +36,9 @@ jobs:
         env:
           CI: true
 
+      - name: Generate LCOV
+        run: npm run coveralls
+
       - name: Update Coveralls
         uses: coverallsapp/github-action@master
         with:
