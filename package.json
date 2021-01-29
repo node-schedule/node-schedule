@@ -13,8 +13,8 @@
   "main": "./lib/schedule.js",
   "scripts": {
     "test": "nodeunit",
-    "test:coverage": "istanbul cover ./node_modules/.bin/nodeunit test",
-    "test:coverage-win": "istanbul cover ./node_modules/nodeunit/bin/nodeunit test",
+    "coveralls": "nyc report --reporter=lcov",
+    "test:coverage": "nyc nodeunit test",
     "lint": "eslint lib test",
     "lint:fix": "eslint --fix lib test"
   },
@@ -40,8 +40,8 @@
   },
   "devDependencies": {
     "eslint": "^7.18.0",
-    "istanbul": "^0.4.5",
     "nodeunit": "~0.11.3",
+    "nyc": "^15.1.0",
     "sinon": "^2.4.1"
   },
   "engines": {
