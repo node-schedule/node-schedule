@@ -10,7 +10,7 @@ const schedule = require('../' + main);
 const base = new Date(2010, 3, 29, 12, 30, 15, 0);
 const baseMs = base.getTime();
 
-test("Date methods", function (t) {
+test("Recurrence rule", function (t) {
   let clock
   t.test("Setup", function (t) {
     clock = sinon.useFakeTimers();
