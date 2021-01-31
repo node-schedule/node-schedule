@@ -28,12 +28,12 @@ npm install node-schedule
 ### Overview
 
 Node Schedule is for time-based scheduling, not interval-based scheduling.
+
 While you can easily bend it to your will, if you only want to do something like
-"run this function every 5 minutes", you'll find `setInterval` much easier to use,
-and far more appropriate. But if you want to, say, "run this function at the :20
+"run this function every 5 minutes", [toad-scheduler](https://github.com/kibertoad/toad-scheduler) would be a better choice. But if you want to, say, "run this function at the :20
 and :50 of every hour on the third Tuesday of every month," you'll find that
 Node Schedule suits your needs better. Additionally, Node Schedule has Windows
-support unlike true cron since the node runtime is now fully supported.
+support, unlike true `cron`, since the node runtime is now fully supported.
 
 Note that Node Schedule is designed for in-process scheduling, i.e. scheduled jobs
 will only fire as long as your script is running, and the schedule will disappear
