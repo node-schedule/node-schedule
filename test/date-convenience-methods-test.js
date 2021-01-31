@@ -3,7 +3,7 @@
 
 const test = require('tape');
 const sinon = require('sinon');
-const schedule = require('../lib/schedule');
+const schedule = require('..');
 
 test("Date methods", function (t) {
   let clock

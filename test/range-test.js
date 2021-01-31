@@ -2,7 +2,7 @@
 'use strict';
 
 const test = require('tape');
-const schedule = require('../lib/schedule');
+const schedule = require('..');
 
 test("step defaults to 1", function (t) {
   const range = new schedule.Range(2, 6);

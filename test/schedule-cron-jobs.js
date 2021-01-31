@@ -2,7 +2,7 @@
 
 const test = require('tape');
 const sinon = require('sinon');
-const schedule = require('../lib/schedule');
+const schedule = require('..');
 const { runAtDate } = require('./utils/timerUtils')
 
 test(".scheduleJob(cron_expr, fn)", function (t) {
