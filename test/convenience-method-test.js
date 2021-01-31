@@ -22,8 +22,33 @@ test("Convenience method", function (t) {
 
       job.cancel();
       test.end();
-    })
-  })
+    });
+
+    t.test("Returns null if fewer than 2 arguments are passed", function (test) {
+      test.plan(1);
+
+      const fn = function() {
+        return schedule.scheduleJob(function() {});
+      };
+
+      test.throws(fn, RangeError);
+
+      test.end();
+    });
+
+    t.test("Returns null if the method argument is not a function", function (test) {
+      test.plan(1);
+
+      const fn = function() {
+        return schedule.scheduleJob(new Date(Date.now() + 1000), {});
+      };
+
+      test.throws(fn, RangeError);
+
+      test.end();
+    });
+  });
+
   t.test(".scheduleJob(Date, fn)", function(t) {
     t.test("Runs job once at some date", function(test) {
       test.plan(1);
