@@ -7,7 +7,8 @@
     "task",
     "job",
     "cron",
-    "in-memory"
+    "in-memory",
+    "rrule"
   ],
   "license": "MIT",
   "main": "./lib/schedule.js",
@@ -27,6 +28,9 @@
     {
       "name": "Igor Savin",
       "email": "kibertoad@gmail.com"
+    },
+    {
+      "name": "DinoEgo"
     }
   ],
   "repository": {
