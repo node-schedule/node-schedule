@@ -2,8 +2,7 @@
 'use strict';
 
 const test = require('tape');
-const main = require('../package.json').main;
-const schedule = require('../' + main);
+const schedule = require('../lib/schedule');
 
 test("step defaults to 1", function (t) {
   const range = new schedule.Range(2, 6);

@@ -3,8 +3,7 @@
 
 const test = require('tape');
 const sinon = require('sinon');
-const main = require('../package.json').main;
-const schedule = require('../' + main);
+const schedule = require('../lib/schedule');
 
 // 12:30:15 pm Thursday 29 April 2010 in the timezone this code is being run in
 const base = new Date(2010, 3, 29, 12, 30, 15, 0);
