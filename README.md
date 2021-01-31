@@ -15,17 +15,7 @@ at any given time (rather than reevaluating upcoming jobs every second/minute).
 
 Node 6+ is supported.
 
-## Usage
-
-### Installation
-
-You can install using [npm](https://www.npmjs.com/package/node-schedule).
-
-```
-npm install node-schedule
-```
-
-### Overview
+## Overview
 
 Node Schedule is for time-based scheduling, not interval-based scheduling.
 
@@ -39,6 +29,20 @@ Note that Node Schedule is designed for in-process scheduling, i.e. scheduled jo
 will only fire as long as your script is running, and the schedule will disappear
 when execution completes. If you need to schedule jobs that will persist even when
 your script *isn't* running, consider using actual [cron].
+
+In case you need durable jobs that persist across restarts and lock system compatible with multi-node deployments,
+try [agenda](https://github.com/agenda/agenda) or [bree](https://github.com/breejs/bree).
+
+## Usage
+
+### Installation
+
+You can install using [npm](https://www.npmjs.com/package/node-schedule).
+
+```
+npm install node-schedule
+```
+
 
 ### Jobs and Scheduling
 
