@@ -6,7 +6,7 @@ const main = require('../package.json').main;
 const schedule = require('../' + main);
 
 test("step defaults to 1", function (t) {
-  var range = new schedule.Range(2, 6);
+  const range = new schedule.Range(2, 6);
 
   t.equals(1, range.step);
 

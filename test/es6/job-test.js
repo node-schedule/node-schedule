@@ -6,7 +6,7 @@ module.exports = function(schedule) {
     jobInGenerator: function(test) {
       test.plan(1);
 
-      var job = new schedule.Job(function*() {
+      const job = new schedule.Job(function* () {
         test.ok(true);
       });
 
@@ -19,7 +19,7 @@ module.exports = function(schedule) {
     jobContextInGenerator: function(test) {
       test.plan(1);
 
-      var job = new schedule.Job('name of job', function*() {
+      const job = new schedule.Job('name of job', function* () {
         test.ok(this.name === 'name of job');
       });
 

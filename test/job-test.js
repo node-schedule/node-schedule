@@ -16,21 +16,21 @@ test("Job", function (t) {
 
   t.test("Job constructor", function (t) {
     t.test("Accepts Job name and function to run", function (test) {
-      var job = new schedule.Job('the job', function () {
+      const job = new schedule.Job('the job', function () {
       });
 
       test.equal(job.name, 'the job');
       test.end();
     })
     t.test("Job name is optional and will be auto-generated", function (test) {
-      var job = new schedule.Job();
+      const job = new schedule.Job();
 
       test.ok(job.name);
       test.end();
     })
     t.test("Uses unique names across auto-generated Job names", function (test) {
-      var job1 = new schedule.Job();
-      var job2 = new schedule.Job();
+      const job1 = new schedule.Job();
+      const job2 = new schedule.Job();
 
       test.notEqual(job1.name, job2.name);
       test.end();
@@ -41,7 +41,7 @@ test("Job", function (t) {
     t.test("Runs job once at some date", function (test) {
       test.plan(1);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         test.ok(true);
       });
 
@@ -56,7 +56,7 @@ test("Job", function (t) {
     t.test("Cancel next job before it runs", function (test) {
       test.plan(1);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         test.ok(true);
       });
 
@@ -72,7 +72,7 @@ test("Job", function (t) {
     t.test("Run job on specified date", function (test) {
       test.plan(1);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         test.ok(true);
       });
 
@@ -100,7 +100,7 @@ test("Job", function (t) {
     t.test("Won't run job if scheduled in the past", function (test) {
       test.plan(0);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         test.ok(false);
       });
 
@@ -116,14 +116,14 @@ test("Job", function (t) {
     t.test("Jobs still run after scheduling a Job in the past", function (test) {
       test.plan(1);
 
-      var pastJob = new schedule.Job(function () {
+      const pastJob = new schedule.Job(function () {
         // Should not run, blow up if it does
         test.ok(false);
       });
 
       pastJob.schedule(new Date(Date.now() - 3000));
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         test.ok(true);
       });
 
@@ -139,8 +139,8 @@ test("Job", function (t) {
     t.test("Job emits 'scheduled' event with 'run at' Date", function (test) {
       test.plan(1);
 
-      var date = new Date(Date.now() + 3000);
-      var job = new schedule.Job(function () {
+      const date = new Date(Date.now() + 3000);
+      const job = new schedule.Job(function () {
         test.end();
       });
 
@@ -157,7 +157,7 @@ test("Job", function (t) {
     t.test("Runs job once at some date, calls callback when done", function (test) {
       test.plan(1);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
       }, function () {
         test.ok(true);
       });
@@ -175,11 +175,11 @@ test("Job", function (t) {
     t.test("Runs job at interval based on recur rule, repeating indefinitely", function (test) {
       test.plan(3);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         test.ok(true);
       });
 
-      var rule = new schedule.RecurrenceRule();
+      const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
 
       job.schedule(rule);
@@ -197,14 +197,14 @@ test("Job", function (t) {
       // due to cancel.
       test.plan(4);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
       });
 
       job.on('scheduled', function (runOnDate) {
         test.ok(true);
       });
 
-      var rule = new schedule.RecurrenceRule();
+      const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
 
       job.schedule(rule);
@@ -220,11 +220,11 @@ test("Job", function (t) {
     t.test("Doesn't invoke job if recur rule schedules it in the past", function (test) {
       test.plan(0);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         test.ok(false);
       });
 
-      var rule = new schedule.RecurrenceRule();
+      const rule = new schedule.RecurrenceRule();
       rule.year = 2000;
 
       job.schedule(rule);
@@ -242,7 +242,7 @@ test("Job", function (t) {
     t.test("Runs job at interval based on object, repeating indefinitely", function (test) {
       test.plan(3);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         test.ok(true);
       });
 
@@ -262,7 +262,7 @@ test("Job", function (t) {
       // due to cancel.
       test.plan(4);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
       });
 
       job.on('scheduled', function (runOnDate) {
@@ -284,7 +284,7 @@ test("Job", function (t) {
     t.test("Doesn't invoke job if object schedules it in the past", function (test) {
       test.plan(0);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         test.ok(false);
       });
 
@@ -304,7 +304,7 @@ test("Job", function (t) {
     t.test("Runs job with a custom name input", function (test) {
       test.plan(3);
 
-      var job = new schedule.Job('jobName', function () {
+      const job = new schedule.Job('jobName', function () {
         test.equal(job.name, 'jobName');
       });
 
@@ -324,7 +324,7 @@ test("Job", function (t) {
     t.test("Runs job and run callback when job is done if callback is provided", function (test) {
       test.plan(3);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
       }, function () {
         test.ok(true);
       });
@@ -343,7 +343,7 @@ test("Job", function (t) {
     t.test("Runs job with a custom name input and run callback when job is done", function (test) {
       test.plan(3);
 
-      var job = new schedule.Job('MyJob', function () {
+      const job = new schedule.Job('MyJob', function () {
       }, function () {
         test.equal(job.name, 'MyJob');
       });
@@ -364,7 +364,7 @@ test("Job", function (t) {
     t.test("Prevents all future invocations", function (test) {
       test.plan(1);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         test.ok(true);
       });
 
@@ -385,9 +385,9 @@ test("Job", function (t) {
 
     t.test("Cancelled job reschedules", function (test) {
       test.plan(1);
-      var ok = false;
+      let ok = false;
 
-      var job = schedule.scheduleJob('*/1 * * * * *', function () {
+      const job = schedule.scheduleJob('*/1 * * * * *', function () {
       });
 
       setTimeout(function () {
@@ -406,9 +406,9 @@ test("Job", function (t) {
 
     t.test("CancelNext job reschedules", function (test) {
       test.plan(1);
-      var ok = false;
+      let ok = false;
 
-      var job = schedule.scheduleJob('*/1 * * * * *', function () {
+      const job = schedule.scheduleJob('*/1 * * * * *', function () {
       });
 
       setTimeout(function () {
@@ -428,7 +428,7 @@ test("Job", function (t) {
     t.test("Job emits 'canceled' event", function (test) {
       test.plan(1);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
       });
 
       job.on('canceled', function () {
@@ -453,13 +453,13 @@ test("Job", function (t) {
     t.test("Job is added to scheduledJobs when created and removed when cancelled", function (test) {
       test.plan(4);
 
-      var job1 = new schedule.Job('cancelJob', function () {
+      const job1 = new schedule.Job('cancelJob', function () {
       });
       job1.schedule({
         second: null // fire every second
       });
 
-      var job2 = schedule.scheduleJob('second',
+      const job2 = schedule.scheduleJob('second',
         {second: null},
         function () {
         },
@@ -482,7 +482,7 @@ test("Job", function (t) {
   t.test("#reschedule", function (t) {
     t.test("When rescheduled counter will be reset to zero", function (test) {
 
-      var job = new schedule.scheduleJob({
+      const job = new schedule.scheduleJob({
         second: null
       }, function () {
       });
@@ -507,7 +507,7 @@ test("Job", function (t) {
     t.test("Job emits 'run' event", function (test) {
       test.plan(1);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
       });
 
       job.on('run', function () {
@@ -523,7 +523,7 @@ test("Job", function (t) {
       clock.tick(3250);
     })
     t.test("Job counter increase properly", function (test) {
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
       });
 
       job.schedule({
@@ -541,8 +541,8 @@ test("Job", function (t) {
 
     t.test("Job gets invoked with the fire date", function (test) {
       test.plan(2);
-      var prevFireDate;
-      var job = new schedule.Job(function (fireDate) {
+      let prevFireDate;
+      const job = new schedule.Job(function (fireDate) {
         if (!prevFireDate) {
           test.ok(fireDate instanceof Date);
         } else {
@@ -566,9 +566,9 @@ test("Job", function (t) {
     t.test("Job emits 'error' event when the job synchronously throws an error", function (test) {
       test.plan(1);
 
-      var error = new Error('test');
+      const error = new Error('test');
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         throw error;
       });
 
@@ -585,9 +585,9 @@ test("Job", function (t) {
     t.test("Job emits 'error' event when the job returns a rejected Promise", function (test) {
       test.plan(1);
 
-      var error = new Error('test');
+      const error = new Error('test');
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         return Promise.reject(error);
       });
 
@@ -605,11 +605,11 @@ test("Job", function (t) {
     t.test("It returns the result of the job", function (test) {
       test.plan(1);
 
-      var job = new schedule.Job(function () {
+      const job = new schedule.Job(function () {
         return 1;
       });
 
-      var result = job.invoke();
+      const result = job.invoke();
 
       test.strictEqual(result, 1);
       test.end();

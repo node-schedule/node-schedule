@@ -16,9 +16,9 @@ test(".scheduleJob(cron_expr, fn)", function (t) {
   t.test("Runs job every second", function (t) {
     t.plan(3);
 
-    var timeout = 3 * 1000 + 150;
+    const timeout = 3 * 1000 + 150;
 
-    var job = schedule.scheduleJob('* * * * * *', function () {
+    const job = schedule.scheduleJob('* * * * * *', function () {
       t.ok(true);
     });
 
@@ -33,9 +33,9 @@ test(".scheduleJob(cron_expr, fn)", function (t) {
   t.test("Runs job every minute", function (t) {
     t.plan(3);
 
-    var timeout = 3 * 60 * 1000 + 150;
+    const timeout = 3 * 60 * 1000 + 150;
 
-    var job = schedule.scheduleJob('0 * * * * *', function () {
+    const job = schedule.scheduleJob('0 * * * * *', function () {
       t.ok(true);
     });
 
@@ -50,9 +50,9 @@ test(".scheduleJob(cron_expr, fn)", function (t) {
   t.test("Runs job every hour", function (t) {
     t.plan(3);
 
-    var timeout = 3 * 60 * 60 * 1000 + 150;
+    const timeout = 3 * 60 * 60 * 1000 + 150;
 
-    var job = schedule.scheduleJob('0 0 * * * *', function () {
+    const job = schedule.scheduleJob('0 0 * * * *', function () {
       t.ok(true);
     });
 
@@ -67,9 +67,9 @@ test(".scheduleJob(cron_expr, fn)", function (t) {
   t.test("Runs job every day", function (t) {
     t.plan(3);
 
-    var timeout = 3 * 24 * 60 * 60 * 1000 + 150;
+    const timeout = 3 * 24 * 60 * 60 * 1000 + 150;
 
-    var job = schedule.scheduleJob('0 0 0 * * *', function () {
+    const job = schedule.scheduleJob('0 0 0 * * *', function () {
       t.ok(true);
     });
 
@@ -84,9 +84,9 @@ test(".scheduleJob(cron_expr, fn)", function (t) {
   t.test("Runs job every week", function (t) {
     t.plan(3);
 
-    var timeout = 3 * 7 * 24 * 60 * 60 * 1000 + 150;
+    const timeout = 3 * 7 * 24 * 60 * 60 * 1000 + 150;
 
-    var job = schedule.scheduleJob('0 0 0 * * 1', function () {
+    const job = schedule.scheduleJob('0 0 0 * * 1', function () {
       t.ok(true);
     });
 
