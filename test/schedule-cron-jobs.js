@@ -1,134 +1,141 @@
 
 'use strict';
 
-var sinon = require('sinon');
-var main = require('../package.json').main;
-var schedule = require('../' + main);
+const test = require('tape');
+const sinon = require('sinon');
+const main = require('../package.json').main;
+const schedule = require('../' + main);
 
-var clock;
+test(".scheduleJob(cron_expr, fn)", function (t) {
+  let clock
+  t.test("Setup", function (t) {
+    clock = sinon.useFakeTimers();
+    t.end()
+  })
 
-module.exports = {
-  ".scheduleJob(cron_expr, fn)": {
-    setUp: function(cb) {
-      clock = sinon.useFakeTimers();
-      cb();
-    },
-    "Runs job every second": function(test) {
-      test.expect(3);
+  t.test("Runs job every second", function (t) {
+    t.plan(3);
 
-      var timeout = 3 * 1000 + 150;
+    var timeout = 3 * 1000 + 150;
 
-      var job = schedule.scheduleJob('* * * * * *', function() {
-        test.ok(true);
-      });
+    var job = schedule.scheduleJob('* * * * * *', function () {
+      t.ok(true);
+    });
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+    setTimeout(function () {
+      job.cancel();
+      t.end();
+    }, timeout);
 
-      clock.tick(timeout);
-    },
-    "Runs job every minute": function(test) {
-      test.expect(3);
+    clock.tick(timeout);
+  })
 
-      var timeout = 3 * 60 * 1000 + 150;
+  t.test("Runs job every minute", function (t) {
+    t.plan(3);
 
-      var job = schedule.scheduleJob('0 * * * * *', function() {
-        test.ok(true);
-      });
+    var timeout = 3 * 60 * 1000 + 150;
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+    var job = schedule.scheduleJob('0 * * * * *', function () {
+      t.ok(true);
+    });
 
-      clock.tick(timeout);
-    },
-    "Runs job every hour": function(test) {
-      test.expect(3);
+    setTimeout(function () {
+      job.cancel();
+      t.end();
+    }, timeout);
 
-      var timeout = 3 * 60 * 60 * 1000 + 150;
+    clock.tick(timeout);
+  })
 
-      var job = schedule.scheduleJob('0 0 * * * *', function() {
-        test.ok(true);
-      });
+  t.test("Runs job every hour", function (t) {
+    t.plan(3);
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+    var timeout = 3 * 60 * 60 * 1000 + 150;
 
-      clock.tick(timeout);
-    },
-    "Runs job every day": function(test) {
-      test.expect(3);
+    var job = schedule.scheduleJob('0 0 * * * *', function () {
+      t.ok(true);
+    });
 
-      var timeout = 3 * 24 * 60 * 60 * 1000 + 150;
+    setTimeout(function () {
+      job.cancel();
+      t.end();
+    }, timeout);
 
-      var job = schedule.scheduleJob('0 0 0 * * *', function() {
-        test.ok(true);
-      });
+    clock.tick(timeout);
+  })
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+  t.test("Runs job every day", function (t) {
+    t.plan(3);
 
-      clock.tick(timeout);
-    },
-    "Runs job every week": function(test) {
-      test.expect(3);
+    var timeout = 3 * 24 * 60 * 60 * 1000 + 150;
 
-      var timeout = 3 * 7 * 24 * 60 * 60 * 1000 + 150;
+    var job = schedule.scheduleJob('0 0 0 * * *', function () {
+      t.ok(true);
+    });
 
-      var job = schedule.scheduleJob('0 0 0 * * 1', function() {
-        test.ok(true);
-      });
+    setTimeout(function () {
+      job.cancel();
+      t.end();
+    }, timeout);
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+    clock.tick(timeout);
+  })
 
-      clock.tick(timeout);
-    },
-    "Runs job every month": function(test) {
-      test.expect(48);
+  t.test("Runs job every week", function (t) {
+    t.plan(3);
 
-      var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000 + 150;
+    var timeout = 3 * 7 * 24 * 60 * 60 * 1000 + 150;
 
-      var job = schedule.scheduleJob('0 0 0 1 * *', function() {
-        test.ok(true);
-      });
+    var job = schedule.scheduleJob('0 0 0 * * 1', function () {
+      t.ok(true);
+    });
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+    setTimeout(function () {
+      job.cancel();
+      t.end();
+    }, timeout);
 
-      clock.tick(timeout);
+    clock.tick(timeout);
+  })
 
-    },
-    "Runs job every year": function(test) {
-      test.expect(4);
+  t.test("Runs job every month", function (t) {
+    t.plan(48);
 
-      var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000 + 150;
+    var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000 + 150;
 
-      var job = schedule.scheduleJob('0 0 0 1 1 *', function() {
-        test.ok(true);
-      });
+    var job = schedule.scheduleJob('0 0 0 1 * *', function () {
+      t.ok(true);
+    });
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+    setTimeout(function () {
+      job.cancel();
+      t.end();
+    }, timeout);
 
-      clock.tick(timeout);
-    },
-    tearDown: function(cb) {
-      clock.restore();
-      cb();
-    }
-  }
-};
+    clock.tick(timeout);
+
+  })
+
+  t.test("Runs job every year", function (t) {
+    t.plan(4);
+
+    var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000 + 150;
+
+    var job = schedule.scheduleJob('0 0 0 1 1 *', function () {
+      t.ok(true);
+    });
+
+    setTimeout(function () {
+      job.cancel();
+      t.end();
+    }, timeout);
+
+    clock.tick(timeout);
+  })
+
+  t.test("Restore", function (t) {
+    clock.restore();
+    t.end()
+  })
+})
+

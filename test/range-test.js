@@ -1,77 +1,79 @@
 
 'use strict';
 
-var main = require('../package.json').main;
-var schedule = require('../' + main);
+const test = require('tape');
+const main = require('../package.json').main;
+const schedule = require('../' + main);
 
-module.exports = {
-  "step defaults to 1": function(test) {
-    var range = new schedule.Range(2, 6);
+test("step defaults to 1", function (t) {
+  var range = new schedule.Range(2, 6);
 
-    test.equals(1, range.step);
+  t.equals(1, range.step);
 
-    test.done();
-  },
-  "when step is 1": {
-    "setUp": function(done) {
-      this.range = new schedule.Range(2, 6, 1);
+  t.end();
+})
 
-      done();
-    },
-    "includes start value": function(test) {
-      test.ok(this.range.contains(2));
+test("when step is 1", function (t) {
+  const range = new schedule.Range(2, 6, 1);
 
-      test.done();
-    },
-    "includes end value": function(test) {
-      test.ok(this.range.contains(6));
+  t.test("includes start value", function (t) {
+    t.ok(range.contains(2));
 
-      test.done();
-    },
-    "includes value between start and end": function(test) {
-      test.ok(this.range.contains(3));
+    t.end();
+  })
 
-      test.done();
-    },
-    "excludes values outside of start and end": function(test) {
-      test.ok(!this.range.contains(1));
-      test.ok(!this.range.contains(7));
+  t.test("includes end value", function (t) {
+    t.ok(range.contains(6));
 
-      test.done();
-    }
-  },
-  "when step > 1": {
-    "setUp": function(done) {
-      this.range = new schedule.Range(2, 6, 2);
+    t.end();
+  })
 
-      done();
-    },
-    "includes start value": function(test) {
-      test.ok(this.range.contains(2));
+  t.test("includes value between start and end", function (t) {
+    t.ok(range.contains(3));
 
-      test.done();
-    },
-    "excludes end value": function(test) {
-      test.ok(!this.range.contains(6));
+    t.end();
+  })
 
-      test.done();
-    },
-    "includes value between start and end that is evenly divisible by step": function(test) {
-      test.ok(this.range.contains(4));
+  t.test("excludes values outside of start and end", function (t) {
+    t.ok(!range.contains(1));
+    t.ok(!range.contains(7));
 
-      test.done();
-    },
-    "excludes value between start and end that is not evenly divisible by step": function(test) {
-      test.ok(!this.range.contains(5));
+    t.end();
+  })
+})
 
-      test.done();
-    },
-    "excludes values outside of start and end": function(test) {
-      test.ok(!this.range.contains(1));
-      test.ok(!this.range.contains(7));
+test("when step > 1", function(t) {
+  const range = new schedule.Range(2, 6, 2);
 
-      test.done();
-    }
-  }
+  t.test("includes start value", function(t) {
+    t.ok(range.contains(2));
 
-};
+    t.end();
+  })
+
+  t.test("excludes end value", function(t) {
+    t.ok(!range.contains(6));
+
+    t.end();
+  })
+
+  t.test("includes value between start and end that is evenly divisible by step", function(t) {
+    t.ok(range.contains(4));
+
+    t.end();
+  })
+
+  t.test("excludes value between start and end that is not evenly divisible by step", function(t) {
+    t.ok(!range.contains(5));
+
+    t.end();
+  })
+
+  t.test("excludes values outside of start and end", function(t) {
+    t.ok(!range.contains(1));
+    t.ok(!range.contains(7));
+
+    t.end();
+  })
+})
+

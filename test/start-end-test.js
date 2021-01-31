@@ -1,19 +1,20 @@
 'use strict';
 
-var sinon = require('sinon');
-var main = require('../package.json').main;
-var schedule = require('../' + main);
+const test = require('tape');
+const sinon = require('sinon');
+const main = require('../package.json').main;
+const schedule = require('../' + main);
 
-var clock;
-
-module.exports = {
-  setUp: function (cb) {
+test("start-end", function (t) {
+  let clock
+  t.test("Setup", function (t) {
     clock = sinon.useFakeTimers();
-    cb();
-  },
-  'RecurrenceRule': {
-    'no endTime , startTime less than now': function (test) {
-      test.expect(3);
+    t.end()
+  })
+
+  t.test('RecurrenceRule', function(t) {
+    t.test('no endTime , startTime less than now', function (test) {
+      test.plan(3);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -29,13 +30,14 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    'no endTime , startTime greater than now': function (test) {
-      test.expect(1);
+    })
+
+    t.test('no endTime , startTime greater than now', function (test) {
+      test.plan(1);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -51,13 +53,13 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    'no startTime , endTime less than now': function (test) {
-      test.expect(0);
+    })
+    t.test('no startTime , endTime less than now', function (test) {
+      test.plan(0);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -73,13 +75,13 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    'no startTime , endTime greater than now': function (test) {
-      test.expect(2);
+    })
+    t.test('no startTime , endTime greater than now', function (test) {
+      test.plan(2);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -95,13 +97,13 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    'has startTime and endTime': function (test) {
-      test.expect(1);
+    })
+    t.test('has startTime and endTime', function (test) {
+      test.plan(1);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -118,15 +120,16 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    }
-  },
-  'Object Literal': {
-    'no endTime , startTime less than now': function (test) {
-      test.expect(3);
+    })
+  })
+
+  t.test('Object Literal', function(t) {
+    t.test('no endTime , startTime less than now', function (test) {
+      test.plan(3);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -139,13 +142,14 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    'no endTime , startTime greater than now': function (test) {
-      test.expect(1);
+    })
+
+    t.test('no endTime , startTime greater than now', function (test) {
+      test.plan(1);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -158,13 +162,14 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    'no startTime , endTime less than now': function (test) {
-      test.expect(0);
+    })
+
+    t.test('no startTime , endTime less than now', function (test) {
+      test.plan(0);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -177,13 +182,14 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    'no startTime , endTime greater than now': function (test) {
-      test.expect(2);
+    })
+
+    t.test('no startTime , endTime greater than now', function (test) {
+      test.plan(2);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -196,13 +202,14 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    'has startTime and endTime': function (test) {
-      test.expect(1);
+    })
+
+    t.test('has startTime and endTime', function (test) {
+      test.plan(1);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -216,15 +223,15 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    }
-  },
-  'cron-style': {
-    'no endTime , startTime less than now': function (test) {
-      test.expect(3);
+    })
+  })
+  t.test('cron-style', function(t) {
+    t.test('no endTime , startTime less than now', function (test) {
+      test.plan(3);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -237,13 +244,14 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    'no endTime , startTime greater than now': function (test) {
-      test.expect(1);
+    })
+
+    t.test('no endTime , startTime greater than now', function (test) {
+      test.plan(1);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -256,13 +264,14 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    'no startTime , endTime less than now': function (test) {
-      test.expect(0);
+    })
+
+    t.test('no startTime , endTime less than now', function (test) {
+      test.plan(0);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -275,13 +284,14 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    'no startTime , endTime greater than now': function (test) {
-      test.expect(2);
+    })
+
+    t.test('no startTime , endTime greater than now', function (test) {
+      test.plan(2);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -294,13 +304,14 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    'has startTime and endTime': function (test) {
-      test.expect(1);
+    })
+
+    t.test('has startTime and endTime', function (test) {
+      test.plan(1);
 
       var job = new schedule.Job(function () {
         test.ok(true);
@@ -314,14 +325,15 @@ module.exports = {
 
       setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    }
-  },
-  tearDown: function (cb) {
+    })
+  })
+
+  t.test("Restore", function (t) {
     clock.restore();
-    cb();
-  }
-};
+    t.end()
+  })
+})
