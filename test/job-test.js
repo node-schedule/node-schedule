@@ -255,7 +255,7 @@ test("Job", function (t) {
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
@@ -280,7 +280,7 @@ test("Job", function (t) {
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);

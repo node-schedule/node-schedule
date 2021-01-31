@@ -1,314 +1,331 @@
-var sinon = require('sinon');
+const test = require('tape');
+const sinon = require('sinon');
 const { RRule } = require('rrule');
-var main = require('../package.json').main;
-var schedule = require('../' + main);
+const main = require('../package.json').main;
+const schedule = require('../' + main);
 
-var clock;
-module.exports = {
-  ".scheduleJob(RRule String, fn)": {
-    setUp: function(cb) {
-      var now = Date.now();
-      clock = sinon.useFakeTimers();
-      clock.tick(now);
-      cb();
-    },
-    "Runs job every second": function(test) {
-      test.expect(3);
+let clock;
+test(".scheduleJob(RRule String, fn)", function(t) {
+  test('setup', function(t){
+    let now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
+    t.end();
+  });
 
-      var timeout = 3 * 1000;
-      var rrule = new RRule({
-          freq: RRule.SECONDLY
-      }).toString();
-
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
-
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
-
-      clock.tick(timeout);
-    },
-    "Runs job every minute": function(test) {
-      test.expect(3);
-
-      var timeout = 3 * 60 * 1000;
-
-      var rrule = new RRule({
-        freq: RRule.MINUTELY
-      }).toString();
-
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
-
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
-
-      clock.tick(timeout);
-    },
-    "Runs job every hour": function(test) {
-      test.expect(3);
-
-      var timeout = 3 * 60 * 60 * 1000;
-
-      var rrule = new RRule({
-        freq: RRule.HOURLY
-      }).toString();
-
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
-
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
-
-      clock.tick(timeout);
-    },
-    "Runs job every day": function(test) {
-      test.expect(3);
-
-      var timeout = 3 * 24 * 60 * 60 * 1000;
-
-      var rrule = new RRule({
-        freq: RRule.DAILY
-      }).toString();
-
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
-
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
-
-      clock.tick(timeout);
-    },
-    "Runs job every week": function(test) {
-      test.expect(3);
-
-      var timeout = 3 * 7 * 24 * 60 * 60 * 1000;
-
-      var rrule = new RRule({
-        freq: RRule.WEEKLY
-      }).toString();
-
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
-
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
-
-      clock.tick(timeout);
-    },
-    "Runs job every month": function(test) {
-      test.expect(48);
-
-      var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
-
-      var rrule = new RRule({
-        freq: RRule.MONTHLY,
-        bymonthday: 1
-      }).toString();
-
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
-
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
-
-      clock.tick(timeout);
-
-    },
-    "Runs job every year": function(test) {
-      test.expect(4);
-
-      var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
-
-      var rrule = new RRule({
-        freq: RRule.YEARLY
-      }).toString();
-
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
-
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
-
-      clock.tick(timeout);
-    },
-    tearDown: function(cb) {
+  test("teardown", function(t) {
       clock.restore();
-      cb();
-    }
-  },
-  ".scheduleJob(RRule, fn)": {
-    setUp: function(cb) {
-      var now = Date.now();
-      clock = sinon.useFakeTimers();
-      clock.tick(now);
-      cb();
-    },
-    "Runs job every second": function(test) {
-      test.expect(3);
+      t.end();
+  });
+    
+  t.test("Runs job every second", function(test) {
+    test.expect(3);
 
-      var timeout = 3 * 1000;
-      var rrule = new RRule({
-          freq: RRule.SECONDLY
-      });
+    let timeout = 3 * 1000;
+    let rrule = new RRule({
+        freq: RRule.SECONDLY
+    }).toString();
 
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
 
-      clock.tick(timeout);
-    },
-    "Runs job every minute": function(test) {
-      test.expect(3);
+    clock.tick(timeout);
+    test.end()
+  });
 
-      var timeout = 3 * 60 * 1000;
+  t.test("Runs job every minute", function(test) {
+    test.expect(3);
 
-      var rrule = new RRule({
-        freq: RRule.MINUTELY
-      });
+    let timeout = 3 * 60 * 1000;
 
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
+    let rrule = new RRule({
+      freq: RRule.MINUTELY
+    }).toString();
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
 
-      clock.tick(timeout);
-    },
-    "Runs job every hour": function(test) {
-      test.expect(3);
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
 
-      var timeout = 3 * 60 * 60 * 1000;
+    clock.tick(timeout);
+  });
 
-      var rrule = new RRule({
-        freq: RRule.HOURLY
-      });
+  t.test("Runs job every hour", function(test) {
+    test.expect(3);
 
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
+    let timeout = 3 * 60 * 60 * 1000;
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+    let rrule = new RRule({
+      freq: RRule.HOURLY
+    }).toString();
 
-      clock.tick(timeout);
-    },
-    "Runs job every day": function(test) {
-      test.expect(3);
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
 
-      var timeout = 3 * 24 * 60 * 60 * 1000;
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
 
-      var rrule = new RRule({
-        freq: RRule.DAILY
-      });
+    clock.tick(timeout);
+  });
 
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
+  t.test("Runs job every day", function(test) {
+    test.expect(3);
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+    let timeout = 3 * 24 * 60 * 60 * 1000;
 
-      clock.tick(timeout);
-    },
-    "Runs job every week": function(test) {
-      test.expect(3);
+    let rrule = new RRule({
+      freq: RRule.DAILY
+    }).toString();
 
-      var timeout = 3 * 7 * 24 * 60 * 60 * 1000;
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
 
-      var rrule = new RRule({
-        freq: RRule.WEEKLY
-      });
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
 
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
+    clock.tick(timeout);
+  });
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+  t.test("Runs job every week", function(test) {
+    test.expect(3);
 
-      clock.tick(timeout);
-    },
-    "Runs job every month": function(test) {
-      test.expect(48);
+    let timeout = 3 * 7 * 24 * 60 * 60 * 1000;
 
-      var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
+    let rrule = new RRule({
+      freq: RRule.WEEKLY
+    }).toString();
 
-      var rrule = new RRule({
-        freq: RRule.MONTHLY,
-        bymonthday: 1
-      });
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
 
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+    clock.tick(timeout);
+  });
 
-      clock.tick(timeout);
+  t.test("Runs job every month", function(test) {
+    test.expect(48);
 
-    },
-    "Runs job every year": function(test) {
-      test.expect(4);
+    let timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
 
-      var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
+    let rrule = new RRule({
+      freq: RRule.MONTHLY,
+      bymonthday: 1
+    }).toString();
 
-      var rrule = new RRule({
-        freq: RRule.YEARLY
-      });
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
 
-      var job = schedule.scheduleJob(rrule, function() {
-        test.ok(true);
-      });
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
 
-      setTimeout(function() {
-        job.cancel();
-        test.done();
-      }, timeout);
+    clock.tick(timeout);
 
-      clock.tick(timeout);
-    },
-    tearDown: function(cb) {
-      clock.restore();
-      cb();
-    }
-  }
-};
+  });
+
+  t.test("Runs job every year", function(test) {
+    test.expect(4);
+
+    let timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
+
+    let rrule = new RRule({
+      freq: RRule.YEARLY
+    }).toString();
+
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
+
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
+
+    clock.tick(timeout);
+  });
+});
+
+test(".scheduleJob(RRule, fn)", function(t){
+  test("setup", function(t) {
+    let now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
+    t.end();
+  });
+
+  test('teardown', function(t) {
+    clock.restore();
+    t.end();
+  });
+
+  t.test("Runs job every second", function(test) {
+    test.expect(3);
+
+    let timeout = 3 * 1000;
+    let rrule = new RRule({
+        freq: RRule.SECONDLY
+    });
+
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
+
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
+
+    clock.tick(timeout);
+  });
+
+  t.test("Runs job every minute", function(test) {
+    test.expect(3);
+
+    let timeout = 3 * 60 * 1000;
+
+    let rrule = new RRule({
+      freq: RRule.MINUTELY
+    });
+
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
+
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
+
+    clock.tick(timeout);
+  });
+
+  t.test("Runs job every hour", function(test) {
+    test.expect(3);
+
+    let timeout = 3 * 60 * 60 * 1000;
+
+    let rrule = new RRule({
+      freq: RRule.HOURLY
+    });
+
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
+
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
+
+    clock.tick(timeout);
+  });
+
+  t.test("Runs job every day", function(test) {
+    test.expect(3);
+
+    let timeout = 3 * 24 * 60 * 60 * 1000;
+
+    let rrule = new RRule({
+      freq: RRule.DAILY
+    });
+
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
+
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
+
+    clock.tick(timeout);
+  });
+
+  t.test("Runs job every week", function(test) {
+    test.expect(3);
+
+    let timeout = 3 * 7 * 24 * 60 * 60 * 1000;
+
+    let rrule = new RRule({
+      freq: RRule.WEEKLY
+    });
+
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
+
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
+
+    clock.tick(timeout);
+  });
+
+  t.test("Runs job every month", function(test) {
+    test.expect(48);
+
+    let timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
+
+    let rrule = new RRule({
+      freq: RRule.MONTHLY,
+      bymonthday: 1
+    });
+
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
+
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
+
+    clock.tick(timeout);
+
+  });
+
+  t.test("Runs job every year", function(test) {
+    test.expect(4);
+
+    let timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
+
+    let rrule = new RRule({
+      freq: RRule.YEARLY
+    });
+
+    let job = schedule.scheduleJob(rrule, function() {
+      test.ok(true);
+    });
+
+    setTimeout(function() {
+      job.cancel();
+      test.end();
+    }, timeout);
+
+    clock.tick(timeout);
+  });
+});
