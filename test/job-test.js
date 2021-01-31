@@ -4,6 +4,7 @@
 const test = require('tape');
 const sinon = require('sinon');
 const main = require('../package.json').main;
+const {RRule} = require('rrule');
 const schedule = require('../' + main);
 const es6 = require('./es6/job-test')(schedule);
 
@@ -237,6 +238,54 @@ test("Job", function (t) {
       clock.tick(1000);
     })
   })
+
+  t.test("#schedule(RRule)", function(t){
+    t.test("Runs job at interval based on rrule, repeating indefinitely", function(test) {
+      test.expect(3);
+
+      var job = new schedule.Job(function() {
+        test.ok(true);
+      });
+
+      var rrule = new RRule({
+        freq: RRule.SECONDLY
+      });
+
+      job.schedule(rrule);
+
+      setTimeout(function() {
+        job.cancel();
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    });
+
+    t.test("Job emits 'scheduled' event for every next invocation",  function(test) {
+      // Job will run 3 times but be scheduled 4 times, 4th run never happens
+      // due to cancel.
+      test.expect(4);
+
+      var job = new schedule.Job(function() {});
+
+      job.on('scheduled', function() {
+        test.ok(true);
+      });
+
+      var rrule = new RRule({
+        freq: RRule.SECONDLY
+      });
+
+      job.schedule(rrule);
+
+      setTimeout(function() {
+        job.cancel();
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    });
+  });
 
   t.test("#schedule({...})", function (t) {
     t.test("Runs job at interval based on object, repeating indefinitely", function (test) {
