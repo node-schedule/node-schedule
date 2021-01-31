@@ -32,7 +32,7 @@ test("Date methods", function (t) {
     t.test("Should not accept invalid string as valid date", function(test) {
       test.plan(1);
 
-      var job = schedule.scheduleJob("hello!!", function() {
+      const job = schedule.scheduleJob('hello!!', function () {
       });
 
       test.equal(job, null);
