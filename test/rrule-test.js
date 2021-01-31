@@ -8,328 +8,289 @@ const schedule = require('../' + main);
 
 let clock;
 
-test(".scheduleJob(RRule String, fn)", function(t) {
-  t.test('setup', function(t) {
-    let now = Date.now();
+test(".scheduleJob(RRule String, fn)", function(t) {    
+  t.test("Runs job every second", function(test) {
+    const now = Date.now();
     clock = sinon.useFakeTimers();
     clock.tick(now);
-    t.end();
-  });
-
-  t.test("teardown", function(t) {
-    clock.restore();
-    t.end();
-  });
-    
-  t.test("Runs job every second", function(test) {
     test.plan(3);
 
-    let timeout = 3 * 1000;
-    let rrule = new RRule({
+    const timeout = 3 * 1000;
+    const rrule = new RRule({
       freq: RRule.SECONDLY
     }).toString();
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
+    job.cancel();
+    test.end();
   });
 
   t.test("Runs job every minute", function(test) {
+    clock.restore();
+    const now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
     test.plan(3);
 
-    let timeout = 3 * 60 * 1000;
-
-    let rrule = new RRule({
+    const timeout = 3 * 60 * 1000;
+    const rrule = new RRule({
       freq: RRule.MINUTELY
     }).toString();
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
+    job.cancel();
+    test.end();
   });
 
   t.test("Runs job every hour", function(test) {
+    clock.restore();
+    const now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
     test.plan(3);
 
-    let timeout = 3 * 60 * 60 * 1000;
-
-    let rrule = new RRule({
+    const timeout = 3 * 60 * 60 * 1000;
+    const rrule = new RRule({
       freq: RRule.HOURLY
     }).toString();
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
+    job.cancel();
+    test.end();
   });
 
   t.test("Runs job every day", function(test) {
+    clock.restore();
+    const now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
     test.plan(3);
 
-    let timeout = 3 * 24 * 60 * 60 * 1000;
-
-    let rrule = new RRule({
+    const timeout = 3 * 24 * 60 * 60 * 1000;
+    const rrule = new RRule({
       freq: RRule.DAILY
     }).toString();
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
+    job.cancel();
+    test.end();
   });
 
   t.test("Runs job every week", function(test) {
+    clock.restore();
+    const now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
     test.plan(3);
 
-    let timeout = 3 * 7 * 24 * 60 * 60 * 1000;
-
-    let rrule = new RRule({
+    const timeout = 3 * 7 * 24 * 60 * 60 * 1000;
+    const rrule = new RRule({
       freq: RRule.WEEKLY
     }).toString();
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
+    job.cancel();
+    test.end();
   });
 
   t.test("Runs job every month", function(test) {
+    clock.restore();
+    const now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
     test.plan(48);
 
-    let timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
-
-    let rrule = new RRule({
+    const timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
+    const rrule = new RRule({
       freq: RRule.MONTHLY,
       bymonthday: 1
     }).toString();
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
-
+    job.cancel();
+    test.end();
   });
 
   t.test("Runs job every year", function(test) {
+    clock.restore();
+    const now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
     test.plan(4);
 
-    let timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
-
-    let rrule = new RRule({
+    const timeout = 4 * (365.25 * (24 * (60 * (60 * 1000))));
+    const rrule = new RRule({
       freq: RRule.YEARLY
     }).toString();
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
+    job.cancel();
+    test.end();
   });
-  t.end();
+
 });
 
 test(".scheduleJob(RRule, fn)", function(t) {
-  t.test("setup", function(t) {
-    let now = Date.now();
+  t.test("Runs job every second", function(test) {
+    clock.restore();
+    const now = Date.now();
     clock = sinon.useFakeTimers();
     clock.tick(now);
-    t.end();
-  });
-
-  t.test('teardown', function(t) {
-    clock.restore();
-    t.end();
-  });
-
-  t.test("Runs job every second", function(test) {
     test.plan(3)
 
-    let timeout = 3 * 1000;
-    let rrule = new RRule({
+    const timeout = 3 * 1000;
+    const rrule = new RRule({
       freq: RRule.SECONDLY
     });
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
+    job.cancel();
+    test.end();
   });
 
   t.test("Runs job every minute", function(test) {
+    clock.restore();
+    const now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
     test.plan(3);
 
-    let timeout = 3 * 60 * 1000;
-
-    let rrule = new RRule({
+    const timeout = 3 * 60 * 1000;
+    const rrule = new RRule({
       freq: RRule.MINUTELY
     });
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
+    job.cancel();
+    test.end();
   });
 
   t.test("Runs job every hour", function(test) {
+    clock.restore();
+    const now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
     test.plan(3);
 
-    let timeout = 3 * 60 * 60 * 1000;
-
-    let rrule = new RRule({
+    const timeout = 3 * 60 * 60 * 1000;
+    const rrule = new RRule({
       freq: RRule.HOURLY
     });
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
+    job.cancel();
+    test.end();
   });
 
   t.test("Runs job every day", function(test) {
+    clock.restore();
+    const now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
     test.plan(3);
 
-    let timeout = 3 * 24 * 60 * 60 * 1000;
-
-    let rrule = new RRule({
+    const timeout = 3 * 24 * 60 * 60 * 1000;
+    const rrule = new RRule({
       freq: RRule.DAILY
     });
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
+    job.cancel();
+    test.end();
   });
 
   t.test("Runs job every week", function(test) {
+    clock.restore();
+    const now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
     test.plan(3);
 
-    let timeout = 3 * 7 * 24 * 60 * 60 * 1000;
-
-    let rrule = new RRule({
+    const timeout = 3 * 7 * 24 * 60 * 60 * 1000;
+    const rrule = new RRule({
       freq: RRule.WEEKLY
     });
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
+    job.cancel();
+    test.end();
   });
 
   t.test("Runs job every month", function(test) {
+    clock.restore();
+    const now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
     test.plan(48);
 
-    let timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
-
-    let rrule = new RRule({
+    const timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
+    const rrule = new RRule({
       freq: RRule.MONTHLY,
       bymonthday: 1
     });
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
-
+    job.cancel();
+    test.end();
   });
 
   t.test("Runs job every year", function(test) {
+    clock.restore();
+    const now = Date.now();
+    clock = sinon.useFakeTimers();
+    clock.tick(now);
     test.plan(4);
 
-    let timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
-
-    let rrule = new RRule({
+    const timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
+    const rrule = new RRule({
       freq: RRule.YEARLY
     });
-
-    let job = schedule.scheduleJob(rrule, function() {
+    const job = schedule.scheduleJob(rrule, function() {
       test.ok(true);
     });
 
-    setTimeout(function() {
-      job.cancel();
-      test.end();
-    }, timeout);
-
     clock.tick(timeout);
+    job.cancel();
+    test.end();
   });
-  t.end();
+
 });
