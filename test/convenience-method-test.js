@@ -375,7 +375,7 @@ test("Convenience method", function (t) {
 
   t.test(".rescheduleJob(job, RecurrenceRule)", function(t) {
     t.test("Reschedule jobs from RecurrenceRule to RecurrenceRule", function (test) {
-      test.plan(3);
+      test.plan(4);
 
       const timeout = 60 * 1000;
 

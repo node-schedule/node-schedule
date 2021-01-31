@@ -6,16 +6,17 @@ const { RRule } = require('rrule');
 const main = require('../package.json').main;
 const schedule = require('../' + main);
 
-let clock
+let clock;
+
 test(".scheduleJob(RRule String, fn)", function(t) {
-  test('setup', function(t){
+  t.test('setup', function(t) {
     let now = Date.now();
     clock = sinon.useFakeTimers();
     clock.tick(now);
     t.end();
   });
 
-  test("teardown", function(t) {
+  t.test("teardown", function(t) {
     clock.restore();
     t.end();
   });
@@ -38,7 +39,6 @@ test(".scheduleJob(RRule String, fn)", function(t) {
     }, timeout);
 
     clock.tick(timeout);
-    test.end()
   });
 
   t.test("Runs job every minute", function(test) {
@@ -168,17 +168,18 @@ test(".scheduleJob(RRule String, fn)", function(t) {
 
     clock.tick(timeout);
   });
+  t.end();
 });
 
 test(".scheduleJob(RRule, fn)", function(t) {
-  test("setup", function(t) {
+  t.test("setup", function(t) {
     let now = Date.now();
     clock = sinon.useFakeTimers();
     clock.tick(now);
     t.end();
   });
 
-  test('teardown', function(t) {
+  t.test('teardown', function(t) {
     clock.restore();
     t.end();
   });
@@ -330,4 +331,5 @@ test(".scheduleJob(RRule, fn)", function(t) {
 
     clock.tick(timeout);
   });
+  t.end();
 });
