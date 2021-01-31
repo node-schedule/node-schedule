@@ -13,6 +13,8 @@ It allows you to schedule jobs (arbitrary functions) for execution at
 specific dates, with optional recurrence rules. It only uses a single timer
 at any given time (rather than reevaluating upcoming jobs every second/minute).
 
+Node 6+ is supported.
+
 ## Usage
 
 ### Installation
@@ -76,9 +78,9 @@ The cron format consists of:
 Examples with the cron format:
 
 ```js
-var schedule = require('node-schedule');
+const schedule = require('node-schedule');
 
-var j = schedule.scheduleJob('42 * * * *', function(){
+const job = schedule.scheduleJob('42 * * * *', function(){
   console.log('The answer to life, the universe, and everything!');
 });
 ```
@@ -88,7 +90,7 @@ Execute a cron job when the minute is 42 (e.g. 19:42, 20:42, etc.).
 And:
 
 ```js
-var j = schedule.scheduleJob('0 17 ? * 0,4-6', function(){
+const job = schedule.scheduleJob('0 17 ? * 0,4-6', function(){
   console.log('Today is recognized by Rebecca Black!');
 });
 ```
@@ -97,16 +99,16 @@ Execute a cron job every 5 Minutes = */5 * * * *
 
 You can also get when it is scheduled to run for every invocation of the job:
 ```js
-var j = schedule.scheduleJob('0 1 * * *', function(fireDate){
+const job = schedule.scheduleJob('0 1 * * *', function(fireDate){
   console.log('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
 });
 ```
 This is useful when you need to check if there is a delay of the job invocation when the system is busy, or save a record of all invocations of a job for audit purpose.
 #### Unsupported Cron Features
 
-Currently, `W` (nearest weekday), `L` (last day of month/week), and `#` (nth weekday
-of the month) are not supported. Most other features supported by popular cron
-implementations should work just fine.
+Currently, `W` (nearest weekday) and `L` (last day of month/week) are not supported. 
+Most other features supported by popular cron implementations should work just fine, 
+including `#` (nth weekday of the month).
 
 [cron-parser] is used to parse crontab instructions.
 
@@ -116,10 +118,10 @@ Say you very specifically want a function to execute at 5:30am on December 21, 2
 Remember - in JavaScript - 0 - January, 11 - December.
 
 ```js
-var schedule = require('node-schedule');
-var date = new Date(2012, 11, 21, 5, 30, 0);
+const schedule = require('node-schedule');
+const date = new Date(2012, 11, 21, 5, 30, 0);
 
-var j = schedule.scheduleJob(date, function(){
+const job = schedule.scheduleJob(date, function(){
   console.log('The world is going to end today.');
 });
 ```
@@ -127,10 +129,10 @@ var j = schedule.scheduleJob(date, function(){
 To use current data in the future you can use binding:
 
 ```js
-var schedule = require('node-schedule');
-var date = new Date(2012, 11, 21, 5, 30, 0);
-var x = 'Tada!';
-var j = schedule.scheduleJob(date, function(y){
+const schedule = require('node-schedule');
+const date = new Date(2012, 11, 21, 5, 30, 0);
+const x = 'Tada!';
+const job = schedule.scheduleJob(date, function(y){
   console.log(y);
 }.bind(null,x));
 x = 'Changing Data';
@@ -144,12 +146,12 @@ You can build recurrence rules to specify when a job should recur. For instance,
 consider this rule, which executes the function every hour at 42 minutes after the hour:
 
 ```js
-var schedule = require('node-schedule');
+const schedule = require('node-schedule');
 
-var rule = new schedule.RecurrenceRule();
+const rule = new schedule.RecurrenceRule();
 rule.minute = 42;
 
-var j = schedule.scheduleJob(rule, function(){
+const job = schedule.scheduleJob(rule, function(){
   console.log('The answer to life, the universe, and everything!');
 });
 ```
@@ -159,12 +161,12 @@ object to specify a range of start and end values, with an optional step paramet
 For instance, this will print a message on Thursday, Friday, Saturday, and Sunday at 5pm:
 
 ```js
-var rule = new schedule.RecurrenceRule();
+const rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(4, 6)];
 rule.hour = 17;
 rule.minute = 0;
 
-var j = schedule.scheduleJob(rule, function(){
+const job = schedule.scheduleJob(rule, function(){
   console.log('Today is recognized by Rebecca Black!');
 });
 ```
@@ -172,11 +174,11 @@ var j = schedule.scheduleJob(rule, function(){
 Timezones are also supported. Here is an example of executing at the start of every day in the UTC timezone.
 
 ```js
-var rule = new schedule.RecurrenceRule();
+const rule = new schedule.RecurrenceRule();
 rule.hour = 0;
 rule.tz = 'Etc/UTC';
 
-var j = schedule.scheduleJob(rule, function(){
+const job = schedule.scheduleJob(rule, function(){
   console.log('A new day has begun in the UTC timezone!');
 });
 ```
@@ -206,7 +208,7 @@ To make things a little easier, an object literal syntax is also supported, like
 in this example which will log a message every Sunday at 2:30pm:
 
 ```js
-var j = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 0}, function(){
+const job = schedule.scheduleJob({hour: 14, minute: 30, dayOfWeek: 0}, function(){
   console.log('Time for tea!');
 });
 ```
@@ -217,9 +219,9 @@ It will run after 5 seconds and stop after 10 seconds in this example.
 The ruledat supports the above.
 
 ```js
-let startTime = new Date(Date.now() + 5000);
-let endTime = new Date(startTime.getTime() + 5000);
-var j = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * * * * *' }, function(){
+const startTime = new Date(Date.now() + 5000);
+const endTime = new Date(startTime.getTime() + 5000);
+const job = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * * * * *' }, function(){
   console.log('Time for tea!');
 });
 ```
@@ -253,8 +255,9 @@ This method returns a Date object for the planned next Invocation for this Job. 
 
 ## Contributing
 
-This module was originally developed by [Matt Patenaude], and is now maintained by
-[Tejas Manohar] and [other wonderful contributors].
+This module was originally developed by [Matt Patenaude] who eventually passed over maintainer's mantle over to [Tejas Manohar].   
+
+Currently it is being maintained by [Igor Savin] and [our amazing community].
 
 We'd love to get your contributions. Individuals making significant and valuable
 contributions are given commit-access to the project to contribute as they see fit.
@@ -272,7 +275,8 @@ Licensed under the **[MIT License] [license]**.
 [Contributing]: https://github.com/node-schedule/node-schedule/blob/master/CONTRIBUTING.md
 [Matt Patenaude]: https://github.com/mattpat
 [Tejas Manohar]: http://tejas.io
+[Igor Savin]: https://twitter.com/kibertoad
 [license]: https://github.com/node-schedule/node-schedule/blob/master/LICENSE
 [Tejas Manohar]: https://github.com/tejasmanohar
-[other wonderful contributors]: https://github.com/node-schedule/node-schedule/graphs/contributors
+[our amazing community]: https://github.com/node-schedule/node-schedule/graphs/contributors
 [cron-parser]: https://github.com/harrisiirak/cron-parser

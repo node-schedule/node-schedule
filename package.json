@@ -1,19 +1,20 @@
 {
   "name": "node-schedule",
-  "version": "1.3.2",
+  "version": "2.0.0",
   "description": "A cron-like and not-cron-like job scheduler for Node.",
   "keywords": [
     "schedule",
     "task",
     "job",
-    "cron"
+    "cron",
+    "in-memory"
   ],
   "license": "MIT",
   "main": "./lib/schedule.js",
   "scripts": {
-    "test": "nodeunit",
-    "test:coverage": "istanbul cover ./node_modules/.bin/nodeunit test",
-    "test:coverage-win": "istanbul cover ./node_modules/nodeunit/bin/nodeunit test",
+    "test": "tape test/*.js",
+    "coveralls": "nyc report --reporter=lcov",
+    "test:coverage": "nyc tape test/*.js",
     "lint": "eslint lib test",
     "lint:fix": "eslint --fix lib test"
   },
@@ -22,19 +23,33 @@
     "email": "matt@mattpatenaude.com",
     "url": "http://mattpatenaude.com"
   },
+  "contributors": [
+    {
+      "name": "Igor Savin",
+      "email": "kibertoad@gmail.com"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/node-schedule/node-schedule.git"
   },
   "dependencies": {
-    "cron-parser": "^2.18.0",
+    "cron-parser": "^3.1.0",
     "long-timeout": "0.1.1",
     "sorted-array-functions": "^1.3.0"
   },
   "devDependencies": {
     "eslint": "^7.18.0",
-    "istanbul": "^0.4.5",
-    "nodeunit": "~0.10.2",
-    "sinon": "^2.4.1"
-  }
+    "nyc": "^15.1.0",
+    "sinon": "^9.2.4",
+    "tape": "^5.1.1"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "files": [
+    "README.md",
+    "LICENSE",
+    "lib/*"
+  ]
 }

@@ -1,97 +1,105 @@
 
 'use strict';
 
-var sinon = require('sinon');
-var main = require('../package.json').main;
-var schedule = require('../' + main);
+const test = require('tape');
+const sinon = require('sinon');
+const main = require('../package.json').main;
+const schedule = require('../' + main);
 
-var clock;
-
-module.exports = {
-  setUp: function(cb) {
+test("Convenience method", function (t) {
+  let clock
+  t.test("Setup", function (t) {
     clock = sinon.useFakeTimers();
-    cb();
-  },
-  ".scheduleJob": {
-    "Returns Job instance": function(test) {
-      var job = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
+    t.end()
+  })
+
+  t.test(".scheduleJob", function(t) {
+    t.test("Returns Job instance", function (test) {
+      const job = schedule.scheduleJob(new Date(Date.now() + 1000), function () {
+      });
 
       test.ok(job instanceof schedule.Job);
 
       job.cancel();
-      test.done();
-    }
-  },
-  ".scheduleJob(Date, fn)": {
-    "Runs job once at some date": function(test) {
-      test.expect(1);
+      test.end();
+    })
+  })
+  t.test(".scheduleJob(Date, fn)", function(t) {
+    t.test("Runs job once at some date", function(test) {
+      test.plan(1);
 
       schedule.scheduleJob(new Date(Date.now() + 3000), function() {
         test.ok(true);
       });
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    "Job doesn't emit initial 'scheduled' event": function(test) {
-      var job = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
+    })
+
+    t.test("Job doesn't emit initial 'scheduled' event", function(test) {
+      const job = schedule.scheduleJob(new Date(Date.now() + 1000), function () {
+      });
 
       job.on('scheduled', function() {
         test.ok(false);
       });
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 1250);
 
       clock.tick(1250);
-    },
-    "Won't run job if scheduled in the past": function(test) {
-      test.expect(1);
-      var job = schedule.scheduleJob(new Date(Date.now() - 3000), function() {
+    })
+
+    t.test("Won't run job if scheduled in the past", function(test) {
+      test.plan(1);
+      const job = schedule.scheduleJob(new Date(Date.now() - 3000), function () {
         test.ok(false);
       });
 
       test.equal(job, null);
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 1000);
 
       clock.tick(1000);
-    }
-  },
-  ".scheduleJob(RecurrenceRule, fn)": {
-    "Runs job at interval based on recur rule, repeating indefinitely": function(test) {
-      test.expect(3);
+    })
+  })
 
-      var rule = new schedule.RecurrenceRule();
+  t.test(".scheduleJob(RecurrenceRule, fn)", function(t) {
+    t.test("Runs job at interval based on recur rule, repeating indefinitely", function(test) {
+      test.plan(3);
+
+      const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
 
-      var job = schedule.scheduleJob(rule, function() {
+      const job = schedule.scheduleJob(rule, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    "Job doesn't emit initial 'scheduled' event": function(test) {
+    })
+
+    t.test("Job doesn't emit initial 'scheduled' event", function(test) {
       /*
         * If this was Job#schedule it'd fire 4 times.
         */
-      test.expect(3);
+      test.plan(3);
 
-      var rule = new schedule.RecurrenceRule();
+      const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
 
-      var job = new schedule.scheduleJob(rule, function() {});
+      const job = new schedule.scheduleJob(rule, function () {
+      });
 
       job.on('scheduled', function(runOnDate) {
         test.ok(true);
@@ -99,58 +107,62 @@ module.exports = {
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    "Doesn't invoke job if recur rule schedules it in the past": function(test) {
-      test.expect(1);
-      var rule = new schedule.RecurrenceRule();
+    })
+
+    t.test("Doesn't invoke job if recur rule schedules it in the past", function(test) {
+      test.plan(1);
+      const rule = new schedule.RecurrenceRule();
       rule.year = 1960;
 
-      var job = schedule.scheduleJob(rule, function() {
+      const job = schedule.scheduleJob(rule, function () {
         test.ok(false);
       });
-      
+
       test.equal(job, null);
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 1000);
 
       clock.tick(1000);
-    }
-  },
-  ".scheduleJob({...}, fn)": {
-    "Runs job at interval based on object, repeating indefinitely": function(test) {
-      test.expect(3);
+    })
+  })
 
-      var job = new schedule.scheduleJob({
+  t.test(".scheduleJob({...}, fn)", function(t) {
+    t.test("Runs job at interval based on object, repeating indefinitely", function(test) {
+      test.plan(3);
+
+      const job = new schedule.scheduleJob({
         second: null // Fire every second
-      }, function() {
+      }, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    "Job doesn't emit initial 'scheduled' event": function(test) {
+    })
+
+    t.test("Job doesn't emit initial 'scheduled' event", function(test) {
       /*
         * With Job#schedule this would be 3:
         *  scheduled at time 0
         *  scheduled at time 1000
         *  scheduled at time 2000
         */
-      test.expect(2);
+      test.plan(2);
 
-      var job = schedule.scheduleJob({
+      const job = schedule.scheduleJob({
         second: null // fire every second
-      }, function() {});
+      }, function () {
+      });
 
       job.on('scheduled', function() {
         test.ok(true);
@@ -158,54 +170,58 @@ module.exports = {
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, 2250);
 
       clock.tick(2250);
-    },
-    "Doesn't invoke job if object schedules it in the past": function(test) {
-      test.expect(1);
-    
-      var job = schedule.scheduleJob({
+    })
+
+    t.test("Doesn't invoke job if object schedules it in the past", function(test) {
+      test.plan(1);
+
+      const job = schedule.scheduleJob({
         year: 1960
-      }, function() {
+      }, function () {
         test.ok(false);
       });
-      
+
       test.equal(job, null);
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 1000);
 
       clock.tick(1000);
-    }
-  },
-  ".scheduleJob({...}, {...}, fn)": {
-    "Callback called for each job if callback is provided": function(test) {
-      test.expect(3);
+    })
+  })
 
-      var job = new schedule.scheduleJob({
+  t.test(".scheduleJob({...}, {...}, fn)", function(t) {
+    t.test("Callback called for each job if callback is provided", function(test) {
+      test.plan(3);
+
+      const job = new schedule.scheduleJob({
         second: null // Fire every second
-      }, function() {}, function() {
+      }, function () {
+      }, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    }
-  },
-  ".rescheduleJob(job, {...})": {
-    "Reschedule jobs from object based to object based": function(test) {
-      test.expect(3);
+    })
+  })
 
-      var job = new schedule.scheduleJob({
+  t.test(".rescheduleJob(job, {...})", function(t) {
+    t.test("Reschedule jobs from object based to object based", function(test) {
+      test.plan(3);
+
+      const job = new schedule.scheduleJob({
         second: null
-      }, function() {
+      }, function () {
         test.ok(true);
       });
 
@@ -217,19 +233,20 @@ module.exports = {
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, 5000);
 
       clock.tick(5000);
-    },
-    "Reschedule jobs from every minutes to every second": function(test) {
-      test.expect(3);
+    })
 
-      var timeout = 60 * 1000;
+    t.test("Reschedule jobs from every minutes to every second", function(test) {
+      test.plan(3);
 
-      var job = new schedule.scheduleJob({
+      const timeout = 60 * 1000;
+
+      const job = new schedule.scheduleJob({
         minute: null
-      }, function() {
+      }, function () {
         test.ok(true);
       });
 
@@ -241,17 +258,18 @@ module.exports = {
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, timeout + 2250);
 
       clock.tick(timeout + 2250);
-    }
-  },
-  ".rescheduleJob(job, Date)": {
-    "Reschedule jobs from Date to Date": function(test) {
-      test.expect(1);
+    })
+  })
 
-      var job = new schedule.scheduleJob(new Date(Date.now() + 3000), function() {
+  t.test(".rescheduleJob(job, Date)", function(t) {
+    t.test("Reschedule jobs from Date to Date", function(test) {
+      test.plan(1);
+
+      const job = new schedule.scheduleJob(new Date(Date.now() + 3000), function () {
         test.ok(true);
       });
 
@@ -260,15 +278,16 @@ module.exports = {
       }, 1000);
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 6150);
 
       clock.tick(6150);
-    },
-    "Reschedule jobs that has been executed": function(test) {
-      test.expect(2);
+    })
 
-      var job = new schedule.scheduleJob(new Date(Date.now() + 1000), function() {
+    t.test("Reschedule jobs that has been executed", function(test) {
+      test.plan(2);
+
+      const job = new schedule.scheduleJob(new Date(Date.now() + 1000), function () {
         test.ok(true);
       });
 
@@ -277,113 +296,119 @@ module.exports = {
       }, 2000);
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 5150);
 
       clock.tick(5150);
-    }
-  },
-  ".rescheduleJob(job, RecurrenceRule)": {
-    "Reschedule jobs from RecurrenceRule to RecurrenceRule": function(test) {
-      test.expect(3);
+    })
+  })
 
-      var timeout = 60 * 1000;
+  t.test(".rescheduleJob(job, RecurrenceRule)", function(t) {
+    t.test("Reschedule jobs from RecurrenceRule to RecurrenceRule", function (test) {
+      test.plan(3);
 
-      var rule = new schedule.RecurrenceRule();
+      const timeout = 60 * 1000;
+
+      const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
 
-      var job = schedule.scheduleJob(rule, function() {
+      const job = schedule.scheduleJob(rule, function () {
         test.ok(true);
       });
 
-      var newRule = new schedule.RecurrenceRule();
+      const newRule = new schedule.RecurrenceRule();
       newRule.minute = null;
 
-      setTimeout(function() {
+      setTimeout(function () {
         schedule.rescheduleJob(job, newRule);
       }, 2250);
 
-      setTimeout(function() {
+      setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, timeout + 2250);
 
       clock.tick(timeout + 2250);
-    },
-    "Reschedule jobs from RecurrenceRule to Date": function(test) {
-      test.expect(3);
+    })
 
-      var rule = new schedule.RecurrenceRule();
+    t.test("Reschedule jobs from RecurrenceRule to Date", function (test) {
+      test.plan(3);
+
+      const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
 
-      var job = schedule.scheduleJob(rule, function() {
+      const job = schedule.scheduleJob(rule, function () {
         test.ok(true);
       });
 
-      setTimeout(function() {
+      setTimeout(function () {
         schedule.rescheduleJob(job, new Date(Date.now() + 2000));
       }, 2150);
 
-      setTimeout(function() {
-        test.done();
+      setTimeout(function () {
+        test.end();
       }, 4250);
 
       clock.tick(4250);
-    },
-    "Reschedule jobs from RecurrenceRule to {...}": function(test) {
-      test.expect(3);
+    })
 
-      var timeout = 60 * 1000;
+    t.test("Reschedule jobs from RecurrenceRule to {...}", function (test) {
+      test.plan(3);
 
-      var rule = new schedule.RecurrenceRule();
+      const timeout = 60 * 1000;
+
+      const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
 
-      var job = schedule.scheduleJob(rule, function() {
+      const job = schedule.scheduleJob(rule, function () {
         test.ok(true);
       });
 
-      setTimeout(function() {
+      setTimeout(function () {
         schedule.rescheduleJob(job, {
           minute: null
         });
       }, 2150);
 
-      setTimeout(function() {
+      setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, timeout + 2150);
 
       clock.tick(timeout + 2150);
-    },
-    "Reschedule jobs that is not available": function(test) {
-      test.expect(4);
+    })
 
-      var rule = new schedule.RecurrenceRule();
+    t.test("Reschedule jobs that is not available", function (test) {
+      test.plan(4);
+      clock = sinon.useFakeTimers();
+
+      const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
 
-      var job = schedule.scheduleJob(rule, function() {
+      const job = schedule.scheduleJob(rule, function () {
         test.ok(true);
       });
 
-      setTimeout(function() {
+      setTimeout(function () {
         schedule.rescheduleJob(null, new Date(Date.now() + 2000));
       }, 2150);
 
-      setTimeout(function() {
+      setTimeout(function () {
         job.cancel();
-        test.done();
+        test.end();
       }, 4250);
 
       clock.tick(4250);
-    }
-  },
-  '.rescheduleJob("job name", {...})': {
-    "Reschedule jobs from object based to object based": function(test) {
-      test.expect(3);
+    })
+  })
 
-      var job = new schedule.scheduleJob({
+  t.test('.rescheduleJob("job name", {...})', function(t) {
+    t.test("Reschedule jobs from object based to object based", function(test) {
+      test.plan(3);
+
+      const job = new schedule.scheduleJob({
         second: null
-      }, function() {
+      }, function () {
         test.ok(true);
       });
 
@@ -395,19 +420,20 @@ module.exports = {
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, 5000);
 
       clock.tick(5000);
-    },
-    "Reschedule jobs from every minutes to every second": function(test) {
-      test.expect(3);
+    })
 
-      var timeout = 60 * 1000;
+    t.test("Reschedule jobs from every minutes to every second", function(test) {
+      test.plan(3);
 
-      var job = new schedule.scheduleJob({
+      const timeout = 60 * 1000;
+
+      const job = new schedule.scheduleJob({
         minute: null
-      }, function() {
+      }, function () {
         test.ok(true);
       });
 
@@ -419,17 +445,17 @@ module.exports = {
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, timeout + 2250);
 
       clock.tick(timeout + 2250);
-    }
-  },
-  '.rescheduleJob("job name", Date)': {
-    "Reschedule jobs from Date to Date": function(test) {
-      test.expect(1);
+    })
+  })
+  t.test('.rescheduleJob("job name", Date)', function(t) {
+    t.test("Reschedule jobs from Date to Date", function(test) {
+      test.plan(1);
 
-      var job = new schedule.scheduleJob(new Date(Date.now() + 3000), function() {
+      const job = new schedule.scheduleJob(new Date(Date.now() + 3000), function () {
         test.ok(true);
       });
 
@@ -438,15 +464,15 @@ module.exports = {
       }, 1000);
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 6150);
 
       clock.tick(6150);
-    },
-    "Reschedule jobs that has been executed": function(test) {
-      test.expect(2);
+    })
+    t.test("Reschedule jobs that has been executed", function(test) {
+      test.plan(2);
 
-      var job = new schedule.scheduleJob(new Date(Date.now() + 1000), function() {
+      const job = new schedule.scheduleJob(new Date(Date.now() + 1000), function () {
         test.ok(true);
       });
 
@@ -455,26 +481,27 @@ module.exports = {
       }, 2000);
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 5150);
 
       clock.tick(5150);
-    }
-  },
-  '.rescheduleJob("job name", RecurrenceRule)': {
-    "Reschedule jobs from RecurrenceRule to RecurrenceRule": function(test) {
-      test.expect(3);
+    })
+  })
+  t.test('.rescheduleJob("job name", RecurrenceRule)', function(t) {
+    t.test("Reschedule jobs from RecurrenceRule to RecurrenceRule", function(test) {
+      test.plan(3);
+      clock = sinon.useFakeTimers();
 
-      var timeout = 60 * 1000;
+      const timeout = 60 * 1000;
 
-      var rule = new schedule.RecurrenceRule();
+      const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
 
-      var job = schedule.scheduleJob(rule, function() {
+      const job = schedule.scheduleJob(rule, function () {
         test.ok(true);
       });
 
-      var newRule = new schedule.RecurrenceRule();
+      const newRule = new schedule.RecurrenceRule();
       newRule.minute = null;
 
       setTimeout(function() {
@@ -483,18 +510,19 @@ module.exports = {
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, timeout + 2250);
 
       clock.tick(timeout + 2250);
-    },
-    "Reschedule jobs from RecurrenceRule to Date": function(test) {
-      test.expect(3);
+    })
 
-      var rule = new schedule.RecurrenceRule();
+    t.test("Reschedule jobs from RecurrenceRule to Date", function(test) {
+      test.plan(3);
+
+      const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
 
-      var job = schedule.scheduleJob(rule, function() {
+      const job = schedule.scheduleJob(rule, function () {
         test.ok(true);
       });
 
@@ -503,20 +531,21 @@ module.exports = {
       }, 2150);
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 4250);
 
       clock.tick(4250);
-    },
-    "Reschedule jobs from RecurrenceRule to {...}": function(test) {
-      test.expect(3);
+    })
 
-      var timeout = 60 * 1000;
+    t.test("Reschedule jobs from RecurrenceRule to {...}", function(test) {
+      test.plan(3);
 
-      var rule = new schedule.RecurrenceRule();
+      const timeout = 60 * 1000;
+
+      const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
 
-      var job = schedule.scheduleJob(rule, function() {
+      const job = schedule.scheduleJob(rule, function () {
         test.ok(true);
       });
 
@@ -528,18 +557,19 @@ module.exports = {
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, timeout + 2150);
 
       clock.tick(timeout + 2150);
-    },
-    "Reschedule jobs that is not available": function(test) {
-      test.expect(4);
+    })
 
-      var rule = new schedule.RecurrenceRule();
+    t.test("Reschedule jobs that is not available", function(test) {
+      test.plan(4);
+
+      const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
 
-      var job = schedule.scheduleJob(rule, function() {
+      const job = schedule.scheduleJob(rule, function () {
         test.ok(true);
       });
 
@@ -549,19 +579,21 @@ module.exports = {
 
       setTimeout(function() {
         job.cancel();
-        test.done();
+        test.end();
       }, 4250);
 
       clock.tick(4250);
-    }
-  },
-  ".cancelJob(Job)": {
-    "Prevents all future invocations of Job passed in": function(test) {
-      test.expect(2);
+    })
+  })
 
-      var job = schedule.scheduleJob({
+  t.test(".cancelJob(Job)", function(t) {
+    t.test("Prevents all future invocations of Job passed in", function(test) {
+      test.plan(2);
+      clock = sinon.useFakeTimers();
+
+      const job = schedule.scheduleJob({
         second: null
-      }, function() {
+      }, function () {
         test.ok(true);
       });
 
@@ -570,15 +602,17 @@ module.exports = {
       }, 2250);
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    "Can cancel Jobs scheduled with Job#schedule": function(test) {
-      test.expect(2);
+    })
 
-      var job = new schedule.Job(function() {
+    t.test("Can cancel Jobs scheduled with Job#schedule", function(test) {
+      test.plan(2);
+      clock = sinon.useFakeTimers();
+
+      const job = new schedule.Job(function () {
         test.ok(true);
       });
 
@@ -591,17 +625,19 @@ module.exports = {
       }, 2250);
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
-    "Job emits 'canceled' event": function(test) {
-      test.expect(1);
+    })
 
-      var job = schedule.scheduleJob({
+    t.test("Job emits 'canceled' event", function(test) {
+      test.plan(1);
+
+      const job = schedule.scheduleJob({
         second: null
-      }, function() {});
+      }, function () {
+      });
 
       job.on('canceled', function() {
         test.ok(true);
@@ -609,19 +645,20 @@ module.exports = {
 
       setTimeout(function() {
         schedule.cancelJob(job);
-        test.done();
+        test.end();
       }, 1250);
 
       clock.tick(1250);
-    }
-  },
-  '.cancelJob("job name")': {
-    "Prevents all future invocations of Job identified by name": function(test) {
-      test.expect(2);
+    })
+  })
 
-      var job = schedule.scheduleJob({
+  t.test('.cancelJob("job name")', function(t) {
+    t.test("Prevents all future invocations of Job identified by name", function(test) {
+      test.plan(2);
+
+      const job = schedule.scheduleJob({
         second: null
-      }, function() {
+      }, function () {
         test.ok(true);
       });
 
@@ -630,16 +667,16 @@ module.exports = {
       }, 2250);
 
       setTimeout(function() {
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    },
+    })
     /*
-    "Can cancel Jobs scheduled with Job#schedule": function(test) {
-      test.expect(2);
+    "Can cancel Jobs scheduled with Job#schedule", function(test) {
+      test.plan(2);
 
-      var job = new schedule.Job(function() {
+      const job = new schedule.Job(function() {
       test.ok(true);
       });
 
@@ -652,15 +689,17 @@ module.exports = {
       }, 2250);
 
       setTimeout(function() {
-      test.done();
+      test.end();
       }, 3250);
     },*/
-    "Job emits 'canceled' event": function(test) {
-      test.expect(1);
 
-      var job = schedule.scheduleJob({
+    t.test("Job emits 'canceled' event", function(test) {
+      test.plan(1);
+
+      const job = schedule.scheduleJob({
         second: null
-      }, function() {});
+      }, function () {
+      });
 
       job.on('canceled', function() {
         test.ok(true);
@@ -668,17 +707,19 @@ module.exports = {
 
       setTimeout(function() {
         schedule.cancelJob(job.name);
-        test.done();
+        test.end();
       }, 1250);
 
       clock.tick(1250);
-    },
-    "Does nothing if no job found by that name": function(test) {
-      test.expect(3);
+    })
 
-      var job = schedule.scheduleJob({
+    t.test("Does nothing if no job found by that name", function(test) {
+      test.plan(3);
+      clock = sinon.useFakeTimers();
+
+      const job = schedule.scheduleJob({
         second: null
-      }, function() {
+      }, function () {
         test.ok(true);
       });
 
@@ -689,25 +730,28 @@ module.exports = {
 
       setTimeout(function() {
         job.cancel(); // prevent tests from hanging
-        test.done();
+        test.end();
       }, 3250);
 
       clock.tick(3250);
-    }
-  },
-  '.pendingInvocations()': {
-    "Retrieves pendingInvocations of the job": function(test) {
-      var job = schedule.scheduleJob(new Date(Date.now() + 1000), function() {});
+    })
+  })
+
+  t.test('.pendingInvocations()', function(t) {
+    t.test("Retrieves pendingInvocations of the job", function(test) {
+      const job = schedule.scheduleJob(new Date(Date.now() + 1000), function () {
+      });
 
       test.ok(job instanceof schedule.Job);
       test.ok(job.pendingInvocations()[0].job);
 
       job.cancel();
-      test.done();
-    }
-  },
-  tearDown: function(cb) {
+      test.end();
+    })
+  })
+
+  t.test("Restore", function (t) {
     clock.restore();
-    cb();
-  }
-};
+    t.end()
+  })
+})
