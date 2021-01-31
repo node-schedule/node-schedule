@@ -3,3 +3,17 @@
 ### Upgrading to version 2.0.0+
 
 * Node.js versions older than 6 are no longer supported, please update your environment before upgrading.
+* The `scheduleJob()` method no longer supports passing an object with the job method. If you were using an object, pass the job method directly.  
+
+  E.g. code that previously looked like this:
+  ```javascript
+  const obj = {
+   execute() {}
+  };
+  Scheduler.scheduleJob(obj);
+  ```
+  should be changed to something like this:
+  ```javascript
+  function execute() {}
+  Scheduler.scheduleJob(execute);
+  ```
