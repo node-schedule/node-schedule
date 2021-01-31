@@ -41,7 +41,7 @@
   "devDependencies": {
     "eslint": "^7.18.0",
     "nyc": "^15.1.0",
-    "sinon": "^2.4.1",
+    "sinon": "^5.1.1",
     "tape": "^5.1.1"
   },
   "engines": {
