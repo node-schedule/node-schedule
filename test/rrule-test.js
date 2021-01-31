@@ -1,10 +1,12 @@
+'use strict';
+
 const test = require('tape');
 const sinon = require('sinon');
 const { RRule } = require('rrule');
 const main = require('../package.json').main;
 const schedule = require('../' + main);
 
-let clock;
+let clock
 test(".scheduleJob(RRule String, fn)", function(t) {
   test('setup', function(t){
     let now = Date.now();
@@ -14,16 +16,16 @@ test(".scheduleJob(RRule String, fn)", function(t) {
   });
 
   test("teardown", function(t) {
-      clock.restore();
-      t.end();
+    clock.restore();
+    t.end();
   });
     
   t.test("Runs job every second", function(test) {
-    test.expect(3);
+    test.plan(3);
 
     let timeout = 3 * 1000;
     let rrule = new RRule({
-        freq: RRule.SECONDLY
+      freq: RRule.SECONDLY
     }).toString();
 
     let job = schedule.scheduleJob(rrule, function() {
@@ -40,7 +42,7 @@ test(".scheduleJob(RRule String, fn)", function(t) {
   });
 
   t.test("Runs job every minute", function(test) {
-    test.expect(3);
+    test.plan(3);
 
     let timeout = 3 * 60 * 1000;
 
@@ -61,7 +63,7 @@ test(".scheduleJob(RRule String, fn)", function(t) {
   });
 
   t.test("Runs job every hour", function(test) {
-    test.expect(3);
+    test.plan(3);
 
     let timeout = 3 * 60 * 60 * 1000;
 
@@ -82,7 +84,7 @@ test(".scheduleJob(RRule String, fn)", function(t) {
   });
 
   t.test("Runs job every day", function(test) {
-    test.expect(3);
+    test.plan(3);
 
     let timeout = 3 * 24 * 60 * 60 * 1000;
 
@@ -103,7 +105,7 @@ test(".scheduleJob(RRule String, fn)", function(t) {
   });
 
   t.test("Runs job every week", function(test) {
-    test.expect(3);
+    test.plan(3);
 
     let timeout = 3 * 7 * 24 * 60 * 60 * 1000;
 
@@ -124,7 +126,7 @@ test(".scheduleJob(RRule String, fn)", function(t) {
   });
 
   t.test("Runs job every month", function(test) {
-    test.expect(48);
+    test.plan(48);
 
     let timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
 
@@ -147,7 +149,7 @@ test(".scheduleJob(RRule String, fn)", function(t) {
   });
 
   t.test("Runs job every year", function(test) {
-    test.expect(4);
+    test.plan(4);
 
     let timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
 
@@ -168,7 +170,7 @@ test(".scheduleJob(RRule String, fn)", function(t) {
   });
 });
 
-test(".scheduleJob(RRule, fn)", function(t){
+test(".scheduleJob(RRule, fn)", function(t) {
   test("setup", function(t) {
     let now = Date.now();
     clock = sinon.useFakeTimers();
@@ -182,11 +184,11 @@ test(".scheduleJob(RRule, fn)", function(t){
   });
 
   t.test("Runs job every second", function(test) {
-    test.expect(3);
+    test.plan(3)
 
     let timeout = 3 * 1000;
     let rrule = new RRule({
-        freq: RRule.SECONDLY
+      freq: RRule.SECONDLY
     });
 
     let job = schedule.scheduleJob(rrule, function() {
@@ -202,7 +204,7 @@ test(".scheduleJob(RRule, fn)", function(t){
   });
 
   t.test("Runs job every minute", function(test) {
-    test.expect(3);
+    test.plan(3);
 
     let timeout = 3 * 60 * 1000;
 
@@ -223,7 +225,7 @@ test(".scheduleJob(RRule, fn)", function(t){
   });
 
   t.test("Runs job every hour", function(test) {
-    test.expect(3);
+    test.plan(3);
 
     let timeout = 3 * 60 * 60 * 1000;
 
@@ -244,7 +246,7 @@ test(".scheduleJob(RRule, fn)", function(t){
   });
 
   t.test("Runs job every day", function(test) {
-    test.expect(3);
+    test.plan(3);
 
     let timeout = 3 * 24 * 60 * 60 * 1000;
 
@@ -265,7 +267,7 @@ test(".scheduleJob(RRule, fn)", function(t){
   });
 
   t.test("Runs job every week", function(test) {
-    test.expect(3);
+    test.plan(3);
 
     let timeout = 3 * 7 * 24 * 60 * 60 * 1000;
 
@@ -286,7 +288,7 @@ test(".scheduleJob(RRule, fn)", function(t){
   });
 
   t.test("Runs job every month", function(test) {
-    test.expect(48);
+    test.plan(48);
 
     let timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
 
@@ -309,7 +311,7 @@ test(".scheduleJob(RRule, fn)", function(t){
   });
 
   t.test("Runs job every year", function(test) {
-    test.expect(4);
+    test.plan(4);
 
     let timeout = 4 * 365.25 * 24 * 60 * 60 * 1000;
 

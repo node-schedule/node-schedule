@@ -160,10 +160,10 @@ test("Convenience method", function (t) {
 
   t.test(".scheduleJob(RRule, fn)", function(t) {
     t.test("Runs job at interval based on RRule, repeating indefinitely", function(test) {
-      test.expect(3);
+      test.plan(3);
 
       let rrule = new RRule({
-          freq: RRule.SECONDLY
+        freq: RRule.SECONDLY
       });
 
       let job = schedule.scheduleJob(rrule, function() {
@@ -181,7 +181,7 @@ test("Convenience method", function (t) {
       /*
        * If this was Job#schedule it'd fire 4 times.
        */
-      test.expect(3);
+      test.plan(3);
 
       var rrule = new RRule({
         freq: RRule.SECONDLY

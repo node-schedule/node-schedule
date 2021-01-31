@@ -239,9 +239,9 @@ test("Job", function (t) {
     })
   })
 
-  t.test("#schedule(RRule)", function(t){
+  t.test("#schedule(RRule)", function(t) {
     t.test("Runs job at interval based on rrule, repeating indefinitely", function(test) {
-      test.expect(3);
+      test.plan(3);
 
       var job = new schedule.Job(function() {
         test.ok(true);
@@ -264,7 +264,7 @@ test("Job", function (t) {
     t.test("Job emits 'scheduled' event for every next invocation",  function(test) {
       // Job will run 3 times but be scheduled 4 times, 4th run never happens
       // due to cancel.
-      test.expect(4);
+      test.plan(4);
 
       var job = new schedule.Job(function() {});
 
