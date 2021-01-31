@@ -6,6 +6,8 @@ const sinon = require('sinon');
 const schedule = require('../lib/schedule');
 const es6 = require('./es6/job-test')(schedule);
 
+// ToDo this is failing on airtap, investigate if we are not closing something properly
+
 test("Job", function (t) {
   let clock
   t.test("Setup", function (t) {
@@ -600,19 +602,17 @@ test("Job", function (t) {
       clock.tick(3250);
     })
   })
-  t.test("When invoked manually", function (t) {
-    t.test("It returns the result of the job", function (test) {
-      test.plan(1);
+  t.test("When invoked manually, it returns the result of the job", { skip: false}, function (test) {
+    test.plan(1);
 
-      const job = new schedule.Job(function () {
-        return 1;
-      });
+    const job = new schedule.Job(function () {
+      return 1;
+    });
 
-      const result = job.invoke();
+    const result = job.invoke();
 
-      test.strictEqual(result, 1);
-      test.end();
-    })
+    test.strictEqual(result, 1);
+    test.end();
   })
 
   t.test("Restore", function (t) {
