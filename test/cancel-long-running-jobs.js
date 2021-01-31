@@ -1,13 +1,13 @@
 'use strict';
 
 const test = require('tape');
-const schedule = require('../lib/schedule');
+const { scheduleJob } = require('..');
 
 test('Cancel Long Running Job', function (t) {
 
   t.test('should work even when recurring jobs are to be run on the past', function (t) {
     let ok = true;
-    const job = schedule.scheduleJob('*/1 * * * * *', function () {
+    const job = scheduleJob('*/1 * * * * *', function () {
       t.ok(ok);
       const time = Date.now();
       while (ok && (Date.now() - time < 2000)) {
