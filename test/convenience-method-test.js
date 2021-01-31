@@ -5,6 +5,7 @@ const test = require('tape');
 const sinon = require('sinon');
 const main = require('../package.json').main;
 const schedule = require('../' + main);
+const {RRule} = require('rrule');
 
 test("Convenience method", function (t) {
   let clock
@@ -156,6 +157,50 @@ test("Convenience method", function (t) {
       clock.tick(1000);
     })
   })
+
+  t.test(".scheduleJob(RRule, fn)", function(t) {
+    t.test("Runs job at interval based on RRule, repeating indefinitely", function(test) {
+      test.expect(3);
+
+      let rrule = new RRule({
+          freq: RRule.SECONDLY
+      });
+
+      let job = schedule.scheduleJob(rrule, function() {
+        test.ok(true);
+      });
+
+      setTimeout(function() {
+        job.cancel();
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    });
+    t.test("Job doesn't emit initial 'scheduled' event",  function(test) {
+      /*
+       * If this was Job#schedule it'd fire 4 times.
+       */
+      test.expect(3);
+
+      var rrule = new RRule({
+        freq: RRule.SECONDLY
+      });
+
+      var job = schedule.scheduleJob(rrule, function() {});
+
+      job.on('scheduled', function() {
+        test.ok(true);
+      });
+
+      setTimeout(function() {
+        job.cancel();
+        test.done();
+      }, 3250);
+
+      clock.tick(3250);
+    });
+  });
 
   t.test(".scheduleJob({...}, fn)", function(t) {
     t.test("Runs job at interval based on object, repeating indefinitely", function(test) {
