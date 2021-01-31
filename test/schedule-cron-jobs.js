@@ -1,15 +1,15 @@
-
 'use strict';
 
 const test = require('tape');
 const sinon = require('sinon');
 const main = require('../package.json').main;
 const schedule = require('../' + main);
+const { runAtDate } = require('./utils/timerUtils')
 
 test(".scheduleJob(cron_expr, fn)", function (t) {
   let clock
   t.test("Setup", function (t) {
-    clock = sinon.useFakeTimers();
+    clock = sinon.useFakeTimers()
     t.end()
   })
 
@@ -100,35 +100,36 @@ test(".scheduleJob(cron_expr, fn)", function (t) {
 
   t.test("Runs job every month", function (t) {
     t.plan(48);
+    const clock = sinon.useFakeTimers()
 
-    var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000 + 150;
+    const timeout = 4 * 365.25 * 24 * 60 * 60 * 1000 + 150;
 
-    var job = schedule.scheduleJob('0 0 0 1 * *', function () {
+    const job = schedule.scheduleJob('0 0 0 1 * *', function () {
       t.ok(true);
     });
 
-    setTimeout(function () {
+    runAtDate(new Date(timeout), function () {
       job.cancel();
       t.end();
-    }, timeout);
+    })
 
     clock.tick(timeout);
-
   })
 
   t.test("Runs job every year", function (t) {
     t.plan(4);
+    const clock = sinon.useFakeTimers()
 
-    var timeout = 4 * 365.25 * 24 * 60 * 60 * 1000 + 150;
+    const timeout = 4 * 365.25 * 24 * 60 * 60 * 1000 + 150;
 
-    var job = schedule.scheduleJob('0 0 0 1 1 *', function () {
+    const job = schedule.scheduleJob('0 0 0 1 1 *', function () {
       t.ok(true);
     });
 
-    setTimeout(function () {
+    runAtDate(new Date(timeout), function () {
       job.cancel();
       t.end();
-    }, timeout);
+    })
 
     clock.tick(timeout);
   })
