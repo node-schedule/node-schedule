@@ -12,10 +12,9 @@
   "license": "MIT",
   "main": "./lib/schedule.js",
   "scripts": {
-    "test": "nodeunit",
-    "test:tape": "tape test/*.spec.js",
+    "test": "tape test/*.js",
     "coveralls": "nyc report --reporter=lcov",
-    "test:coverage": "nyc nodeunit test",
+    "test:coverage": "nyc tape test/*.js",
     "lint": "eslint lib test",
     "lint:fix": "eslint --fix lib test"
   },
