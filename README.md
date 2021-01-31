@@ -178,7 +178,7 @@ const rule = new schedule.RecurrenceRule();
 rule.hour = 0;
 rule.tz = 'Etc/UTC';
 
-const j = schedule.scheduleJob(rule, function(){
+const job = schedule.scheduleJob(rule, function(){
   console.log('A new day has begun in the UTC timezone!');
 });
 ```
