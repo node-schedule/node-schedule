@@ -41,10 +41,8 @@
   },
   "devDependencies": {
     "airtap": "^4.0.1",
-    "airtap-playwright": "^1.0.1",
     "eslint": "^7.18.0",
     "nyc": "^15.1.0",
-    "playwright": "^1.8.0",
     "sinon": "^9.2.4",
     "tape": "^5.1.1"
   },

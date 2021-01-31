@@ -27,6 +27,11 @@ jobs:
       - name: Install
         run: |
           npm install
+
+      - name: Install playwright
+        run: |
+          npm install playwright airtap-playwright
+
       - name: Run Tests
         run: |
           npm run test:browser
