@@ -8,7 +8,7 @@ const schedule = require('../' + main);
 
 let clock;
 
-test(".scheduleJob(RRule String, fn)", function(t) {    
+test(".scheduleJob(RRule String, fn)", function(t) {
   t.test("Runs job every second", function(test) {
     const now = Date.now();
     clock = sinon.useFakeTimers();

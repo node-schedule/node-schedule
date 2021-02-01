@@ -41,7 +41,9 @@
   "dependencies": {
     "cron-parser": "^3.1.0",
     "long-timeout": "0.1.1",
-    "sorted-array-functions": "^1.3.0",
+    "sorted-array-functions": "^1.3.0"
+  },
+  "optionalDependencies": {
     "rrule": "2.6.4"
   },
   "devDependencies": {
