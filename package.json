@@ -7,6 +7,7 @@
     "task",
     "job",
     "cron",
+    "recurrent",
     "in-memory"
   ],
   "license": "MIT",
@@ -50,7 +51,9 @@
     "node": ">=6"
   },
   "files": [
+    "CHANGELOG.md",
     "README.md",
+    "UPGRADING.md",
     "LICENSE",
     "lib/*"
   ]
