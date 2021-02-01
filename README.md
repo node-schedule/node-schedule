@@ -272,7 +272,7 @@ Before jumping in, check out our [Contributing] page guide!
 
 Copyright 2015 Matt Patenaude.
 
-Licensed under the **[MIT License] [license]**.
+Licensed under the **[MIT License](https://github.com/node-schedule/node-schedule/blob/master/LICENSE)**.
 
 
 [cron]: http://unixhelp.ed.ac.uk/CGI/man-cgi?crontab+5
@@ -280,7 +280,5 @@ Licensed under the **[MIT License] [license]**.
 [Matt Patenaude]: https://github.com/mattpat
 [Tejas Manohar]: http://tejas.io
 [Igor Savin]: https://twitter.com/kibertoad
-[license]: https://github.com/node-schedule/node-schedule/blob/master/LICENSE
-[Tejas Manohar]: https://github.com/tejasmanohar
 [our amazing community]: https://github.com/node-schedule/node-schedule/graphs/contributors
 [cron-parser]: https://github.com/harrisiirak/cron-parser
