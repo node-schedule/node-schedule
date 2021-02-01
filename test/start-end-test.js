@@ -2,8 +2,7 @@
 
 const test = require('tape');
 const sinon = require('sinon');
-const main = require('../package.json').main;
-const schedule = require('../' + main);
+const schedule = require('..');
 
 test("start-end", function (t) {
   let clock
