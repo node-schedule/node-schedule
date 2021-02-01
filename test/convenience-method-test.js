@@ -4,6 +4,8 @@
 const test = require('tape');
 const sinon = require('sinon');
 const schedule = require('..');
+const { _invocations } = require('../lib/Invocation')
+const { scheduledJobs } = require('../lib/Job')
 
 test("Convenience method", function (t) {
   let clock
@@ -49,14 +51,16 @@ test("Convenience method", function (t) {
   });
 
   t.test(".scheduleJob(Date, fn)", function(t) {
-    t.test("Runs job once at some date", function(test) {
-      test.plan(1);
+    t.test("Runs job once at some date and does not cause a leak", function(test) {
+      test.plan(3);
 
       schedule.scheduleJob(new Date(Date.now() + 3000), function() {
         test.ok(true);
       });
 
       setTimeout(function() {
+        test.equal(_invocations.length, 0)
+        test.equal(Object.keys(scheduledJobs).length, 0)
         test.end();
       }, 3250);
 
@@ -493,7 +497,7 @@ test("Convenience method", function (t) {
 
       clock.tick(6150);
     })
-    t.test("Reschedule jobs that has been executed", function(test) {
+    t.test("Rescheduling one-off job that has been executed by name throws an error", function(test) {
       test.plan(2);
 
       const job = new schedule.scheduleJob(new Date(Date.now() + 1000), function () {
@@ -501,7 +505,9 @@ test("Convenience method", function (t) {
       });
 
       setTimeout(function() {
-        schedule.rescheduleJob(job.name, new Date(Date.now() + 2000));
+        test.throws(function() {
+          schedule.rescheduleJob(job.name, new Date(Date.now() + 2000));
+        }, /Error: Cannot reschedule one-off job by name, pass job reference instead/)
       }, 2000);
 
       setTimeout(function() {
@@ -587,8 +593,8 @@ test("Convenience method", function (t) {
       clock.tick(timeout + 2150);
     })
 
-    t.test("Reschedule jobs that is not available", function(test) {
-      test.plan(4);
+    t.test("Reschedule jobs that does not exist", function(test) {
+      test.plan(5);
 
       const rule = new schedule.RecurrenceRule();
       rule.second = null; // fire every second
@@ -598,7 +604,9 @@ test("Convenience method", function (t) {
       });
 
       setTimeout(function() {
-        schedule.rescheduleJob("Blah", new Date(Date.now() + 2000));
+        test.throws(function() {
+          schedule.rescheduleJob("Blah", new Date(Date.now() + 2000));
+        }, /Error: Cannot reschedule one-off job by name, pass job reference instead/)
       }, 2150);
 
       setTimeout(function() {
@@ -767,7 +775,7 @@ test("Convenience method", function (t) {
       });
 
       test.ok(job instanceof schedule.Job);
-      test.ok(job.pendingInvocations()[0].job);
+      test.ok(job.pendingInvocations[0].job);
 
       job.cancel();
       test.end();
