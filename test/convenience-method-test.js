@@ -4,6 +4,7 @@
 const test = require('tape');
 const sinon = require('sinon');
 const schedule = require('..');
+const {RRule} = require('rrule');
 
 test("Convenience method", function (t) {
   let clock

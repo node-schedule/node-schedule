@@ -5,6 +5,7 @@ const test = require('tape');
 const sinon = require('sinon');
 const schedule = require('..');
 const es6 = require('./es6/job-test')(schedule);
+const {RRule} = require('rrule');
 
 // ToDo this is failing on airtap, investigate if we are not closing something properly
 
