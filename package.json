@@ -8,7 +8,7 @@
     "job",
     "cron",
     "recurrent",
-    "in-memory"
+    "in-memory",
     "rrule"
   ],
   "license": "MIT",
