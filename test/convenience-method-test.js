@@ -175,15 +175,14 @@ test("Convenience method", function (t) {
 
       setTimeout(function() {
         job.cancel();
+        clock.tick(250); // not sure why this needs to be delayed but itll make other test(s) fail if its not
         test.end();
       }, 3250);
 
       clock.tick(3250);
     });
     t.test("Job doesn't emit initial 'scheduled' event",  function(test) {
-      /*
-       * If this was Job#schedule it'd fire 4 times.
-       */
+      // If this was Job#schedule it'd fire 4 times.
       test.plan(3);
 
       var rrule = new RRule({
@@ -401,9 +400,9 @@ test("Convenience method", function (t) {
       setTimeout(function () {
         job.cancel();
         test.end();
-      }, timeout);
+      }, timeout + 2250);
 
-      clock.tick(timeout);
+      clock.tick(timeout + 2250);
     })
 
     t.test("Reschedule jobs from RecurrenceRule to Date", function (test) {
