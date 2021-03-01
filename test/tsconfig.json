@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "noEmit": true
+  },
+  "include": [
+    "test/**/*.ts",
+    "../lib/cron-parser.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist/"
+  ],
+  "ts-node": {
+    "files": true
+  }
+}

@@ -1,12 +1,11 @@
+import test from 'tape';
+import * as sinon from 'sinon';
 
-'use strict';
-
-const test = require('tape');
-const sinon = require('sinon');
-const schedule = require('..');
+import { scheduleJob } from "../lib/schedule";
 
 test("Date methods", function (t) {
-  let clock
+  let clock: sinon.SinonFakeTimers;
+
   t.test("Setup", function (t) {
     clock = sinon.useFakeTimers();
     t.end()
@@ -17,7 +16,7 @@ test("Date methods", function (t) {
     t.test("Should accept a valid date string", function(test) {
       test.plan(1);
 
-      schedule.scheduleJob(new Date(Date.now() + 1000).toString(), function() {
+      scheduleJob(new Date(Date.now() + 1000).toString(), function() {
         test.ok(true);
       });
 
@@ -31,7 +30,7 @@ test("Date methods", function (t) {
     t.test("Should not accept invalid string as valid date", function(test) {
       test.plan(1);
 
-      const job = schedule.scheduleJob('hello!!', function () {
+      const job = scheduleJob('hello!!', function () {
       });
 
       test.equal(job, null);
@@ -44,7 +43,7 @@ test("Date methods", function (t) {
     t.test("Should accept a valid UTC date in milliseconds", function(test) {
       test.plan(1);
 
-      schedule.scheduleJob(new Date(Date.now() + 1000).getTime(), function() {
+      scheduleJob(new Date(Date.now() + 1000).getTime(), function() {
         test.ok(true);
       });
 

@@ -1,11 +1,14 @@
 'use strict';
 
-const test = require('tape');
-const sinon = require('sinon');
-const schedule = require('..');
+import test from 'tape';
+import * as sinon from 'sinon';
+
+import { Job } from '../lib/Job';
+import { RecurrenceRule } from '../lib/recurrence-rule';
 
 test("start-end", function (t) {
-  let clock
+  let clock: sinon.SinonFakeTimers;
+
   t.test("Setup", function (t) {
     clock = sinon.useFakeTimers();
     t.end()
@@ -15,16 +18,16 @@ test("start-end", function (t) {
     t.test('no endTime , startTime less than now', function (test) {
       test.plan(3);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // every second
 
       job.schedule({
         start: new Date(Date.now() - 2000),
-        rule: rule
+        rule,
       });
 
       setTimeout(function () {
@@ -38,11 +41,11 @@ test("start-end", function (t) {
     t.test('no endTime , startTime greater than now', function (test) {
       test.plan(1);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // every second
 
       job.schedule({
@@ -60,11 +63,11 @@ test("start-end", function (t) {
     t.test('no startTime , endTime less than now', function (test) {
       test.plan(0);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // every second
 
       job.schedule({
@@ -82,11 +85,11 @@ test("start-end", function (t) {
     t.test('no startTime , endTime greater than now', function (test) {
       test.plan(2);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // every second
 
       job.schedule({
@@ -104,11 +107,11 @@ test("start-end", function (t) {
     t.test('has startTime and endTime', function (test) {
       test.plan(1);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // every second
 
       job.schedule({
@@ -130,13 +133,13 @@ test("start-end", function (t) {
     t.test('no endTime , startTime less than now', function (test) {
       test.plan(3);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
       job.schedule({
         start: new Date(Date.now() - 2000),
-        rule: { second: null }
+        rule: { second: undefined }
       });
 
       setTimeout(function () {
@@ -150,13 +153,13 @@ test("start-end", function (t) {
     t.test('no endTime , startTime greater than now', function (test) {
       test.plan(1);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
       job.schedule({
         start: new Date(Date.now() + 2000),
-        rule: { second: null }
+        rule: { second: undefined }
       });
 
       setTimeout(function () {
@@ -170,13 +173,13 @@ test("start-end", function (t) {
     t.test('no startTime , endTime less than now', function (test) {
       test.plan(0);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
       job.schedule({
         end: new Date(Date.now() - 2000),
-        rule: { second: null }
+        rule: { second: undefined }
       });
 
       setTimeout(function () {
@@ -190,13 +193,13 @@ test("start-end", function (t) {
     t.test('no startTime , endTime greater than now', function (test) {
       test.plan(2);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
       job.schedule({
         end: new Date(Date.now() + 2000),
-        rule: { second: null }
+        rule: { second: undefined }
       });
 
       setTimeout(function () {
@@ -210,14 +213,14 @@ test("start-end", function (t) {
     t.test('has startTime and endTime', function (test) {
       test.plan(1);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
       job.schedule({
         start: new Date(Date.now() + 1000),
         end: new Date(Date.now() + 2000),
-        rule: { second: null }
+        rule: { second: undefined }
       });
 
       setTimeout(function () {
@@ -232,7 +235,7 @@ test("start-end", function (t) {
     t.test('no endTime , startTime less than now', function (test) {
       test.plan(3);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
@@ -252,7 +255,7 @@ test("start-end", function (t) {
     t.test('no endTime , startTime greater than now', function (test) {
       test.plan(1);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
@@ -272,7 +275,7 @@ test("start-end", function (t) {
     t.test('no startTime , endTime less than now', function (test) {
       test.plan(0);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
@@ -292,7 +295,7 @@ test("start-end", function (t) {
     t.test('no startTime , endTime greater than now', function (test) {
       test.plan(2);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
@@ -312,7 +315,7 @@ test("start-end", function (t) {
     t.test('has startTime and endTime', function (test) {
       test.plan(1);
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 

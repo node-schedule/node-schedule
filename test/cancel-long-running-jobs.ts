@@ -1,7 +1,6 @@
-'use strict';
+import test from 'tape';
 
-const test = require('tape');
-const { scheduleJob } = require('..');
+import { scheduleJob } from '../lib/schedule';
 
 test('Cancel Long Running Job', function (t) {
 

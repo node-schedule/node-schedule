@@ -1,12 +1,14 @@
 'use strict';
 
-const test = require('tape');
-const sinon = require('sinon');
-const schedule = require('..');
-const { runAtDate } = require('./utils/timerUtils')
+import test from 'tape';
+import * as sinon from 'sinon';
+
+import * as schedule from '../lib/schedule';
+import { runAtDate } from './utils/timerUtils';
 
 test(".scheduleJob(cron_expr, fn)", function (t) {
-  let clock
+  let clock: sinon.SinonFakeTimers;
+
   t.test("Setup", function (t) {
     clock = sinon.useFakeTimers()
     t.end()

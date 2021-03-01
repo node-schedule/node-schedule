@@ -11,9 +11,11 @@
     "in-memory"
   ],
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "tape test/*.js",
+    "build": "tsc",
+    "test": "ts-node --project test/tsconfig.json node_modules/tape/bin/tape test/*.ts",
     "test:browser": "airtap test/cancel-long-running-jobs.js test/convenience-method-test.js test/date-convenience-methods-test.js test/range-test.js test/recurrence-rule-test.js test/schedule-cron-jobs.js test/start-end-test.js",
     "coveralls": "nyc report --reporter=lcov",
     "test:coverage": "nyc tape test/*.js",
@@ -41,11 +43,18 @@
     "sorted-array-functions": "^1.3.0"
   },
   "devDependencies": {
+    "@types/long-timeout": "^0.1.0",
+    "@types/node": "^14.14.22",
+    "@types/sinon": "^9.0.10",
+    "@types/sorted-array-functions": "^1.3.0",
+    "@types/tape": "^4.13.0",
     "airtap": "^4.0.1",
     "eslint": "^7.18.0",
     "nyc": "^15.1.0",
     "sinon": "^9.2.4",
-    "tape": "^5.1.1"
+    "tape": "^5.1.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
   },
   "engines": {
     "node": ">=6"
@@ -55,6 +64,6 @@
     "README.md",
     "UPGRADING.md",
     "LICENSE",
-    "lib/*"
+    "dist/*"
   ]
 }

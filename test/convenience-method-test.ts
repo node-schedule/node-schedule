@@ -1,14 +1,14 @@
+import test from 'tape';
+import * as sinon from 'sinon';
 
-'use strict';
-
-const test = require('tape');
-const sinon = require('sinon');
-const schedule = require('..');
-const { _invocations } = require('../lib/Invocation')
-const { scheduledJobs } = require('../lib/Job')
+import { cancelJob, rescheduleJob, scheduleJob } from '../lib/schedule';
+import { Job, scheduledJobs } from '../lib/Job';
+import { RecurrenceRule } from '../lib/recurrence-rule';
+import { invocations } from '../lib/Invocation';
 
 test("Convenience method", function (t) {
-  let clock
+  let clock: sinon.SinonFakeTimers;
+
   t.test("Setup", function (t) {
     clock = sinon.useFakeTimers();
     t.end()
@@ -16,10 +16,10 @@ test("Convenience method", function (t) {
 
   t.test(".scheduleJob", function(t) {
     t.test("Returns Job instance", function (test) {
-      const job = schedule.scheduleJob(new Date(Date.now() + 1000), function () {
+      const job = scheduleJob(new Date(Date.now() + 1000), function () {
       });
 
-      test.ok(job instanceof schedule.Job);
+      test.ok(job instanceof Job);
 
       job.cancel();
       test.end();
@@ -29,7 +29,8 @@ test("Convenience method", function (t) {
       test.plan(1);
 
       const fn = function() {
-        return schedule.scheduleJob(function() {});
+        // @ts-ignore - Wrong number of arguments
+        return scheduleJob(function() {});
       };
 
       test.throws(fn, RangeError);
@@ -37,11 +38,12 @@ test("Convenience method", function (t) {
       test.end();
     });
 
-    t.test("Returns null if the method argument is not a function", function (test) {
+    t.test("Throws a RangeError if the method argument is not a function", function (test) {
       test.plan(1);
 
       const fn = function() {
-        return schedule.scheduleJob(new Date(Date.now() + 1000), {});
+        // @ts-ignore - Wrong argument type
+        return scheduleJob(new Date(Date.now() + 1000), {});
       };
 
       test.throws(fn, RangeError);
@@ -54,12 +56,13 @@ test("Convenience method", function (t) {
     t.test("Runs job once at some date and does not cause a leak", function(test) {
       test.plan(3);
 
-      schedule.scheduleJob(new Date(Date.now() + 3000), function() {
+      scheduleJob(new Date(Date.now() + 3000), function() {
         test.ok(true);
       });
 
       setTimeout(function() {
-        test.equal(_invocations.length, 0)
+        // TODO: This should be private
+        test.equal(invocations.length, 0)
         test.equal(Object.keys(scheduledJobs).length, 0)
         test.end();
       }, 3250);
@@ -68,7 +71,7 @@ test("Convenience method", function (t) {
     })
 
     t.test("Job doesn't emit initial 'scheduled' event", function(test) {
-      const job = schedule.scheduleJob(new Date(Date.now() + 1000), function () {
+      const job = scheduleJob(new Date(Date.now() + 1000), function () {
       });
 
       job.on('scheduled', function() {
@@ -84,7 +87,7 @@ test("Convenience method", function (t) {
 
     t.test("Won't run job if scheduled in the past", function(test) {
       test.plan(1);
-      const job = schedule.scheduleJob(new Date(Date.now() - 3000), function () {
+      const job = scheduleJob(new Date(Date.now() - 3000), function () {
         test.ok(false);
       });
 
@@ -102,10 +105,10 @@ test("Convenience method", function (t) {
     t.test("Runs job at interval based on recur rule, repeating indefinitely", function(test) {
       test.plan(3);
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // fire every second
 
-      const job = schedule.scheduleJob(rule, function () {
+      const job = scheduleJob(rule, function () {
         test.ok(true);
       });
 
@@ -123,10 +126,10 @@ test("Convenience method", function (t) {
         */
       test.plan(3);
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // fire every second
 
-      const job = new schedule.scheduleJob(rule, function () {
+      const job = scheduleJob(rule, function () {
       });
 
       job.on('scheduled', function(runOnDate) {
@@ -143,10 +146,10 @@ test("Convenience method", function (t) {
 
     t.test("Doesn't invoke job if recur rule schedules it in the past", function(test) {
       test.plan(1);
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.year = 1960;
 
-      const job = schedule.scheduleJob(rule, function () {
+      const job = scheduleJob(rule, function () {
         test.ok(false);
       });
 
@@ -164,8 +167,8 @@ test("Convenience method", function (t) {
     t.test("Runs job at interval based on object, repeating indefinitely", function(test) {
       test.plan(3);
 
-      const job = new schedule.scheduleJob({
-        second: null // Fire every second
+      const job = scheduleJob({
+        second: undefined // Fire every second
       }, function () {
         test.ok(true);
       });
@@ -187,8 +190,8 @@ test("Convenience method", function (t) {
         */
       test.plan(2);
 
-      const job = schedule.scheduleJob({
-        second: null // fire every second
+      const job = scheduleJob({
+        second: undefined // fire every second
       }, function () {
       });
 
@@ -207,7 +210,7 @@ test("Convenience method", function (t) {
     t.test("Doesn't invoke job if object schedules it in the past", function(test) {
       test.plan(1);
 
-      const job = schedule.scheduleJob({
+      const job = scheduleJob({
         year: 1960
       }, function () {
         test.ok(false);
@@ -227,8 +230,8 @@ test("Convenience method", function (t) {
     t.test("Callback called for each job if callback is provided", function(test) {
       test.plan(3);
 
-      const job = new schedule.scheduleJob({
-        second: null // Fire every second
+      const job = scheduleJob({
+        second: undefined // Fire every second
       }, function () {
       }, function () {
         test.ok(true);
@@ -247,15 +250,15 @@ test("Convenience method", function (t) {
     t.test("Reschedule jobs from object based to object based", function(test) {
       test.plan(3);
 
-      const job = new schedule.scheduleJob({
-        second: null
+      const job = scheduleJob({
+        second: undefined
       }, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
-        schedule.rescheduleJob(job, {
-          minute: null
+        rescheduleJob(job, {
+          minute: undefined
         });
       }, 3250);
 
@@ -272,15 +275,15 @@ test("Convenience method", function (t) {
 
       const timeout = 60 * 1000;
 
-      const job = new schedule.scheduleJob({
-        minute: null
+      const job = scheduleJob({
+        minute: undefined
       }, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
-        schedule.rescheduleJob(job, {
-          second: null
+        rescheduleJob(job, {
+          second: undefined
         });
       }, timeout);
 
@@ -297,12 +300,12 @@ test("Convenience method", function (t) {
     t.test("Reschedule jobs from Date to Date", function(test) {
       test.plan(1);
 
-      const job = new schedule.scheduleJob(new Date(Date.now() + 3000), function () {
+      const job = scheduleJob(new Date(Date.now() + 3000), function () {
         test.ok(true);
       });
 
       setTimeout(function() {
-        schedule.rescheduleJob(job, new Date(Date.now() + 5000));
+        rescheduleJob(job, new Date(Date.now() + 5000));
       }, 1000);
 
       setTimeout(function() {
@@ -315,12 +318,12 @@ test("Convenience method", function (t) {
     t.test("Reschedule jobs that has been executed", function(test) {
       test.plan(2);
 
-      const job = new schedule.scheduleJob(new Date(Date.now() + 1000), function () {
+      const job = scheduleJob(new Date(Date.now() + 1000), function () {
         test.ok(true);
       });
 
       setTimeout(function() {
-        schedule.rescheduleJob(job, new Date(Date.now() + 2000));
+        rescheduleJob(job, new Date(Date.now() + 2000));
       }, 2000);
 
       setTimeout(function() {
@@ -337,18 +340,18 @@ test("Convenience method", function (t) {
 
       const timeout = 60 * 1000;
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // fire every second
 
-      const job = schedule.scheduleJob(rule, function () {
+      const job = scheduleJob(rule, function () {
         test.ok(true);
       });
 
-      const newRule = new schedule.RecurrenceRule();
+      const newRule = new RecurrenceRule();
       newRule.minute = null;
 
       setTimeout(function () {
-        schedule.rescheduleJob(job, newRule);
+        rescheduleJob(job, newRule);
       }, 2250);
 
       setTimeout(function () {
@@ -362,15 +365,15 @@ test("Convenience method", function (t) {
     t.test("Reschedule jobs from RecurrenceRule to Date", function (test) {
       test.plan(3);
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // fire every second
 
-      const job = schedule.scheduleJob(rule, function () {
+      const job = scheduleJob(rule, function () {
         test.ok(true);
       });
 
       setTimeout(function () {
-        schedule.rescheduleJob(job, new Date(Date.now() + 2000));
+        rescheduleJob(job, new Date(Date.now() + 2000));
       }, 2150);
 
       setTimeout(function () {
@@ -385,16 +388,16 @@ test("Convenience method", function (t) {
 
       const timeout = 60 * 1000;
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // fire every second
 
-      const job = schedule.scheduleJob(rule, function () {
+      const job = scheduleJob(rule, function () {
         test.ok(true);
       });
 
       setTimeout(function () {
-        schedule.rescheduleJob(job, {
-          minute: null
+        rescheduleJob(job, {
+          minute: undefined
         });
       }, 2150);
 
@@ -410,15 +413,16 @@ test("Convenience method", function (t) {
       test.plan(4);
       clock = sinon.useFakeTimers();
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // fire every second
 
-      const job = schedule.scheduleJob(rule, function () {
+      const job = scheduleJob(rule, function () {
         test.ok(true);
       });
 
       setTimeout(function () {
-        schedule.rescheduleJob(null, new Date(Date.now() + 2000));
+        // @ts-ignore - Wrong argument type
+        rescheduleJob(null, new Date(Date.now() + 2000));
       }, 2150);
 
       setTimeout(function () {
@@ -434,15 +438,15 @@ test("Convenience method", function (t) {
     t.test("Reschedule jobs from object based to object based", function(test) {
       test.plan(3);
 
-      const job = new schedule.scheduleJob({
-        second: null
+      const job = scheduleJob({
+        second: undefined
       }, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
-        schedule.rescheduleJob(job.name, {
-          minute: null
+        rescheduleJob(job.name, {
+          minute: undefined
         });
       }, 3250);
 
@@ -459,15 +463,15 @@ test("Convenience method", function (t) {
 
       const timeout = 60 * 1000;
 
-      const job = new schedule.scheduleJob({
-        minute: null
+      const job = scheduleJob({
+        minute: undefined
       }, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
-        schedule.rescheduleJob(job.name, {
-          second: null
+        rescheduleJob(job.name, {
+          second: undefined
         });
       }, timeout);
 
@@ -483,12 +487,12 @@ test("Convenience method", function (t) {
     t.test("Reschedule jobs from Date to Date", function(test) {
       test.plan(1);
 
-      const job = new schedule.scheduleJob(new Date(Date.now() + 3000), function () {
+      const job = scheduleJob(new Date(Date.now() + 3000), function () {
         test.ok(true);
       });
 
       setTimeout(function() {
-        schedule.rescheduleJob(job.name, new Date(Date.now() + 5000));
+        rescheduleJob(job.name, new Date(Date.now() + 5000));
       }, 1000);
 
       setTimeout(function() {
@@ -500,13 +504,13 @@ test("Convenience method", function (t) {
     t.test("Rescheduling one-off job that has been executed by name throws an error", function(test) {
       test.plan(2);
 
-      const job = new schedule.scheduleJob(new Date(Date.now() + 1000), function () {
+      const job = scheduleJob(new Date(Date.now() + 1000), function () {
         test.ok(true);
       });
 
       setTimeout(function() {
         test.throws(function() {
-          schedule.rescheduleJob(job.name, new Date(Date.now() + 2000));
+          rescheduleJob(job.name, new Date(Date.now() + 2000));
         }, /Error: Cannot reschedule one-off job by name, pass job reference instead/)
       }, 2000);
 
@@ -524,18 +528,18 @@ test("Convenience method", function (t) {
 
       const timeout = 60 * 1000;
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // fire every second
 
-      const job = schedule.scheduleJob(rule, function () {
+      const job = scheduleJob(rule, function () {
         test.ok(true);
       });
 
-      const newRule = new schedule.RecurrenceRule();
+      const newRule = new RecurrenceRule();
       newRule.minute = null;
 
       setTimeout(function() {
-        schedule.rescheduleJob(job.name, newRule);
+        rescheduleJob(job.name, newRule);
       }, 2250);
 
       setTimeout(function() {
@@ -549,15 +553,15 @@ test("Convenience method", function (t) {
     t.test("Reschedule jobs from RecurrenceRule to Date", function(test) {
       test.plan(3);
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // fire every second
 
-      const job = schedule.scheduleJob(rule, function () {
+      const job = scheduleJob(rule, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
-        schedule.rescheduleJob(job.name, new Date(Date.now() + 2000));
+        rescheduleJob(job.name, new Date(Date.now() + 2000));
       }, 2150);
 
       setTimeout(function() {
@@ -572,16 +576,16 @@ test("Convenience method", function (t) {
 
       const timeout = 60 * 1000;
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // fire every second
 
-      const job = schedule.scheduleJob(rule, function () {
+      const job = scheduleJob(rule, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
-        schedule.rescheduleJob(job.name, {
-          minute: null
+        rescheduleJob(job.name, {
+          minute: undefined
         });
       }, 2150);
 
@@ -596,16 +600,16 @@ test("Convenience method", function (t) {
     t.test("Reschedule jobs that does not exist", function(test) {
       test.plan(5);
 
-      const rule = new schedule.RecurrenceRule();
+      const rule = new RecurrenceRule();
       rule.second = null; // fire every second
 
-      const job = schedule.scheduleJob(rule, function () {
+      const job = scheduleJob(rule, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
         test.throws(function() {
-          schedule.rescheduleJob("Blah", new Date(Date.now() + 2000));
+          rescheduleJob("Blah", new Date(Date.now() + 2000));
         }, /Error: Cannot reschedule one-off job by name, pass job reference instead/)
       }, 2150);
 
@@ -623,14 +627,14 @@ test("Convenience method", function (t) {
       test.plan(2);
       clock = sinon.useFakeTimers();
 
-      const job = schedule.scheduleJob({
-        second: null
+      const job = scheduleJob({
+        second: undefined
       }, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
-        schedule.cancelJob(job);
+        cancelJob(job);
       }, 2250);
 
       setTimeout(function() {
@@ -644,16 +648,16 @@ test("Convenience method", function (t) {
       test.plan(2);
       clock = sinon.useFakeTimers();
 
-      const job = new schedule.Job(function () {
+      const job = new Job(function () {
         test.ok(true);
       });
 
       job.schedule({
-        second: null
+        second: undefined
       });
 
       setTimeout(function() {
-        schedule.cancelJob(job);
+        cancelJob(job);
       }, 2250);
 
       setTimeout(function() {
@@ -666,8 +670,8 @@ test("Convenience method", function (t) {
     t.test("Job emits 'canceled' event", function(test) {
       test.plan(1);
 
-      const job = schedule.scheduleJob({
-        second: null
+      const job = scheduleJob({
+        second: undefined
       }, function () {
       });
 
@@ -676,7 +680,7 @@ test("Convenience method", function (t) {
       });
 
       setTimeout(function() {
-        schedule.cancelJob(job);
+        cancelJob(job);
         test.end();
       }, 1250);
 
@@ -688,14 +692,14 @@ test("Convenience method", function (t) {
     t.test("Prevents all future invocations of Job identified by name", function(test) {
       test.plan(2);
 
-      const job = schedule.scheduleJob({
-        second: null
+      const job = scheduleJob({
+        second: undefined
       }, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
-        schedule.cancelJob(job.name);
+        cancelJob(job.name);
       }, 2250);
 
       setTimeout(function() {
@@ -708,12 +712,12 @@ test("Convenience method", function (t) {
     "Can cancel Jobs scheduled with Job#schedule", function(test) {
       test.plan(2);
 
-      const job = new schedule.Job(function() {
+      const job = new Job(function() {
       test.ok(true);
       });
 
       job.schedule({
-      second: null
+      second: undefined
       });
 
       setTimeout(function() {
@@ -728,8 +732,8 @@ test("Convenience method", function (t) {
     t.test("Job emits 'canceled' event", function(test) {
       test.plan(1);
 
-      const job = schedule.scheduleJob({
-        second: null
+      const job = scheduleJob({
+        second: undefined
       }, function () {
       });
 
@@ -738,7 +742,7 @@ test("Convenience method", function (t) {
       });
 
       setTimeout(function() {
-        schedule.cancelJob(job.name);
+        cancelJob(job.name);
         test.end();
       }, 1250);
 
@@ -749,15 +753,15 @@ test("Convenience method", function (t) {
       test.plan(3);
       clock = sinon.useFakeTimers();
 
-      const job = schedule.scheduleJob({
-        second: null
+      const job = scheduleJob({
+        second: undefined
       }, function () {
         test.ok(true);
       });
 
       setTimeout(function() {
         // This cancel should not affect anything
-        schedule.cancelJob('blah');
+        cancelJob('blah');
       }, 2250);
 
       setTimeout(function() {
@@ -771,10 +775,11 @@ test("Convenience method", function (t) {
 
   t.test('.pendingInvocations()', function(t) {
     t.test("Retrieves pendingInvocations of the job", function(test) {
-      const job = schedule.scheduleJob(new Date(Date.now() + 1000), function () {
+      const job = scheduleJob(new Date(Date.now() + 1000), function () {
       });
 
-      test.ok(job instanceof schedule.Job);
+      test.ok(job instanceof Job);
+      // TODO: This should be private
       test.ok(job.pendingInvocations[0].job);
 
       job.cancel();
