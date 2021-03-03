@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "es5",
     "noEmit": true
   },
   "include": [
