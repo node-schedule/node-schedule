@@ -131,12 +131,12 @@ export function cancelInvocation(invocation: Invocation): void {
 
 /* Recurrence scheduler */
 export function scheduleNextRecurrence<T>(rule: RecurrenceRule | CronExpression, job: Job<T>,
-                                          prevDate?: CronDate, endDate?: CronDate): Invocation | null {
+  prevDate?: CronDate, endDate?: CronDate): Invocation | null {
   prevDate = (prevDate instanceof CronDate) ? prevDate : new CronDate();
 
   const date: CronDate | null = rule instanceof RecurrenceRule
-      ? rule._nextInvocationDate(prevDate)
-      : rule.next();
+    ? rule._nextInvocationDate(prevDate)
+    : rule.next();
   if (date === null) {
     return null;
   }

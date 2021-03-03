@@ -11,9 +11,9 @@ export function runAtDate(date: Date, func: VoidFunction) {
   //setTimeout limit is MAX_INT32=(2^31-1)
   if (diff > 0x7FFFFFFF) {
     setTimeout(function () {
-        runAtDate(date, func);
-      },
-      0x7FFFFFFF);
+      runAtDate(date, func);
+    },
+    0x7FFFFFFF);
   } else {
     setTimeout(func, diff);
   }
