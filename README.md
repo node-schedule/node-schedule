@@ -230,6 +230,12 @@ const job = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * 
 });
 ```
 
+### Graceful Shutdown.
+You can shutdown jobs gracefully when SIGINT signal.  
+```js
+schedule.gracefulShutdown();
+```
+
 ### Handle Jobs and Job Invocations
 
 There are some function to get information for a Job and to handle the Job and
