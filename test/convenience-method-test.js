@@ -6,6 +6,7 @@ const sinon = require('sinon');
 const schedule = require('..');
 const { _invocations } = require('../lib/Invocation')
 const { scheduledJobs } = require('../lib/Job')
+const {RRule} = require('rrule');
 
 test("Convenience method", function (t) {
   let clock
@@ -159,6 +160,49 @@ test("Convenience method", function (t) {
       clock.tick(1000);
     })
   })
+
+  t.test(".scheduleJob(RRule, fn)", function(t) {
+    t.test("Runs job at interval based on RRule, repeating indefinitely", function(test) {
+      test.plan(3);
+
+      let rrule = new RRule({
+        freq: RRule.SECONDLY
+      });
+
+      let job = schedule.scheduleJob(rrule, function() {
+        test.ok(true);
+      });
+
+      setTimeout(function() {
+        job.cancel();
+        clock.tick(250); // not sure why this needs to be delayed but itll make other test(s) fail if its not
+        test.end();
+      }, 3250);
+
+      clock.tick(3250);
+    });
+    t.test("Job doesn't emit initial 'scheduled' event",  function(test) {
+      // If this was Job#schedule it'd fire 4 times.
+      test.plan(3);
+
+      var rrule = new RRule({
+        freq: RRule.SECONDLY
+      });
+
+      var job = schedule.scheduleJob(rrule, function() {});
+
+      job.on('scheduled', function() {
+        test.ok(true);
+      });
+
+      setTimeout(function() {
+        job.cancel();
+        test.end();
+      }, 3250);
+
+      clock.tick(3250);
+    });
+  });
 
   t.test(".scheduleJob({...}, fn)", function(t) {
     t.test("Runs job at interval based on object, repeating indefinitely", function(test) {
@@ -332,7 +376,7 @@ test("Convenience method", function (t) {
   })
 
   t.test(".rescheduleJob(job, RecurrenceRule)", function(t) {
-    t.test("Reschedule jobs from RecurrenceRule to RecurrenceRule", function (test) {
+    t.test("Reschedule jobs from RecurrenceRule to RecurrenceRule", function (test) { //todo: fix this test
       test.plan(3);
 
       const timeout = 60 * 1000;
@@ -350,6 +394,8 @@ test("Convenience method", function (t) {
       setTimeout(function () {
         schedule.rescheduleJob(job, newRule);
       }, 2250);
+
+      clock.tick(2250);
 
       setTimeout(function () {
         job.cancel();
