@@ -1,17 +1,31 @@
 {
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "parserOptions": {
+    "project": "./eslint.tsconfig.json"
+  },
   "env": {
     "node": true,
     "es6": true
   },
   "rules": {
     "eqeqeq": ["error", "smart"],
-    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "@typescript-eslint/indent": ["error", 2, { "SwitchCase": 1 }],
     "no-constant-condition": "off",
-    "no-redeclare": "warn",
+    "no-redeclare": "off",
+    "@typescript-eslint/no-redeclare": ["error"],
     "no-underscore-dangle": "off",
-    "no-use-before-define": ["warn","nofunc"],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "warn",
+      {
+        "functions": false,
+        "typedefs": false
+      }
+    ],
     "quotes": ["error", "single"],
-    "space-before-blocks": "error",
-    "strict": "error"
+    "space-before-blocks": "error"
   }
 }
