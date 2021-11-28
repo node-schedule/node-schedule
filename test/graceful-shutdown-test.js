@@ -10,7 +10,6 @@ test('Graceful Shutdown', function (t) {
     clock = sinon.useFakeTimers();
     sandbox = sinon.createSandbox({ useFakeTimers: true });
     exitStub = sandbox.stub(process, 'exit');
-    schedule.gracefulShutdown();
     test.end();
   });
 
