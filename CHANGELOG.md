@@ -1,6 +1,6 @@
 # Master (Unreleased)
 
-# 2.1.0 - 18 November, 2021
+# 2.1.0 - 28 November, 2021
 
 ### New features:
 
