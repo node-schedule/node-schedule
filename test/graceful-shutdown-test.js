@@ -5,14 +5,6 @@ const sinon = require('sinon');
 const schedule = require('..');
 
 test('Graceful Shutdown', function (t) {
-  let clock, sandbox, exitStub;
-  t.test('Setup', function (test) {
-    clock = sinon.useFakeTimers();
-    sandbox = sinon.createSandbox({ useFakeTimers: true });
-    exitStub = sandbox.stub(process, 'exit');
-    test.end();
-  });
-
   t.test('close immediately when no job', function (test) {
     schedule.gracefulShutdown().then(function() {
       test.end();
