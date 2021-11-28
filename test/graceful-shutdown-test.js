@@ -15,29 +15,26 @@ test('Graceful Shutdown', function (t) {
   });
 
   t.test('close immediately when no job', function (test) {
-    process.once('SIGINT', function () { 
-      sinon.assert.calledOnce(exitStub);
+    schedule.gracefulShutdown().then(function() {
       test.end();
     });
-    process.emit('SIGINT', null);
   });
 
   t.test('pending when job running', function (test) {
+    test.plan(1);
     const job = schedule.scheduleJob('* * * * * *', function () {
     });
     
     job.running = 1;
-    process.once('SIGINT', function () {
-      sinon.assert.calledOnce(exitStub);
+    schedule.gracefulShutdown().then(function() {
+      test.ok(true);
     });
-    process.emit('SIGINT', null);
-    
+
     job.running = 0;
-    process.once('SIGINT', function () {
-      sinon.assert.calledTwice(exitStub);
+    schedule.gracefulShutdown().then(function() {
+      test.ok(true);
       test.end();
     });
-    process.emit('SIGINT', null);
   });
 
   t.test('Restore', function (test) {
