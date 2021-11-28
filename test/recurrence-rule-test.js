@@ -7,7 +7,6 @@ const schedule = require('..');
 
 // 12:30:15 pm Thursday 29 April 2010 in the timezone this code is being run in
 const base = new Date(2010, 3, 29, 12, 30, 15, 0);
-const baseMs = base.getTime();
 
 test("Recurrence rule", function (t) {
   let clock
