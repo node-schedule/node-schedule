@@ -201,7 +201,7 @@ test("Job", function (t) {
       const job = new schedule.Job(function () {
       });
 
-      job.on('scheduled', function (runOnDate) {
+      job.on('scheduled', function () {
         test.ok(true);
       });
 
@@ -266,7 +266,7 @@ test("Job", function (t) {
       const job = new schedule.Job(function () {
       });
 
-      job.on('scheduled', function (runOnDate) {
+      job.on('scheduled', function () {
         test.ok(true);
       });
 

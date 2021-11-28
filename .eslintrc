@@ -1,4 +1,7 @@
 {
+  "extends": [
+    "eslint:recommended",
+  ],
   "env": {
     "node": true,
     "es6": true
@@ -12,6 +15,8 @@
     "no-use-before-define": ["warn","nofunc"],
     "quotes": ["error", "single"],
     "space-before-blocks": "error",
-    "strict": "error"
+    "strict": "error",
+    "no-empty": "off",
+    "require-yield": "off"
   }
 }
