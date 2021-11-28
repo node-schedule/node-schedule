@@ -183,6 +183,7 @@ Timezones are also supported. Here is an example of executing at the start of ev
 ```js
 const rule = new schedule.RecurrenceRule();
 rule.hour = 0;
+rule.minute = 0;
 rule.tz = 'Etc/UTC';
 
 const job = schedule.scheduleJob(rule, function(){
