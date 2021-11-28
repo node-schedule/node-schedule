@@ -1,5 +1,12 @@
 # Master (Unreleased)
 
+# 2.1.0 - 18 November, 2021
+
+### New features:
+
+- Implement support for graceful shutdown #583
+- Emit a success event after a successful job invocation. #643
+
 # 2.0.0 - 01 February, 2021
 
 ### Breaking changes:
