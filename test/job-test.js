@@ -573,6 +573,10 @@ test("Job", function (t) {
         throw error;
       });
 
+      // make sure no success event has been emitted
+      job.on('success', function () {
+        test.end(new Error("success emitted on failed invocation"))
+      })
       job.on('error', function (err) {
         test.strictEqual(err, error);
         test.end()
@@ -592,8 +596,50 @@ test("Job", function (t) {
         return Promise.reject(error);
       });
 
+      // make sure no success event has been emitted
+      job.on('success', function () {
+        test.end(new Error("success emitted on failed invocation"))
+      })
       job.on('error', function (err) {
         test.strictEqual(err, error);
+        test.end()
+      });
+
+      job.schedule(new Date(Date.now() + 3000));
+
+      clock.tick(3250);
+    })
+
+    t.test("Job emits 'success' event when the job synchronously returns successfully", function (test) {
+      test.plan(1);
+
+      const returnValue = { test: "data" }
+
+      const job = new schedule.Job(function () {
+        return returnValue
+      });
+
+      job.on('success', function (value) {
+        test.strictEqual(value, returnValue)
+        test.end()
+      });
+
+      job.schedule(new Date(Date.now() + 3000));
+
+      clock.tick(3250);
+    })
+
+    t.test("Job emits 'success' event when the job returns a resolved Promise", function (test) {
+      test.plan(1);
+
+      const returnValue = { test: "data" }
+
+      const job = new schedule.Job(function () {
+        return Promise.resolve(returnValue);
+      });
+
+      job.on('success', function (value) {
+        test.strictEqual(value, returnValue);
         test.end()
       });
 
