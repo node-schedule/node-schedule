@@ -57,6 +57,9 @@ or use the convenience function `scheduleJob()` as demonstrated below.
   Note that `canceled` is the single-L American spelling.
 * An `error` event when a job invocation triggered by a schedule throws or returns
   a rejected `Promise`.
+* A `success` event when a job invocation triggered by a schedule returns successfully or
+  returns a resolved `Promise`. In any case, the `success` event receives the value returned
+  by the callback or in case of a promise, the resolved value.
 
 (Both the `scheduled` and `canceled` events receive a JavaScript date object as
 a parameter).  
