@@ -1,7 +1,6 @@
 'use strict';
 
 const test = require('tape');
-const sinon = require('sinon');
 const schedule = require('..');
 
 test('Graceful Shutdown', function (t) {
@@ -26,10 +25,5 @@ test('Graceful Shutdown', function (t) {
       test.ok(true);
       test.end();
     });
-  });
-
-  t.test('Restore', function (test) {
-    clock.restore();
-    test.end()
   });
 });
