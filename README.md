@@ -234,9 +234,15 @@ const job = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * 
 ```
 
 ### Graceful Shutdown.
-You can shutdown jobs gracefully when SIGINT signal.  
-`gracefulShutdown()` will cancel all jobs and return Promise and It will wait until all jobs are terminated.
+You can shutdown jobs gracefully.  
+`gracefulShutdown()` will cancel all jobs and return Promise.  
+It will wait until all jobs are terminated.  
 ```js
+schedule.gracefulShutdown();
+```
+
+You can also gracefully shutdown jobs when a system interrupt occurs.
+```
 process.on('SIGINT', function () { 
   schedule.gracefulShutdown()
   .then(() => process.exit(0))
