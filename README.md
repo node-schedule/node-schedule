@@ -247,7 +247,7 @@ You can also gracefully shutdown jobs when a system interrupt occurs.
 process.on('SIGINT', function () { 
   schedule.gracefulShutdown()
   .then(() => process.exit(0))
-}
+})
 ```
 
 ### Handle Jobs and Job Invocations
