@@ -121,7 +121,7 @@ including `#` (nth weekday of the month).
 
 ### Date-based Scheduling
 
-Say you very specifically want a function to execute at 5:30am on December 21, 2012.
+Say you very specifically want a function to execute at 5:30am on November 21, 2012.
 Remember - in JavaScript - 0 - January, 11 - December.
 
 ```js
