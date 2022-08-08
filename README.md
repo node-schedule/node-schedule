@@ -57,6 +57,9 @@ or use the convenience function `scheduleJob()` as demonstrated below.
   Note that `canceled` is the single-L American spelling.
 * An `error` event when a job invocation triggered by a schedule throws or returns
   a rejected `Promise`.
+* A `success` event when a job invocation triggered by a schedule returns successfully or
+  returns a resolved `Promise`. In any case, the `success` event receives the value returned
+  by the callback or in case of a promise, the resolved value.
 
 (Both the `scheduled` and `canceled` events receive a JavaScript date object as
 a parameter).  
@@ -180,6 +183,7 @@ Timezones are also supported. Here is an example of executing at the start of ev
 ```js
 const rule = new schedule.RecurrenceRule();
 rule.hour = 0;
+rule.minute = 0;
 rule.tz = 'Etc/UTC';
 
 const job = schedule.scheduleJob(rule, function(){
@@ -228,6 +232,22 @@ const endTime = new Date(startTime.getTime() + 5000);
 const job = schedule.scheduleJob({ start: startTime, end: endTime, rule: '*/1 * * * * *' }, function(){
   console.log('Time for tea!');
 });
+```
+
+### Graceful Shutdown.
+You can shutdown jobs gracefully.  
+`gracefulShutdown()` will cancel all jobs and return Promise.  
+It will wait until all jobs are terminated.  
+```js
+schedule.gracefulShutdown();
+```
+
+You can also gracefully shutdown jobs when a system interrupt occurs.
+```
+process.on('SIGINT', function () { 
+  schedule.gracefulShutdown()
+  .then(() => process.exit(0))
+}
 ```
 
 ### Handle Jobs and Job Invocations

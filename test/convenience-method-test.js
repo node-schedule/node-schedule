@@ -130,7 +130,7 @@ test("Convenience method", function (t) {
       const job = new schedule.scheduleJob(rule, function () {
       });
 
-      job.on('scheduled', function(runOnDate) {
+      job.on('scheduled', function() {
         test.ok(true);
       });
 
