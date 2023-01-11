@@ -1,5 +1,11 @@
 # Master (Unreleased)
 
+# 2.1.1 - 11 January, 2023
+
+### Bug fixes:
+
+- Bump cron-parser from 3.5.0 to 4.2.0 - security fix #642
+
 # 2.1.0 - 28 November, 2021
 
 ### New features:
