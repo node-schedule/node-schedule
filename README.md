@@ -138,7 +138,7 @@ To use current data in the future you can use binding:
 ```js
 const schedule = require('node-schedule');
 const date = new Date(2012, 11, 21, 5, 30, 0);
-const x = 'Tada!';
+let x = 'Tada!';
 const job = schedule.scheduleJob(date, function(y){
   console.log(y);
 }.bind(null,x));
