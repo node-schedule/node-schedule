@@ -277,6 +277,20 @@ Return true/false on success/failure.
 #### job.nextInvocation()
 This method returns a Date object for the planned next Invocation for this Job. If no invocation is planned the method returns null.
 
+## RRule Support
+
+Optional support for the rrule library has now been added as a peer dependency. If not included in your node_modules, but an attempt made to utilise RRule or RRuleSet objects will be met with errors (rrule string parsing will not be attempted if the library is not available).
+
+Once scheduled, any methods of the node-schedule library can be utilised as normal.
+
+#### job.schedule(rrule_string)
+#### job.reschedule(rrule_string)
+Valid RRule strings can be passed as a parameter to the schedule method in string format and will be parsed but not checked for errors, this must be done outside the library and will throw standard RRule errors
+
+#### job.schedule(RRule || RRuleSet)
+#### job.reschedule(RRule || RRuleSet)
+RRule or RRuleSet objects can also be passed as a parameter to the schedule method and will create a schedule if valid. Again, validity of the objects should be checked and handled outside the library.
+
 ## Contributing
 
 This module was originally developed by [Matt Patenaude] who eventually passed over maintainer's mantle over to [Tejas Manohar].   
