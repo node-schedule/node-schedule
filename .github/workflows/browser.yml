@@ -17,10 +17,10 @@ jobs:
         node-version: [16.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Use Node.js
-        uses: actions/setup-node@v3.3.0
+        uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd # v3.3.0
         with:
           node-version: ${{ matrix.node-version }}
 

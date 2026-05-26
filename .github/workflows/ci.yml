@@ -17,10 +17,10 @@ jobs:
         node-version: [6.x, 8.x, 10.x, 12.x, 14.x, 16.x, 17.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
 
       - name: Use Node.js
-        uses: actions/setup-node@v3.3.0
+        uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd # v3.3.0
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -35,6 +35,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: fastify/github-action-merge-dependabot@v2.7.1
+      - uses: fastify/github-action-merge-dependabot@dcc0af4032e8208df22da62da9d01f9ab6bb3170 # v2.7.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
