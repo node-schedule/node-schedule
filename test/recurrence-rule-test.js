@@ -166,6 +166,28 @@ test("Recurrence rule", function (t) {
       test.end();
     })
 
+    t.test("in the year 2040 specified as a string", function(test) {
+      const rule = new schedule.RecurrenceRule();
+      rule.year = '2040';
+
+      const next = rule.nextInvocationDate(base);
+
+      test.deepEqual(new Date(2040, 0, 1, 0, 0, 0, 0), next);
+      test.end();
+    })
+
+    t.test("using past year specified as a string", function(test) {
+      // Regression test for #756: a past year given as a string used to slip
+      // past the numeric-only guard and loop forever instead of returning null.
+      const rule = new schedule.RecurrenceRule();
+      rule.year = '2000';
+
+      const next = rule.nextInvocationDate(base);
+
+      test.equal(null, next);
+      test.end();
+    })
+
     t.test("using mixed time components", function(test) {
       const rule = new schedule.RecurrenceRule();
       rule.second = 50;
