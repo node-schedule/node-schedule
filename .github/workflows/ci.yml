@@ -26,7 +26,14 @@ jobs:
 
       - name: Install
         run: |
-          npm install
+          if node -e 'process.exit(+process.versions.node.split(".")[0] < 8 ? 0 : 1)'; then
+            # npm 3 (Node 6) fails to install airtap's dependency tree. The unit tests only
+            # need tape and sinon, so install those at the versions package.json declares.
+            npm install --production
+            npm install $(node -p "['tape', 'sinon'].map(function (n) { return n + '@' + require('./package.json').devDependencies[n] }).join(' ')")
+          else
+            npm install
+          fi
       - name: Run Tests
         run: |
           npm run test
