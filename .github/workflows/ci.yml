@@ -8,19 +8,25 @@ on:
     branches:
       - master
 
+permissions: {}
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     strategy:
       matrix:
         node-version: [8.x, 10.x, 12.x, 14.x, 16.x, 17.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Use Node.js
-        uses: actions/setup-node@v3.3.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -34,7 +40,10 @@ jobs:
   automerge:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # merge the Dependabot PR
+      pull-requests: write # approve the Dependabot PR
     steps:
-      - uses: fastify/github-action-merge-dependabot@v2.7.1
+      - uses: fastify/github-action-merge-dependabot@dcc0af4032e8208df22da62da9d01f9ab6bb3170 # v2.7.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
