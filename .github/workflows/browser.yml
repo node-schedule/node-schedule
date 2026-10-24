@@ -14,7 +14,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        # Playwright needs Node 20 or newer.
+        node-version: [24.x]
 
     steps:
       - uses: actions/checkout@v3
@@ -28,9 +29,9 @@ jobs:
         run: |
           npm install
 
-      - name: Install playwright
+      - name: Install browser
         run: |
-          npm install playwright airtap-playwright
+          npx playwright install --with-deps chromium
 
       - name: Run Tests
         run: |

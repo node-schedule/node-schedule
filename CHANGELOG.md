@@ -1,19 +1,19 @@
-# Master (Unreleased)
+# node-schedule
 
-# 2.1.1 - 11 January, 2023
+## 2.1.1 - 11 January, 2023
 
 ### Bug fixes:
 
 - Bump cron-parser from 3.5.0 to 4.2.0 - security fix #642
 
-# 2.1.0 - 28 November, 2021
+## 2.1.0 - 28 November, 2021
 
 ### New features:
 
 - Implement support for graceful shutdown #583
 - Emit a success event after a successful job invocation. #643
 
-# 2.0.0 - 01 February, 2021
+## 2.0.0 - 01 February, 2021
 
 ### Breaking changes:
 

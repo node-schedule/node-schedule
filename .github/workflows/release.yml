@@ -1,0 +1,60 @@
+name: release
+
+# Changesets-driven release. On every push to master this either opens/updates the
+# "Release node-schedule" PR (collecting pending changesets into a version bump and a
+# CHANGELOG entry) or, when that PR has just been merged and no changesets are pending,
+# publishes the new version to npm. merge-release-pr.yml merges the Release PR once its
+# checks are green.
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+# Never cancel a publish that is already running.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  release:
+    name: Version / publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the release branch and the version tag
+      pull-requests: write # open/update the Release PR
+      id-token: write # npm trusted publishing (OIDC) and provenance
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # changesets/action pushes the version commit and tags through the GitHub API
+          # with the token given to its `github-token` input, so the checkout does not
+          # need to keep credentials.
+          persist-credentials: false
+
+      # npm trusted publishing needs npm 11.5.1 or newer, which ships with Node 24.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24.x
+          registry-url: https://registry.npmjs.org
+
+      - name: Install
+        run: npm install --ignore-scripts --no-audit --no-fund
+
+      - name: Create Release PR or publish
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          # RELEASE_TOKEN is a PAT. Commits pushed and PRs opened with the default
+          # GITHUB_TOKEN do not trigger other workflows, so without it the Release PR
+          # gets no CI runs and merge-release-pr.yml never fires.
+          github-token: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          publish-script: npm run release
+          pr-title: 'Release node-schedule'
+          commit-message: 'chore: release node-schedule'
+        env:
+          # No NPM_TOKEN: npm authenticates through the trusted publisher configured
+          # for node-schedule on npmjs.com, which must point at this workflow file.
+          NPM_CONFIG_PROVENANCE: 'true'
