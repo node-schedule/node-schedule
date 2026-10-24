@@ -8,19 +8,26 @@ on:
     branches:
       - master
 
+permissions: {}
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     strategy:
       matrix:
-        node-version: [16.x]
+        # Playwright needs Node 20 or newer.
+        node-version: [24.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Use Node.js
-        uses: actions/setup-node@v3.3.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -28,9 +35,9 @@ jobs:
         run: |
           npm install
 
-      - name: Install playwright
+      - name: Install browser
         run: |
-          npm install playwright airtap-playwright
+          npx playwright install --with-deps chromium
 
       - name: Run Tests
         run: |

@@ -4,8 +4,12 @@ name: merge-release-pr
 # green. Runs each time one of the PR workflows finishes and merges only when all of them
 # have succeeded on the PR's current head commit, so it does not depend on auto-merge or
 # branch protection being set up for the repository.
-
-on:
+#
+# workflow_run runs with this repository's secrets even for runs started by a fork PR.
+# That is safe here because the job never checks out or executes code from the PR: it
+# reads event metadata, calls the gh CLI, and only acts when the head branch belongs to
+# this repository.
+on: # zizmor: ignore[dangerous-triggers]
   workflow_run:
     workflows:
       - ci
