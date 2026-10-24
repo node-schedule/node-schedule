@@ -45,6 +45,7 @@
   "devDependencies": {
     "@changesets/cli": "^3.0.3",
     "airtap": "^4.0.4",
+    "airtap-playwright": "^1.0.1",
     "eslint": "^8.3.0",
     "nyc": "^15.1.0",
     "sinon": "^9.2.4",
