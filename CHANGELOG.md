@@ -1,5 +1,11 @@
 # node-schedule
 
+## 2.1.2
+
+### Patch Changes
+
+- bef41ec: Cancel the polling interval in `gracefulShutdown()` once all running jobs have finished, so the process can exit (#752)
+
 ## 2.1.1 - 11 January, 2023
 
 ### Bug fixes:
