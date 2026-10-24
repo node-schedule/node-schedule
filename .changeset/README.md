@@ -11,5 +11,5 @@ Pick the bump type (patch, minor or major) and write a one-line summary. It goes
 
 On each push to `master`, the Release workflow collects pending changesets into a
 "Release node-schedule" PR that bumps the version and updates the changelog. Once every
-check on that PR passes, the "Merge release PR" workflow approves and merges it, and the
-Release workflow then publishes the new version to npm.
+check on that PR passes, the "Merge release PR" workflow merges it, and the Release
+workflow then publishes the new version to npm.
