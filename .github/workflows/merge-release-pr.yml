@@ -1,0 +1,113 @@
+name: merge-release-pr
+
+# Approves and merges the Release PR opened by release.yml once every check on it is
+# green. Runs each time one of the PR workflows finishes and merges only when all of them
+# have succeeded on the PR's current head commit, so it does not depend on auto-merge or
+# branch protection being set up for the repository.
+
+on:
+  workflow_run:
+    workflows:
+      - ci
+      - linting
+      - browser-tests
+    types:
+      - completed
+
+# Two workflows can finish at the same moment. Run one merge attempt at a time so the
+# second one sees the PR already merged.
+concurrency:
+  group: merge-release-pr
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  merge:
+    name: Approve and merge
+    runs-on: ubuntu-latest
+    # Only the Release PR branch in this repository. A fork can name its branch
+    # changeset-release/master too, so the head repository is checked as well.
+    if: >-
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'changeset-release/master' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    permissions:
+      actions: read # list the workflow runs for the head commit
+      checks: read # read the PR's check results
+      contents: write # merge with GITHUB_TOKEN when RELEASE_TOKEN is not set
+      pull-requests: write # approve the PR
+    env:
+      GH_REPO: ${{ github.repository }}
+      HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+      REQUIRED_WORKFLOWS: 'ci linting browser-tests'
+    steps:
+      - name: Check that the PR is green
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          pr=$(gh pr list --base master --head changeset-release/master --state open \
+            --json number,headRefOid --jq '.[0] // empty')
+          if [ -z "$pr" ]; then
+            echo "No open Release PR."
+            exit 0
+          fi
+          number=$(jq -r .number <<<"$pr")
+          head=$(jq -r .headRefOid <<<"$pr")
+          if [ "$head" != "$HEAD_SHA" ]; then
+            echo "PR #$number has moved on to $head; the run for that commit will decide."
+            exit 0
+          fi
+
+          # Every PR workflow must have a successful run for this exact commit. A workflow
+          # that has not started yet has no check runs, so `gh pr checks` alone could pass
+          # before it is queued.
+          runs=$(gh run list --commit "$HEAD_SHA" --event pull_request --limit 100 \
+            --json workflowName,status,conclusion,createdAt)
+          for wf in $REQUIRED_WORKFLOWS; do
+            latest=$(jq -r --arg wf "$wf" \
+              '[.[] | select(.workflowName == $wf)] | sort_by(.createdAt) | last
+               | if . == null then "missing" else "\(.status)/\(.conclusion)" end' <<<"$runs")
+            if [ "$latest" != "completed/success" ]; then
+              echo "Workflow '$wf' is $latest on $HEAD_SHA; not merging yet."
+              exit 0
+            fi
+          done
+
+          # Any other check on the PR (from apps or other workflows) must not be failing
+          # or pending either.
+          bad=$(gh pr checks "$number" --json name,bucket \
+            --jq '[.[] | select(.bucket != "pass" and .bucket != "skipping") | "\(.name): \(.bucket)"] | join(", ")')
+          if [ -n "$bad" ]; then
+            echo "PR #$number has checks that are not green: $bad"
+            exit 0
+          fi
+
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+
+      # Approves as github-actions[bot]. Needs "Allow GitHub Actions to create and approve
+      # pull requests" enabled in the repository's Actions settings, and fails when the
+      # PR was opened with GITHUB_TOKEN (a bot cannot approve its own PR). A missing
+      # approval only blocks the merge when branch protection requires one, so the
+      # merge step still runs.
+      - name: Approve
+        if: steps.check.outputs.number != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.check.outputs.number }}
+        run: gh pr review "$PR_NUMBER" --approve --body 'All checks passed. Approving the release.'
+
+      # Merges with RELEASE_TOKEN: a merge made with GITHUB_TOKEN does not trigger
+      # release.yml, and then nothing gets published. --match-head-commit refuses the
+      # merge if a commit landed on the PR after the checks above ran.
+      - name: Merge
+        if: steps.check.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.check.outputs.number }}
+        run: gh pr merge "$PR_NUMBER" --squash --match-head-commit "$HEAD_SHA"
