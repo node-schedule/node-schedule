@@ -1,6 +1,6 @@
 name: merge-release-pr
 
-# Approves and merges the Release PR opened by release.yml once every check on it is
+# Merges the Release PR opened by release.yml once every check on it is
 # green. Runs each time one of the PR workflows finishes and merges only when all of them
 # have succeeded on the PR's current head commit, so it does not depend on auto-merge or
 # branch protection being set up for the repository.
@@ -24,7 +24,7 @@ permissions: {}
 
 jobs:
   merge:
-    name: Approve and merge
+    name: Merge
     runs-on: ubuntu-latest
     # Only the Release PR branch in this repository. A fork can name its branch
     # changeset-release/master too, so the head repository is checked as well.
@@ -37,7 +37,7 @@ jobs:
       actions: read # list the workflow runs for the head commit
       checks: read # read the PR's check results
       contents: write # merge with GITHUB_TOKEN when RELEASE_TOKEN is not set
-      pull-requests: write # approve the PR
+      pull-requests: read # find the Release PR and its checks
     env:
       GH_REPO: ${{ github.repository }}
       HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
@@ -88,19 +88,6 @@ jobs:
           fi
 
           echo "number=$number" >> "$GITHUB_OUTPUT"
-
-      # Approves as github-actions[bot]. Needs "Allow GitHub Actions to create and approve
-      # pull requests" enabled in the repository's Actions settings, and fails when the
-      # PR was opened with GITHUB_TOKEN (a bot cannot approve its own PR). A missing
-      # approval only blocks the merge when branch protection requires one, so the
-      # merge step still runs.
-      - name: Approve
-        if: steps.check.outputs.number != ''
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ steps.check.outputs.number }}
-        run: gh pr review "$PR_NUMBER" --approve --body 'All checks passed. Approving the release.'
 
       # Merges with RELEASE_TOKEN: a merge made with GITHUB_TOKEN does not trigger
       # release.yml, and then nothing gets published. --match-head-commit refuses the

@@ -3,8 +3,8 @@ name: release
 # Changesets-driven release. On every push to master this either opens/updates the
 # "Release node-schedule" PR (collecting pending changesets into a version bump and a
 # CHANGELOG entry) or, when that PR has just been merged and no changesets are pending,
-# publishes the new version to npm. merge-release-pr.yml approves and merges the Release
-# PR once its checks are green.
+# publishes the new version to npm. merge-release-pr.yml merges the Release PR once its
+# checks are green.
 
 on:
   push:
