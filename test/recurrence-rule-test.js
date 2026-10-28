@@ -401,3 +401,41 @@ test("Recurrence rule", function (t) {
     t.end()
   })
 })
+
+test("fractional recurrence values are rejected before date search", function(t) {
+  const fields = ['year', 'month', 'date', 'dayOfWeek', 'hour', 'minute', 'second'];
+  fields.forEach(function(field) {
+    const fraction = field === 'year' ? 2040.5 : 1.5;
+    [fraction, String(fraction), [fraction], [1, fraction]].forEach(function(value) {
+      const rule = new schedule.RecurrenceRule();
+      rule[field] = value;
+      const valid = rule.isValid();
+      t.equal(valid, false, field + ' rejects ' + JSON.stringify(value));
+      // Only search after rejection so a regression cannot hang the test process.
+      if (!valid) {
+        t.equal(rule.nextInvocationDate(base), null);
+        const job = new schedule.Job(function() {});
+        t.equal(job.schedule(rule), false);
+        job.cancel();
+        t.equal(schedule.scheduleJob('fractional-rule', rule, function() {}), null);
+        schedule.cancelJob('fractional-rule');
+        const spec = {};
+        spec[field] = value;
+        t.equal(schedule.scheduleJob('fractional-spec', spec, function() {}), null);
+        schedule.cancelJob('fractional-spec');
+      }
+    });
+  });
+  t.end();
+});
+
+test("integer strings and ranges remain valid recurrence values", function(t) {
+  ['year', 'month', 'date', 'dayOfWeek', 'hour', 'minute', 'second'].forEach(function(field) {
+    ['1', ['1', 2], new schedule.Range(1, 2)].forEach(function(value) {
+      const rule = new schedule.RecurrenceRule();
+      rule[field] = value;
+      t.equal(rule.isValid(), true, field + ' accepts ' + JSON.stringify(value));
+    });
+  });
+  t.end();
+});
