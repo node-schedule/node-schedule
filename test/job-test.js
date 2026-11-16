@@ -282,6 +282,30 @@ test("Job", function (t) {
       clock.tick(3250);
     })
 
+    t.test("Runs job at interval based on object, user Cron-like '*'", function (test) {
+      test.plan(3);
+
+      const job = new schedule.Job(function () {
+        test.ok(true);
+      });
+
+      job.schedule({
+        year: '*', // fire every year
+        dayOfWeek: '*', // fire every day of the week
+        month: '*', // fire every month
+        hour: '*', // fire every hour
+        minute: '*', // fire every minute
+        second: '*' // fire every second
+      });
+
+      setTimeout(function () {
+        job.cancel();
+        test.end();
+      }, 3250);
+
+      clock.tick(3250);
+    })
+
     t.test("Doesn't invoke job if object schedules it in the past", function (test) {
       test.plan(0);
 
