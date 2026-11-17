@@ -295,7 +295,7 @@ Copyright 2015 Matt Patenaude.
 Licensed under the **[MIT License](https://github.com/node-schedule/node-schedule/blob/master/LICENSE)**.
 
 
-[cron]: http://unixhelp.ed.ac.uk/CGI/man-cgi?crontab+5
+[cron]: https://man7.org/linux/man-pages/man5/crontab.5.html
 [Contributing]: https://github.com/node-schedule/node-schedule/blob/master/CONTRIBUTING.md
 [Matt Patenaude]: https://github.com/mattpat
 [Tejas Manohar]: http://tejas.io
