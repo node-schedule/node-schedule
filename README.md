@@ -165,6 +165,9 @@ const job = schedule.scheduleJob(rule, function(){
 
 You can also use arrays to specify a list of acceptable values, and the `Range`
 object to specify a range of start and end values, with an optional step parameter.
+Both endpoints are inclusive; with a step, the end is included only if it is
+reached from the start by that step. For example, `new schedule.Range(1, 5, 2)`
+includes Monday, Wednesday, and Friday when used for `dayOfWeek`.
 For instance, this will print a message on Thursday, Friday, Saturday, and Sunday at 5pm:
 
 ```js

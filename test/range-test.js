@@ -50,8 +50,8 @@ test("when step > 1", function(t) {
     t.end();
   })
 
-  t.test("excludes end value", function(t) {
-    t.ok(!range.contains(6));
+  t.test("includes end value when it is on a step", function(t) {
+    t.ok(range.contains(6));
 
     t.end();
   })
@@ -69,10 +69,42 @@ test("when step > 1", function(t) {
   })
 
   t.test("excludes values outside of start and end", function(t) {
+    t.ok(!range.contains(0));
     t.ok(!range.contains(1));
     t.ok(!range.contains(7));
+    t.ok(!range.contains(8));
 
     t.end();
   })
+})
+
+test("when end value is not on a step", function(t) {
+  const range = new schedule.Range(2, 7, 2);
+
+  t.ok(range.contains(6));
+  t.ok(!range.contains(7));
+  t.ok(!range.contains(8));
+
+  t.end();
+})
+
+test("when start and end are equal with step > 1", function(t) {
+  const range = new schedule.Range(5, 5, 2);
+
+  t.ok(range.contains(5));
+  t.ok(!range.contains(3));
+  t.ok(!range.contains(7));
+
+  t.end();
+})
+
+test("when step is larger than the range", function(t) {
+  const range = new schedule.Range(2, 3, 4);
+
+  t.ok(range.contains(2));
+  t.ok(!range.contains(3));
+  t.ok(!range.contains(6));
+
+  t.end();
 })
 

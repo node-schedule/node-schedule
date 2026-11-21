@@ -232,13 +232,32 @@ test("Recurrence rule", function (t) {
       next = rule.nextInvocationDate(next);
       test.deepEqual(new Date(2010, 3, 29, 13, 6, 0, 0), next);
 
-      /* Should Range stay inclusive on both ends when step > 1
       next = rule.nextInvocationDate(next);
       test.deepEqual(new Date(2010, 3, 29, 13, 8, 0, 0), next);
-      */
 
       next = rule.nextInvocationDate(next);
       test.deepEqual(new Date(2010, 3, 29, 14, 4, 0, 0), next);
+
+      test.end();
+    })
+
+    t.test("includes the final weekday in a stepped Range", function(test) {
+      const rule = new schedule.RecurrenceRule();
+      rule.dayOfWeek = new schedule.Range(1, 5, 2);
+      rule.hour = 12;
+      rule.minute = 15;
+
+      let next = rule.nextInvocationDate(base);
+      test.deepEqual(new Date(2010, 3, 30, 12, 15, 0, 0), next);
+
+      next = rule.nextInvocationDate(next);
+      test.deepEqual(new Date(2010, 4, 3, 12, 15, 0, 0), next);
+
+      next = rule.nextInvocationDate(next);
+      test.deepEqual(new Date(2010, 4, 5, 12, 15, 0, 0), next);
+
+      next = rule.nextInvocationDate(next);
+      test.deepEqual(new Date(2010, 4, 7, 12, 15, 0, 0), next);
 
       test.end();
     })
